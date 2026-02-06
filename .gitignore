@@ -1,0 +1,10 @@
+# Local development files
+.gemini/
+.agent/
+task.md
+implementation_plan.md
+walkthrough.md
+
+# OS files
+Thumbs.db
+.DS_Store
