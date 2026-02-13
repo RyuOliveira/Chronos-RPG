@@ -1,0 +1,132 @@
+[
+    {
+        "id": "elza-fofoqueira",
+        "nome": "Elza",
+        "titulo": "atendente fofoqueira",
+        "descricao": "Elza é a alma da Estalagem Pedra Colina (Stonehill Inn). Ela sabe de tudo que acontece em Phandalin antes mesmo do Townmaster. Embora seja um pouco indiscreta, ela é uma fonte valiosa de informações e rumores para quem sabe como agradá-la.",
+        "tags": [
+            "Phandalin",
+            "Estalagem Pedra Colina",
+            "Informações e Rumores"
+        ],
+        "ultima_informacao": "Vista pela última vez limpando o balcão e comentando baixinho sobre a movimentação estranha nos arredores de Phandalin.",
+        "imagem": "https://placehold.co/400x600/663399/white?text=Elza"
+    },
+    {
+        "id": "harbin-wester",
+        "nome": "Harbin Wester",
+        "titulo": "Chefe da Vila (Townmaster) de Phandalin",
+        "descricao": "Harbin Wester é o chefe administrativo de Phandalin, mais burocrata do que líder. Tende a evitar confronto direto, prefere pagar para que outros resolvam problemas e costuma se esconder atrás de portas trancadas quando a cidade fica tensa. Preocupado com sua posição e com a aparência de ordem, é útil como fonte de recompensas e permissões, mas raramente inspira coragem em ninguém.",
+        "tags": [
+            "Phandalin",
+            "Prefeitura",
+            "Autoridade local"
+        ],
+        "ultima_informacao": "Visto pela última vez no Salão do Chefe da Vila, lidando com pedidos e oferecendo recompensas por “serviços” para a cidade.",
+        "imagem": "https://placehold.co/400x600/4b0082/white?text=Harbin+Wester"
+    },
+    {
+        "id": "toblen-stonehill",
+        "nome": "Toblen Stonehill",
+        "titulo": "Estalajadeiro da Estalagem Pedra Colina",
+        "descricao": "Toblen Stonehill é um anfitrião cordial e prático, dono da principal estalagem de Phandalin. Ele preza pela segurança de sua família e pela estabilidade do vilarejo, mas não é indiferente ao sofrimento alheio. Costuma ouvir tudo o que acontece na cidade e repassar rumores com cuidado, ajudando aventureiros com informações e um lugar confiável para dormir.",
+        "tags": [
+            "Phandalin",
+            "Estalagem",
+            "Rumores"
+        ],
+        "ultima_informacao": "Visto pela última vez atrás do balcão da Estalagem Pedra Colina, recebendo viajantes e comentando o clima tenso na cidade.",
+        "imagem": "https://placehold.co/400x600/4b0082/white?text=Toblen+Stonehill"
+    },
+    {
+        "id": "linene-greywind",
+        "nome": "Linene Greywind",
+        "titulo": "Comerciante da Transações Escudo Leão",
+        "descricao": "Linene Greywind é uma comerciante competente e desconfiada, responsável pelo posto comercial Transações Escudo Leão em Phandalin. Ela pensa em termos de perdas e lucros, mas não é cruel: se irrita com bandidos e com qualquer coisa que atrapalhe o fluxo de mercadorias. Trata aventureiros como clientes — e possíveis soluções para problemas logísticos e de segurança.",
+        "tags": [
+            "Phandalin",
+            "Comércio",
+            "Escudo Leão"
+        ],
+        "ultima_informacao": "Vista pela última vez na loja Transações Escudo Leão, reclamando do impacto de ataques e roubos nas remessas.",
+        "imagem": "https://placehold.co/400x600/4b0082/white?text=Linene+Greywind"
+    },
+    {
+        "id": "daran-edermath",
+        "nome": "Daran Edermath",
+        "titulo": "Ex-aventureiro e dono do Pomar Edermath",
+        "descricao": "Daran Edermath é um ex-aventureiro que escolheu uma vida mais calma em Phandalin, cuidando de seu pomar. Observador e direto, ele não gosta de tiranos locais e tem um senso forte de justiça. Costuma avaliar pessoas rapidamente, oferecendo conselhos francos e, quando necessário, oportunidades para quem está disposto a agir contra ameaças na região.",
+        "tags": [
+            "Phandalin",
+            "Pomar Edermath",
+            "Missões locais"
+        ],
+        "ultima_informacao": "Visto pela última vez no Pomar Edermath, conversando com visitantes e medindo o quanto eles são capazes de lidar com problemas reais.",
+        "imagem": "https://placehold.co/400x600/4b0082/white?text=Daran+Edermath"
+    },
+    {
+        "id": "sister-garaele",
+        "nome": "Irmã Garaele",
+        "titulo": "Acolita do Santuário da Sorte",
+        "descricao": "Irmã Garaele é uma jovem clériga devota e determinada que serve no Santuário da Sorte, em Phandalin. Gentil no trato, mas firme nas convicções, ela busca informações e aliados para lidar com mistérios e ameaças maiores do que o vilarejo aparenta. É uma ponte entre os moradores comuns e interesses mais amplos, oferecendo tarefas que envolvem diplomacia, segredos e investigação.",
+        "tags": [
+            "Phandalin",
+            "Santuário da Sorte",
+            "Informações"
+        ],
+        "ultima_informacao": "Vista pela última vez no Santuário da Sorte, mantendo-se ocupada com deveres religiosos e contatos discretos.",
+        "imagem": "https://placehold.co/400x600/4b0082/white?text=Irma+Garaele"
+    },
+    {
+        "id": "halia-thornton",
+        "nome": "Halia Thornton",
+        "titulo": "Chefe da Câmbio de Minério de Phandalin",
+        "descricao": "Halia Thornton é uma administradora ambiciosa e calculista que comanda a Câmbio de Minério de Phandalin. Ela vê a cidade como um tabuleiro: poder, influência e estabilidade importam — mas sempre do jeito dela. Sabe negociar, coletar informações e explorar fraquezas alheias. Pode ser aliada útil, porém seus favores quase sempre têm custo.",
+        "tags": [
+            "Phandalin",
+            "Câmbio de Minério",
+            "Influência"
+        ],
+        "ultima_informacao": "Vista pela última vez na Câmbio de Minério, tratando de negócios e sondando quem na cidade pode ser “útil”.",
+        "imagem": "https://placehold.co/400x600/4b0082/white?text=Halia+Thornton"
+    },
+    {
+        "id": "qelline-alderleaf",
+        "nome": "Qelline Alderleaf",
+        "titulo": "Fazendeira da Fazenda Alderleaf",
+        "descricao": "Qelline Alderleaf é uma fazendeira trabalhadora e acolhedora que vive na Fazenda Alderleaf. Ela valoriza a comunidade e costuma ajudar viajantes, oferecendo comida simples e conversa honesta. Atenta ao que acontece na estrada e nos arredores, pode compartilhar pistas úteis sobre pessoas e lugares da região, especialmente sobre trilhas e movimentações suspeitas.",
+        "tags": [
+            "Phandalin",
+            "Fazenda Alderleaf",
+            "Informações locais"
+        ],
+        "ultima_informacao": "Vista pela última vez em sua fazenda, cuidando da rotina e recebendo visitantes com hospitalidade.",
+        "imagem": "https://placehold.co/400x600/4b0082/white?text=Qelline+Alderleaf"
+    },
+    {
+        "id": "mirna-dendrar",
+        "nome": "Mirna Dendrar",
+        "titulo": "Moradora de Phandalin",
+        "descricao": "Mirna Dendrar é uma moradora comum de Phandalin, ligada à vida simples da cidade e às preocupações imediatas de segurança e sobrevivência. Ela representa bem o impacto que a violência local tem sobre as famílias: medo, perdas e a necessidade de ajuda externa. Quando se abre, tende a ser grata e direta, apontando quem está causando sofrimento e o que precisa ser recuperado ou protegido.",
+        "tags": [
+            "Phandalin",
+            "Vítima dos Marcarrubra",
+            "Herança"
+        ],
+        "ultima_informacao": "Os aventureiros souberam por último que Mirna e sua família foram afetados pela violência dos Marcarrubra e precisavam de proteção/justiça.",
+        "imagem": "https://placehold.co/400x600/4b0082/white?text=Mirna+Dendrar"
+    },
+    {
+        "id": "mestre-vahlon",
+        "nome": "Mestre Vahlon",
+        "titulo": "erudito recluso",
+        "descricao": "Um velho arquivista que vive nos arredores da Grande Biblioteca. Dizem que ele conhece segredos sobre a Era do Caos que foram perdidos pela maioria dos historiadores.",
+        "tags": [
+            "Grande Biblioteca",
+            "Missão: O Livro de Eibon",
+            "História Antiga"
+        ],
+        "ultima_informacao": "Trancado em seu estúdio pesquisando pergaminhos sobre necromancia.",
+        "imagem": "https://placehold.co/400x600/2f4f4f/white?text=Vahlon"
+    }
+]

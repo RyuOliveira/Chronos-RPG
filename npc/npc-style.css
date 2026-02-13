@@ -1,0 +1,122 @@
+:root {
+    --npc-primary: #4b0082;
+    /* Indigo */
+    --npc-secondary: #ffd700;
+    /* Gold */
+    --npc-accent: #8b0000;
+    /* Dark Red */
+    --npc-bg: #f8f9fa;
+    --npc-text: #212529;
+}
+
+body {
+    background-color: var(--npc-bg);
+    color: var(--npc-text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.npc-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.npc-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    height: 100%;
+}
+
+.npc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.npc-card-img {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.npc-card-body {
+    padding: 1.25rem;
+}
+
+.npc-title {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.npc-name {
+    color: var(--npc-primary);
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.badge-tag {
+    background-color: var(--npc-primary);
+    color: white;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+    font-weight: normal;
+    font-size: 0.75rem;
+}
+
+.npc-detail-header {
+    background: linear-gradient(135deg, var(--npc-primary), #6a0dad);
+    color: white;
+    padding: 3rem 1rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.npc-detail-img {
+    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-top: -100px;
+    border: 5px solid white;
+}
+
+.npc-info-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.info-label {
+    font-weight: bold;
+    color: var(--npc-primary);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.status-box {
+    background-color: #fff3cd;
+    border-left: 5px solid var(--npc-secondary);
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-radius: 5px;
+}
+
+.home-link {
+    text-decoration: none;
+    color: white;
+    font-size: 1.1rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.home-link:hover {
+    color: var(--npc-secondary);
+}

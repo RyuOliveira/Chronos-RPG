@@ -4,113 +4,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D Initiative Tracker</title>
-    <!-- Google Fonts -->
+    <title>Chronos RPG - Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary: #d4af37;
+            --primary-hover: #f1c40f;
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.8);
+            --text-light: #e0e0e0;
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+                url('https://www.transparenttextures.com/patterns/black-paper.png');
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 1000px;
+            padding: 0 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .nav-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: var(--border-radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-light);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.05), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .nav-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+        }
+
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Iniciativa D&D</h1>
+    <header class="hero">
+        <h1>Chronos RPG</h1>
+        <p class="subtitle">Ferramentas para Mestres e Heróis</p>
+    </header>
 
-    <div class="container">
-        <!-- Sidebar: Add Character -->
-        <aside class="card">
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="add">Adicionar</button>
-                <button class="tab-btn" data-tab="library">Biblioteca</button>
-            </div>
+    <main class="grid">
+        <a href="tracker/index.html" class="nav-card">
+            <div class="icon">⚔️</div>
+            <h2 class="card-title">Iniciativa</h2>
+            <p class="card-desc">Gerencie turnos, PV e CA de jogadores e monstros em tempo real.</p>
+        </a>
 
-            <div id="tab-add" class="tab-content active">
-                <h3 class="card-subtitle" style="font-size: 0.9rem; color: var(--primary); margin-bottom: 1rem;">NOVO
-                    COMBATENTE</h3>
-                <form id="char-form">
-                    <div class="form-group">
-                        <label for="name">Nome</label>
-                        <input type="text" id="name" placeholder="Ex: Grog, Orc, etc." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="init">Iniciativa / Bônus</label>
-                        <input type="text" id="init" placeholder="1d20+3 ou 15" required>
-                        <p class="form-help">Ex: 15, 1d20+3, 2(1d20+2) para vantagem</p>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label for="ac">CA</label>
-                            <input type="number" id="ac" placeholder="15">
-                        </div>
-                        <div class="form-group">
-                            <label for="hp">PV Atual</label>
-                            <input type="number" id="hp" placeholder="30">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label for="type">Tipo</label>
-                            <select id="type"
-                                style="width:100%; padding:0.75rem; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:white;">
-                                <option value="player">Jogador</option>
-                                <option value="enemy">Monstro</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="qty-group" style="display:none;">
-                            <label for="qty">Qtd</label>
-                            <input type="number" id="qty" value="1" min="1">
-                        </div>
-                    </div>
+        <a href="mm/index.html" class="nav-card">
+            <div class="icon">📜</div>
+            <h2 class="card-title">Manual</h2>
+            <p class="card-desc">Glossário completo de criaturas com fichas detalhadas e prontas para uso.</p>
+        </a>
+    </main>
 
-                    <button type="submit" class="btn btn-primary">Entrar no Combate</button>
-                    <button type="button" id="save-to-lib" class="btn btn-secondary"
-                        style="margin-top: 0.5rem; background: rgba(52, 152, 219, 0.2);">Salvar na Biblioteca</button>
-                </form>
-            </div>
-
-            <div id="tab-library" class="tab-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3 style="font-size: 0.9rem; color: var(--primary);">MEUS SALVOS</h3>
-                    <div style="display:flex; gap: 5px;">
-                        <button id="import-lib" title="Importar JSON" class="btn-small-icon">📥</button>
-                        <button id="export-lib" title="Exportar JSON" class="btn-small-icon">📤</button>
-                    </div>
-                </div>
-                <input type="hidden" id="import-input" accept=".json">
-
-                <div id="player-library" class="library-list">
-                    <!-- Loaded via JS -->
-                </div>
-                <div id="monster-library" class="library-list" style="margin-top: 2rem;">
-                    <!-- Loaded via JS -->
-                </div>
-            </div>
-
-            <button type="button" id="clear-all" class="btn btn-secondary"
-                style="margin-top: 2rem; border-color: var(--accent-red); color: var(--accent-red);">Limpar Combate
-                Atual</button>
-        </aside>
-
-        <!-- Main Content: Initiative List -->
-        <main class="card">
-            <div class="tracker-header">
-                <h2 class="card-title" style="margin-bottom:0; border:none; padding:0;">Ordem de Turno</h2>
-                <div class="turn-controls">
-                    <button id="prev-turn" class="btn btn-secondary btn-small">Anterior</button>
-                    <button id="next-turn" class="btn btn-primary btn-small">Próximo Turno</button>
-                </div>
-            </div>
-
-            <div id="initiative-list" class="initiative-list">
-                <!-- Character items will be injected here via JS -->
-                <div style="text-align: center; color: #666; padding: 2rem;">
-                    Nenhum combatente adicionado.
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script src="script.js"></script>
+    <footer style="margin-top: 5rem; color: #444; font-size: 0.8rem; letter-spacing: 1px;">
+        &copy; 2026 CHRONOS RPG SYSTEM
+    </footer>
 </body>
 
 </html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Initiative Tracker</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Iniciativa D&D</h1>
+
+    <div class="container">
+        <!-- Sidebar: Add Character -->
+        <aside class="card">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="add">Adicionar</button>
+                <button class="tab-btn" data-tab="library">Biblioteca</button>
+            </div>
+
+            <div id="tab-add" class="tab-content active">
+                <h3 class="card-subtitle" style="font-size: 0.9rem; color: var(--primary); margin-bottom: 1rem;">NOVO
+                    COMBATENTE</h3>
+                <form id="char-form">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" placeholder="Ex: Grog, Orc, etc." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="init">Iniciativa / Bônus</label>
+                        <input type="text" id="init" placeholder="1d20+3 ou 15" required>
+                        <p class="form-help">Ex: 15, 1d20+3, 2(1d20+2) para vantagem</p>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="ac">CA</label>
+                            <input type="number" id="ac" placeholder="15">
+                        </div>
+                        <div class="form-group">
+                            <label for="hp">PV Atual</label>
+                            <input type="number" id="hp" placeholder="30">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="type">Tipo</label>
+                            <select id="type"
+                                style="width:100%; padding:0.75rem; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:white;">
+                                <option value="player">Jogador</option>
+                                <option value="enemy">Monstro</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="qty-group" style="display:none;">
+                            <label for="qty">Qtd</label>
+                            <input type="number" id="qty" value="1" min="1">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Entrar no Combate</button>
+                    <button type="button" id="save-to-lib" class="btn btn-secondary"
+                        style="margin-top: 0.5rem; background: rgba(52, 152, 219, 0.2);">Salvar na Biblioteca</button>
+                </form>
+            </div>
+
+            <div id="tab-library" class="tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="font-size: 0.9rem; color: var(--primary);">MEUS SALVOS</h3>
+                    <div style="display:flex; gap: 5px;">
+                        <button id="import-lib" title="Importar JSON" class="btn-small-icon">📥</button>
+                        <button id="export-lib" title="Exportar JSON" class="btn-small-icon">📤</button>
+                    </div>
+                </div>
+                <input type="hidden" id="import-input" accept=".json">
+
+                <div id="player-library" class="library-list">
+                    <!-- Loaded via JS -->
+                </div>
+                <div id="monster-library" class="library-list" style="margin-top: 2rem;">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+
+            <button type="button" id="clear-all" class="btn btn-secondary"
+                style="margin-top: 2rem; border-color: var(--accent-red); color: var(--accent-red);">Limpar Combate
+                Atual</button>
+        </aside>
+
+        <!-- Main Content: Initiative List -->
+        <main class="card">
+            <div class="tracker-header">
+                <h2 class="card-title" style="margin-bottom:0; border:none; padding:0;">Ordem de Turno</h2>
+                <div class="turn-controls">
+                    <button id="prev-turn" class="btn btn-secondary btn-small">Anterior</button>
+                    <button id="next-turn" class="btn btn-primary btn-small">Próximo Turno</button>
+                </div>
+            </div>
+
+            <div id="initiative-list" class="initiative-list">
+                <!-- Character items will be injected here via JS -->
+                <div style="text-align: center; color: #666; padding: 2rem;">
+                    Nenhum combatente adicionado.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

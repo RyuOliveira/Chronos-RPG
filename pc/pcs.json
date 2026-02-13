@@ -1,0 +1,42 @@
+[
+    {
+        "id": "valerius-ironfist",
+        "nome": "Valerius Ironfist",
+        "jogador": "Rodrigo",
+        "raca": "Anão",
+        "classe": "Paladino",
+        "nivel": 5,
+        "imagem": "https://placehold.co/400x600/b8860b/white?text=Valerius",
+        "bio": "Valerius é um paladino devoto da Ordem do Martelo Dourado. Ele busca restaurar a honra de sua linhagem após a queda de Khaz-Modan. Sua fé é inabalável e seu escudo protege os inocentes.",
+        "stats": {
+            "ca": 18,
+            "hp_max": 52,
+            "init_formula": "1d20-1"
+        },
+        "equipamentos": [
+            "Armadura de Placas",
+            "Escudo de Adamante",
+            "Martelo de Guerra Sagrado"
+        ]
+    },
+    {
+        "id": "lyandra-nightwind",
+        "nome": "Lyandra Nightwind",
+        "jogador": "Ana",
+        "raca": "Elfa da Floresta",
+        "classe": "Ranger",
+        "nivel": 5,
+        "imagem": "https://placehold.co/400x600/006400/white?text=Lyandra",
+        "bio": "Uma rastreadora mestre das fronteiras do norte. Lyandra prefere a companhia das feras à das pessoas, mas jurou proteger o grupo contra as sombras que avançam.",
+        "stats": {
+            "ca": 16,
+            "hp_max": 44,
+            "init_formula": "1d20+4"
+        },
+        "equipamentos": [
+            "Arco Longo Élfico",
+            "Adagas de Prata",
+            "Capa de Invisibilidade"
+        ]
+    }
+]

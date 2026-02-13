@@ -401,3 +401,17 @@ input:focus {
     grid-column: 3;
   }
 }
+
+.btn-sheet-link {
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+  opacity: 0.7;
+  transition: var(--transition);
+}
+
+.btn-sheet-link:hover {
+  opacity: 1;
+  display: inline-block;
+  transform: scale(1.2);
+}

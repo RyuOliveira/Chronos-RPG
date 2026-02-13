@@ -1,0 +1,132 @@
+/* mm-style.css - Shared Styles for Manual dos Monstros */
+
+body {
+    background-color: #0d0d0d;
+    color: #e0e0e0;
+    font-family: 'Georgia', serif;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.monster-card {
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #212529;
+    border: 2px solid #dc3545;
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid #8b0000;
+}
+
+.badge {
+    background-color: #495057 !important;
+    padding: 0.5em 0.8em;
+    border-radius: 0.5rem;
+}
+
+/* Glossary Styles */
+.glossary-group h5 {
+    color: #ffc107;
+    border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+    padding-bottom: 0.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.glossary-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.glossary-list li a {
+    color: #b2eaf5;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+    display: block;
+    padding: 0.2rem 0;
+}
+
+.glossary-list li a:hover {
+    color: #00bcd4;
+    text-decoration: underline;
+    padding-left: 5px;
+}
+
+/* Monster Sheet Specific Styles */
+.monster-basics strong,
+.monster-details strong {
+    color: #ffc107;
+}
+
+.ability-score {
+    flex: 1;
+    padding: 0.75rem;
+    background: rgba(255, 193, 7, 0.1);
+    border-radius: 6px;
+    margin: 0 4px;
+    transition: all 0.3s ease;
+}
+
+.ability-name {
+    font-weight: bold;
+    color: #ffc107;
+}
+
+.action-item,
+.special-trait {
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    border-left: 4px solid #00bcd4;
+}
+
+.action-item strong,
+.special-trait strong {
+    color: #00bcd4;
+}
+
+.monster-description {
+    font-style: italic;
+    color: #adb5bd;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.fa-icon {
+    color: #dc3545;
+    margin-right: 0.5em;
+}
+
+.legendary-actions h5 {
+    color: #ff6b6b;
+}
+
+.group-header {
+    background-color: #1a1a1a;
+    border: 2px solid #dc3545;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.group-header h1 {
+    color: #ffc107;
+    font-size: 2.5rem;
+}
+
+.group-header img {
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+}

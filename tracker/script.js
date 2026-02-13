@@ -90,7 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             charEl.innerHTML = `
                 <div class="char-init">${char.init}</div>
-                <div class="char-name" title="${char.name}">${char.name}</div>
+                <div class="char-name" title="${char.name}">
+                    ${char.name}
+                    ${char.monsterSlug ? `<a href="../mm/monster.html?slug=${char.monsterSlug}" target="_blank" class="btn-sheet-link" title="Abrir Ficha">📜</a>` : ''}
+                </div>
                 <div class="char-ac">🛡️ ${char.ac || '--'}</div>
                 <div class="char-hp">
                     <div class="hp-value">${char.hp !== undefined ? char.hp : '--'} HP</div>
@@ -211,9 +214,10 @@ document.addEventListener('DOMContentLoaded', () => {
             characters.push({
                 id: Date.now() + i,
                 name: qty > 1 ? `${source.name} ${i + 1}` : source.name,
-                init: rollDice(source.initFormula),
+                init: rollDice(source.initFormula || "1d20"),
                 ac: source.ac,
                 hp: source.hp,
+                monsterSlug: source.monsterSlug,
                 type: type === 'player' ? 'player' : 'enemy'
             });
         }
