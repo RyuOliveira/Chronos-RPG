@@ -98,41 +98,12 @@ section li {
     color: var(--text);
 }
 
-.story-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
+.story-section {
+    max-width: 860px;
 }
 
-.fact-card,
-.timeline-item {
-    padding: 1.1rem 1.2rem;
-    border-radius: 18px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-}
-
-.timeline {
-    display: grid;
-    gap: 1rem;
-}
-
-.timeline-item {
-    border-left: 3px solid var(--primary);
-}
-
-blockquote {
-    margin: 1.3rem 0 0;
-    padding: 1rem 1.2rem;
-    border-left: 4px solid rgba(209,87,32,0.9);
-    background: rgba(255,255,255,0.03);
-    color: #f8d9b7;
-    border-radius: 14px;
-    font-style: italic;
-}
-
-.final-quote {
-    font-size: 1.05rem;
+.story-section p {
+    margin-bottom: 1.1rem;
 }
 
 .badge {
