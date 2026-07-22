@@ -44,6 +44,8 @@ const parseInteger = (value) => {
 
 const generateId = (prefix = 'attack') => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
 
+const trackerPayloadCache = new Map();
+
 const parseDamagePartsFromText = (text) => {
     const clean = stripHtml(text).replace(/[−–]/g, '-');
     const parts = [];
@@ -101,6 +103,113 @@ const buildMonsterNotes = (monster) => {
     return cleanWhitespace(noteParts.filter(Boolean).join(' | '));
 };
 
+const parseLocalizedInteger = (value) => {
+    if (value === null || value === undefined || value === '') return undefined;
+    const normalized = String(value)
+        .replace(/[^\d.,-]/g, '')
+        .replace(/\./g, '')
+        .replace(',', '.')
+        .trim();
+    if (!normalized) return undefined;
+    const parsed = Number.parseFloat(normalized);
+    return Number.isFinite(parsed) ? Math.trunc(parsed) : undefined;
+};
+
+const parseAbilityModifier = (value) => {
+    if (value === null || value === undefined || value === '') return undefined;
+    const text = String(value).replace(/[âˆ’â€“]/g, '-').trim();
+    const match = text.match(/\(([+-]?\d+)\)/);
+    if (match) return Number.parseInt(match[1], 10);
+
+    const score = parseInteger(text);
+    if (!Number.isFinite(score)) return undefined;
+    return Math.floor((score - 10) / 2);
+};
+
+const parseHpText = (value) => {
+    const text = cleanWhitespace(value);
+    if (!text) return { hp: 0, formula: undefined };
+
+    const hpMatch = text.match(/^([\d.,-]+)/);
+    const hp = parseLocalizedInteger(hpMatch?.[1] ?? text) ?? parseInteger(hpMatch?.[1] ?? text) ?? 0;
+    const formulaMatch = text.match(/\(([^)]+)\)/);
+    return {
+        hp,
+        formula: formulaMatch ? cleanWhitespace(formulaMatch[1]).replace(/\s+/g, '') : undefined
+    };
+};
+
+const clonePlainObject = (value) => {
+    if (value === null || value === undefined) return value;
+    return JSON.parse(JSON.stringify(value));
+};
+
+const buildMonsterTrackerPayload = (monster, slug, group) => {
+    const hpInfo = parseHpText(monster.pontosVida);
+    const dexBonus = parseAbilityModifier(monster.destreza);
+    const groupInfo = {
+        slug: group?.slug,
+        title: group?.titulo_pagina,
+        image: group?.imagem_principal,
+        description: group?.descricao_pagina
+    };
+
+    const initFormula = Number.isFinite(dexBonus)
+        ? (dexBonus === 0 ? '1d20' : `1d20${dexBonus > 0 ? '+' : ''}${dexBonus}`)
+        : '1d20';
+
+    return {
+        type: 'enemy',
+        name: String(monster.nome ?? 'Sem nome').trim() || 'Sem nome',
+        ac: parseInteger(monster.classeArmadura),
+        hp: hpInfo.hp,
+        maxHp: hpInfo.hp,
+        hpFormula: hpInfo.formula,
+        initFormula,
+        initBonus: Number.isFinite(dexBonus) ? dexBonus : undefined,
+        sheetUrl: buildMonsterSheetUrl(slug),
+        monsterSlug: slug,
+        groupSlug: groupInfo.slug,
+        groupTitle: groupInfo.title,
+        groupImage: groupInfo.image,
+        groupDescription: groupInfo.description,
+        cr: String(monster.desafioCR_text ?? '').trim() || undefined,
+        xp: parseLocalizedInteger(monster.xp),
+        size: String(monster.tamanho ?? '').trim() || undefined,
+        creatureType: String(monster.tipo ?? '').trim() || undefined,
+        alignment: String(monster.alinhamento ?? '').trim() || undefined,
+        speed: String(monster.deslocamento ?? '').trim() || undefined,
+        abilities: {
+            forca: String(monster.forca ?? '').trim() || undefined,
+            destreza: String(monster.destreza ?? '').trim() || undefined,
+            constituicao: String(monster.constituicao ?? '').trim() || undefined,
+            inteligencia: String(monster.inteligencia ?? '').trim() || undefined,
+            sabedoria: String(monster.sabedoria ?? '').trim() || undefined,
+            carisma: String(monster.carisma ?? '').trim() || undefined
+        },
+        savingThrows: String(monster.testesResistencia ?? '').trim() || undefined,
+        skills: String(monster.pericias ?? '').trim() || undefined,
+        senses: String(monster.sentidos ?? '').trim() || undefined,
+        languages: String(monster.idiomas ?? '').trim() || undefined,
+        resistances: splitList(monster.resistenciasDano),
+        vulnerabilities: splitList(monster.vulnerabilidadesDano),
+        immunities: splitList(monster.imunidadesDano),
+        conditionImmunities: splitList(monster.imunidadesCondicoes),
+        attacks: parseMonsterActions(monster.acoes),
+        traits: clonePlainObject(monster.habilidadesEspeciais ?? []),
+        actions: clonePlainObject(monster.acoes ?? []),
+        bonusActions: clonePlainObject(monster.bonusAcoes ?? []),
+        legendaryActions: clonePlainObject(monster.acoesLendarias ?? []),
+        legendaryActionDescription: String(monster.descricaoAcoesLendarias ?? '').trim() || undefined,
+        description: String(monster.descricaoGeral ?? '').trim() || undefined,
+        notes: buildMonsterNotes(monster),
+        sourceData: {
+            group: groupInfo,
+            monster: clonePlainObject(monster)
+        }
+    };
+};
+
 class MonsterManual {
     constructor(jsonPath = 'monstros.json') {
         this.jsonPath = jsonPath;
@@ -109,6 +218,11 @@ class MonsterManual {
 
     async load() {
         if (this.data) return this.data;
+        if (Array.isArray(window.CHRONOS_MONSTROS_DATA)) {
+            this.data = window.CHRONOS_MONSTROS_DATA;
+            return this.data;
+        }
+
         try {
             const response = await fetch(this.jsonPath);
             if (!response.ok) throw new Error('Não foi possível carregar o arquivo de monstros.');
@@ -188,35 +302,18 @@ class MonsterManual {
             </div>
         `;
 
-        group.monstros.forEach((monster) => {
-            html += this.generateMonsterCard(monster, slug);
+        group.monstros.forEach((monster, index) => {
+            html += this.generateMonsterCard(monster, slug, group, index);
         });
 
         container.innerHTML = html;
     }
 
-    generateMonsterCard(m, slug) {
-        const ac = parseInteger(m.classeArmadura) || 0;
-        const hp = parseInteger(m.pontosVida) || 0;
-        const attacks = parseMonsterActions(m.acoes);
+    generateMonsterCard(m, slug, group, index) {
         const sheetUrl = buildMonsterSheetUrl(slug);
-
-        const monsterData = JSON.stringify({
-            type: 'enemy',
-            name: m.nome,
-            ac,
-            hp,
-            maxHp: hp,
-            initFormula: '1d20',
-            sheetUrl,
-            monsterSlug: slug,
-            attacks,
-            resistances: splitList(m.resistenciasDano),
-            vulnerabilities: splitList(m.vulnerabilidadesDano),
-            immunities: splitList(m.imunidadesDano),
-            conditionImmunities: splitList(m.imunidadesCondicoes),
-            notes: buildMonsterNotes(m)
-        }).replace(/'/g, '&apos;');
+        const monsterKey = `${slug}:${index}`;
+        const monsterData = buildMonsterTrackerPayload(m, slug, group);
+        trackerPayloadCache.set(monsterKey, monsterData);
 
         return `
         <div class="monster-card card border-danger mb-5">
@@ -224,7 +321,7 @@ class MonsterManual {
                 <h2 class="h4 mb-0">${m.nome}</h2>
                 <div class="d-flex align-items-center gap-2">
                     <a class="btn btn-sm btn-outline-light" href="${sheetUrl}" target="_blank" rel="noopener">Abrir ficha</a>
-                    <button class="btn btn-sm btn-warning" onclick='sendToTracker(event, ${monsterData})'>⚔️ Enviar para o Rastreador</button>
+                    <button class="btn btn-sm btn-warning" onclick='sendToTracker(event, ${JSON.stringify(monsterKey)})'>Adicionar à biblioteca</button>
                     <div class="badge bg-dark text-white fs-6">Desafio ${m.desafioCR_text} (${m.xp} XP)</div>
                 </div>
             </div>
@@ -307,32 +404,62 @@ class MonsterManual {
     }
 }
 
+window.MonsterManual = MonsterManual;
+
 function sendToTracker(event, monsterData) {
     const btn = event?.currentTarget || event?.target;
-    const monsterLibrary = JSON.parse(localStorage.getItem('dd-monster-library')) || [];
-    const index = monsterLibrary.findIndex((entry) => entry.monsterSlug === monsterData.monsterSlug);
+    const payload = typeof monsterData === 'string'
+        ? trackerPayloadCache.get(monsterData)
+        : monsterData;
+
+    if (!payload) {
+        if (btn) {
+            btn.disabled = false;
+        }
+        window.alert('Não foi possível encontrar os dados desse monstro.');
+        return;
+    }
+
+    let monsterLibrary = [];
+    try {
+        monsterLibrary = JSON.parse(localStorage.getItem('dd-monster-library')) || [];
+    } catch (error) {
+        monsterLibrary = [];
+    }
+
+    if (!Array.isArray(monsterLibrary)) {
+        monsterLibrary = [];
+    }
+
+    const index = monsterLibrary.findIndex((entry) => (
+        (payload.monsterSlug && entry.monsterSlug === payload.monsterSlug)
+        || (payload.sheetUrl && entry.sheetUrl === payload.sheetUrl)
+        || (payload.name && entry.name === payload.name && entry.sheetUrl === payload.sheetUrl)
+    ));
 
     if (index >= 0) {
         monsterLibrary[index] = {
             ...monsterLibrary[index],
-            ...monsterData
+            ...payload
         };
     } else {
-        monsterLibrary.push(monsterData);
+        monsterLibrary.push(payload);
     }
 
     localStorage.setItem('dd-monster-library', JSON.stringify(monsterLibrary));
 
     if (!btn) return;
 
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '✅ Enviado!';
+    const originalText = btn.textContent;
+    btn.textContent = 'Salvo na biblioteca';
     btn.classList.replace('btn-warning', 'btn-success');
     btn.disabled = true;
 
     setTimeout(() => {
-        btn.innerHTML = originalText;
+        btn.textContent = originalText;
         btn.classList.replace('btn-success', 'btn-warning');
         btn.disabled = false;
     }, 2000);
 }
+
+window.sendToTracker = sendToTracker;

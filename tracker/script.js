@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initList: document.getElementById('initiative-list'),
         nextTurnBtn: document.getElementById('next-turn'),
         prevTurnBtn: document.getElementById('prev-turn'),
+        finishCombatBtn: document.getElementById('finish-combat'),
         clearAllBtn: document.getElementById('clear-all'),
         saveToLibBtn: document.getElementById('save-to-lib'),
         typeSelect: document.getElementById('type'),
@@ -100,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let sheetContext = null;
     let sheetAttacks = [];
     let attackContext = null;
+    let numericIdCounter = 0;
 
     const loadJsonArray = (key) => {
         try {
@@ -112,6 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const generateId = (prefix = 'id') => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+
+    const generateNumericId = () => {
+        numericIdCounter += 1;
+        return Date.now() + numericIdCounter;
+    };
 
     const normalizeText = (value) => String(value ?? '')
         .normalize('NFD')
@@ -150,6 +157,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return Number.isFinite(parsed) ? Math.trunc(parsed) : undefined;
     };
 
+    const parseLocalizedInteger = (value) => {
+        if (value === null || value === undefined || value === '') return undefined;
+        const normalized = String(value)
+            .replace(/[^\d.,-]/g, '')
+            .replace(/\./g, '')
+            .replace(',', '.')
+            .trim();
+        if (!normalized) return undefined;
+        const parsed = Number.parseFloat(normalized);
+        return Number.isFinite(parsed) ? Math.trunc(parsed) : undefined;
+    };
+
     const splitList = (value) => {
         if (Array.isArray(value)) {
             return value
@@ -165,6 +184,105 @@ document.addEventListener('DOMContentLoaded', () => {
             .split(/[;,]/g)
             .map((item) => item.trim())
             .filter(Boolean);
+    };
+
+    const normalizeAbilityBlock = (value) => {
+        if (!value) return undefined;
+        if (typeof value === 'string') {
+            const text = cleanWhitespace(value);
+            return text ? { text } : undefined;
+        }
+
+        if (typeof value !== 'object') return undefined;
+
+        const pickText = (...candidates) => {
+            for (const candidate of candidates) {
+                const text = cleanWhitespace(candidate);
+                if (text) return text;
+            }
+            return undefined;
+        };
+
+        return {
+            forca: pickText(value.forca, value.strength, value.str),
+            destreza: pickText(value.destreza, value.dexterity, value.dex),
+            constituicao: pickText(value.constituicao, value.constitution, value.con),
+            inteligencia: pickText(value.inteligencia, value.intelligence, value.int),
+            sabedoria: pickText(value.sabedoria, value.wisdom, value.wis),
+            carisma: pickText(value.carisma, value.charisma, value.cha)
+        };
+    };
+
+    const normalizeFeatureList = (source, prefix = 'feature') => {
+        if (!Array.isArray(source)) return [];
+
+        return source
+            .map((item, index) => {
+                if (!item) return null;
+
+                if (typeof item === 'string') {
+                    const description = cleanWhitespace(stripHtml(item));
+                    if (!description) return null;
+
+                    return {
+                        id: generateId(`${prefix}-${index}`),
+                        name: `${prefix} ${index + 1}`,
+                        description
+                    };
+                }
+
+                const name = cleanWhitespace(item.nome ?? item.name ?? item.title ?? `${prefix} ${index + 1}`);
+                const description = cleanWhitespace(stripHtml(item.descricao ?? item.description ?? item.text ?? ''));
+                const icon = cleanWhitespace(item.icone ?? item.icon ?? '');
+                const dmNote = cleanWhitespace(stripHtml(item.notaDM ?? item.note ?? ''));
+                const cost = parseInteger(item.custo ?? item.cost);
+
+                return {
+                    id: String(item.id ?? generateId(`${prefix}-${index}`)),
+                    name: name || `${prefix} ${index + 1}`,
+                    description,
+                    icon: icon || undefined,
+                    dmNote: dmNote || undefined,
+                    cost: Number.isFinite(cost) ? cost : undefined
+                };
+            })
+            .filter(Boolean);
+    };
+
+    const featureListText = (source) => Array.isArray(source)
+        ? source.map((item) => [
+            item?.name ?? item?.nome,
+            item?.description ?? item?.descricao,
+            item?.dmNote ?? item?.notaDM,
+            item?.text
+        ].filter(Boolean).join(' ')).join(' ')
+        : '';
+
+    const formatIntegerPtBr = (value) => {
+        if (!Number.isFinite(value)) return String(value ?? '');
+        return new Intl.NumberFormat('pt-BR').format(value);
+    };
+
+    const formatLibraryMeta = (entity) => {
+        const pieces = [];
+        const initFormula = cleanWhitespace(entity?.initFormula ?? '');
+        const initBonus = parseInteger(entity?.initBonus);
+        if (initFormula) {
+            pieces.push(`Inic ${initFormula}`);
+        } else if (Number.isFinite(initBonus)) {
+            pieces.push(`Inic 1d20${initBonus >= 0 ? '+' : ''}${initBonus}`);
+        }
+
+        if (entity?.ac !== undefined && entity?.ac !== null) pieces.push(`CA ${entity.ac}`);
+        if (entity?.maxHp !== undefined && entity?.maxHp !== null) {
+            const hpFormula = cleanWhitespace(entity?.hpFormula ?? '');
+            pieces.push(`PV ${entity.hp ?? entity.maxHp}/${entity.maxHp}${hpFormula ? ` (${hpFormula})` : ''}`);
+        } else if (entity?.hp !== undefined && entity?.hp !== null) {
+            const hpFormula = cleanWhitespace(entity?.hpFormula ?? '');
+            pieces.push(`PV ${entity.hp}${hpFormula ? ` (${hpFormula})` : ''}`);
+        }
+
+        return pieces.join(' | ');
     };
 
     const normalizeType = (value) => {
@@ -389,35 +507,69 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const normalizeCombatant = (entry, fallbackId = generateId('combatant')) => {
-        const id = parseInteger(entry?.id);
-        const hp = parseInteger(entry?.hp);
-        const maxHp = parseInteger(entry?.maxHp ?? entry?.hp_max ?? entry?.maxHP ?? entry?.pontosVida);
-        const init = parseInteger(entry?.init);
-        const initFormulaSource = String(entry?.initFormula ?? entry?.initiativeFormula ?? entry?.initBonus ?? '').trim();
-        const attackList = normalizeAttacks(entry?.attacks);
+        const rawEntry = deepClone(entry) ?? {};
+        const id = parseInteger(rawEntry?.id);
+        const hp = parseInteger(rawEntry?.hp);
+        const maxHp = parseInteger(rawEntry?.maxHp ?? rawEntry?.hp_max ?? rawEntry?.maxHP ?? rawEntry?.pontosVida);
+        const init = parseInteger(rawEntry?.init);
+        const initFormulaSource = String(rawEntry?.initFormula ?? rawEntry?.initiativeFormula ?? rawEntry?.initBonus ?? '').trim();
+        const attackList = normalizeAttacks(rawEntry?.attacks);
+        const abilityBlock = normalizeAbilityBlock(rawEntry?.abilities ?? {
+            forca: rawEntry?.forca,
+            destreza: rawEntry?.destreza,
+            constituicao: rawEntry?.constituicao,
+            inteligencia: rawEntry?.inteligencia,
+            sabedoria: rawEntry?.sabedoria,
+            carisma: rawEntry?.carisma
+        });
 
         const combatant = {
+            ...rawEntry,
             id: Number.isFinite(id) ? id : parseInteger(fallbackId) ?? Date.now(),
-            name: String(entry?.name ?? entry?.nome ?? 'Sem nome').trim() || 'Sem nome',
+            name: String(rawEntry?.name ?? rawEntry?.nome ?? 'Sem nome').trim() || 'Sem nome',
             init: Number.isFinite(init) ? init : 0,
             initFormula: initFormulaSource || (Number.isFinite(init) ? String(init) : '1d20'),
-            ac: parseInteger(entry?.ac ?? entry?.ca ?? entry?.classeArmadura),
+            ac: parseInteger(rawEntry?.ac ?? rawEntry?.ca ?? rawEntry?.classeArmadura),
             hp: Number.isFinite(hp) ? hp : 0,
             maxHp: Number.isFinite(maxHp) ? maxHp : (Number.isFinite(hp) ? hp : undefined),
-            type: normalizeType(entry?.type ?? entry?.kind ?? (entry?.monsterSlug ? 'enemy' : 'player')),
-            sheetUrl: String(entry?.sheetUrl ?? '').trim() || undefined,
-            monsterSlug: String(entry?.monsterSlug ?? '').trim() || undefined,
+            type: normalizeType(rawEntry?.type ?? rawEntry?.kind ?? (rawEntry?.monsterSlug ? 'enemy' : 'player')),
+            sheetUrl: String(rawEntry?.sheetUrl ?? '').trim() || undefined,
+            monsterSlug: String(rawEntry?.monsterSlug ?? '').trim() || undefined,
             attacks: attackList,
-            resistances: splitList(entry?.resistances ?? entry?.resistencias ?? entry?.resistenciasDano),
-            vulnerabilities: splitList(entry?.vulnerabilities ?? entry?.vulnerabilidades ?? entry?.vulnerabilidadesDano),
-            immunities: splitList(entry?.immunities ?? entry?.imunidades ?? entry?.imunidadesDano),
-            conditionImmunities: splitList(entry?.conditionImmunities ?? entry?.imunidadesCondicoes),
-            notes: String(entry?.notes ?? entry?.observacoes ?? '').trim(),
-            deathSaves: normalizeDeathSaves(entry?.deathSaves ?? entry?.deathSavingThrows ?? {
-                successes: entry?.successes,
-                failures: entry?.failures
+            resistances: splitList(rawEntry?.resistances ?? rawEntry?.resistencias ?? rawEntry?.resistenciasDano),
+            vulnerabilities: splitList(rawEntry?.vulnerabilities ?? rawEntry?.vulnerabilidades ?? rawEntry?.vulnerabilidadesDano),
+            immunities: splitList(rawEntry?.immunities ?? rawEntry?.imunidades ?? rawEntry?.imunidadesDano),
+            conditionImmunities: splitList(rawEntry?.conditionImmunities ?? rawEntry?.imunidadesCondicoes),
+            notes: String(rawEntry?.notes ?? rawEntry?.observacoes ?? '').trim(),
+            cr: String(rawEntry?.cr ?? rawEntry?.challenge ?? rawEntry?.desafioCR_text ?? '').trim() || undefined,
+            xp: parseLocalizedInteger(rawEntry?.xp ?? rawEntry?.experience ?? rawEntry?.xpValue ?? rawEntry?.experiencePoints),
+            hpFormula: String(rawEntry?.hpFormula ?? rawEntry?.hitDice ?? rawEntry?.hpDice ?? '').trim() || undefined,
+            size: String(rawEntry?.size ?? rawEntry?.tamanho ?? '').trim() || undefined,
+            creatureType: String(rawEntry?.creatureType ?? rawEntry?.tipo ?? '').trim() || undefined,
+            alignment: String(rawEntry?.alignment ?? rawEntry?.alinhamento ?? '').trim() || undefined,
+            speed: String(rawEntry?.speed ?? rawEntry?.deslocamento ?? '').trim() || undefined,
+            abilities: abilityBlock,
+            savingThrows: String(rawEntry?.savingThrows ?? rawEntry?.testesResistencia ?? '').trim() || undefined,
+            skills: String(rawEntry?.skills ?? rawEntry?.pericias ?? '').trim() || undefined,
+            senses: String(rawEntry?.senses ?? rawEntry?.sentidos ?? '').trim() || undefined,
+            languages: String(rawEntry?.languages ?? rawEntry?.idiomas ?? '').trim() || undefined,
+            groupSlug: String(rawEntry?.groupSlug ?? rawEntry?.sourceGroupSlug ?? '').trim() || undefined,
+            groupTitle: String(rawEntry?.groupTitle ?? rawEntry?.sourceGroupTitle ?? '').trim() || undefined,
+            groupDescription: String(rawEntry?.groupDescription ?? rawEntry?.sourceGroupDescription ?? '').trim() || undefined,
+            groupImage: String(rawEntry?.groupImage ?? rawEntry?.sourceGroupImage ?? '').trim() || undefined,
+            image: String(rawEntry?.image ?? rawEntry?.portrait ?? rawEntry?.imagem ?? '').trim() || undefined,
+            traits: normalizeFeatureList(rawEntry?.traits ?? rawEntry?.habilidadesEspeciais, 'trait'),
+            actions: normalizeFeatureList(rawEntry?.actions ?? rawEntry?.acoes, 'action'),
+            bonusActions: normalizeFeatureList(rawEntry?.bonusActions ?? rawEntry?.bonusAcoes, 'bonus-action'),
+            legendaryActions: normalizeFeatureList(rawEntry?.legendaryActions ?? rawEntry?.acoesLendarias, 'legendary-action'),
+            legendaryActionDescription: String(rawEntry?.legendaryActionDescription ?? rawEntry?.descricaoAcoesLendarias ?? '').trim() || undefined,
+            description: String(rawEntry?.description ?? rawEntry?.descricaoGeral ?? '').trim() || undefined,
+            sourceData: rawEntry?.sourceData ? deepClone(rawEntry.sourceData) : undefined,
+            deathSaves: normalizeDeathSaves(rawEntry?.deathSaves ?? rawEntry?.deathSavingThrows ?? {
+                successes: rawEntry?.successes,
+                failures: rawEntry?.failures
             }),
-            state: normalizeState(entry?.state ?? entry?.condition ?? entry?.status)
+            state: normalizeState(rawEntry?.state ?? rawEntry?.condition ?? rawEntry?.status)
         };
 
         return syncCombatantState(combatant);
@@ -462,9 +614,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const buildSearchBlob = (entity) => [
         entity?.name ?? '',
+        entity?.cr ?? '',
+        entity?.xp ?? '',
+        entity?.hpFormula ?? '',
+        entity?.size ?? '',
+        entity?.creatureType ?? '',
+        entity?.alignment ?? '',
+        entity?.speed ?? '',
+        entity?.savingThrows ?? '',
+        entity?.skills ?? '',
+        entity?.senses ?? '',
+        entity?.languages ?? '',
         entity?.notes ?? '',
+        entity?.description ?? '',
         entity?.sheetUrl ?? '',
         entity?.monsterSlug ?? '',
+        entity?.groupTitle ?? '',
+        entity?.groupDescription ?? '',
+        featureListText(entity?.traits),
+        featureListText(entity?.actions),
+        featureListText(entity?.bonusActions),
+        featureListText(entity?.legendaryActions),
+        JSON.stringify(entity?.abilities ?? {}),
+        JSON.stringify(entity?.sourceData ?? {}),
         (entity?.attacks ?? []).map((attack) => [attack.name, attack.notes, damagePartsToText(attack.damage)].join(' ')).join(' ')
     ].join(' ');
 
@@ -548,6 +720,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const isEnemy = els.typeSelect.value === 'enemy';
         els.qtyGroup.style.display = isEnemy ? 'block' : 'none';
         els.saveToLibBtn.textContent = isEnemy ? 'Salvar monstro na biblioteca' : 'Salvar jogador na biblioteca';
+    };
+
+    const setActiveTab = (tabName) => {
+        els.tabBtns.forEach((button) => {
+            button.classList.toggle('active', button.dataset.tab === tabName);
+        });
+
+        els.tabContents.forEach((content) => {
+            content.classList.toggle('active', content.id === `tab-${tabName}`);
+        });
+
+        if (tabName === 'library') {
+            renderLibrary();
+            window.setTimeout(() => els.librarySearchInput?.focus(), 30);
+        }
     };
 
     const rollDie = (faces) => Math.floor(Math.random() * faces) + 1;
@@ -659,6 +846,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getInitiativeLabel = (combatant) => String(combatant.init ?? 0);
 
+    const canTakeTurn = (combatant) => normalizeState(combatant?.state) !== 'dead';
+
     const sortCombatantsByInitiative = () => {
         const currentId = currentTurnId;
         characters.sort((a, b) => (b.init ?? 0) - (a.init ?? 0));
@@ -679,8 +868,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (characters.length === 0) return;
 
         const currentIndex = getCurrentTurnIndex();
-        const baseIndex = currentIndex >= 0 ? currentIndex : 0;
-        const nextIndex = (baseIndex + delta + characters.length) % characters.length;
+        const baseIndex = currentIndex >= 0 ? currentIndex : (delta > 0 ? -1 : 0);
+        let nextIndex = -1;
+
+        for (let step = 1; step <= characters.length; step += 1) {
+            const candidateIndex = (baseIndex + (delta * step) + characters.length) % characters.length;
+            if (canTakeTurn(characters[candidateIndex])) {
+                nextIndex = candidateIndex;
+                break;
+            }
+        }
+
+        if (nextIndex === -1) {
+            currentTurnId = null;
+            if (attackContext) {
+                clearPendingAttack();
+            }
+            refreshAll();
+            return;
+        }
 
         currentTurnId = characters[nextIndex].id;
         if (attackContext) {
@@ -1059,21 +1265,28 @@ ${escapeHtml(attack.notes || '')}
 
         const type = sheetContext?.type ?? 'player';
         const hpForLibrary = Number.isFinite(values.maxHp) ? values.maxHp : values.hp;
+        const source = sheetContext?.kind === 'combatant'
+            ? characters.find((character) => character.id === parseInteger(sheetContext.id))
+            : (type === 'enemy'
+                ? monsterLibrary[sheetContext?.index ?? -1]
+                : playerLibrary[sheetContext?.index ?? -1]);
+        const baseEntry = source ? deepClone(source) : {};
 
         return {
+            ...baseEntry,
             name: values.name,
             type,
-            initFormula: values.initText || '1d20',
+            initFormula: values.initText || baseEntry.initFormula || '1d20',
             ac: Number.isFinite(values.ac) ? values.ac : undefined,
             hp: Number.isFinite(hpForLibrary) ? hpForLibrary : undefined,
             maxHp: Number.isFinite(hpForLibrary) ? hpForLibrary : undefined,
-            sheetUrl: values.sheetUrl || undefined,
-            monsterSlug: sheetContext?.monsterSlug,
+            sheetUrl: values.sheetUrl || baseEntry.sheetUrl || undefined,
+            monsterSlug: sheetContext?.monsterSlug ?? baseEntry.monsterSlug,
             attacks: deepClone(sheetAttacks),
             resistances: values.resistances,
             vulnerabilities: values.vulnerabilities,
             immunities: values.immunities,
-            conditionImmunities: sheetContext?.conditionImmunities ?? [],
+            conditionImmunities: sheetContext?.conditionImmunities ?? baseEntry.conditionImmunities ?? [],
             notes: values.notes
         };
     };
@@ -1140,13 +1353,12 @@ ${escapeHtml(attack.notes || '')}
             }))
         };
 
-        const bonus = Number.isFinite(attack.bonus) ? attack.bonus : 0;
         els.attackModalTitle.textContent = attack.name || 'Resolver ataque';
         els.attackModalSubtitle.textContent = `${source.name} contra ${target.name}`;
         els.attackSourceName.textContent = source.name;
         els.attackTargetName.textContent = target.name;
         els.attackRollMode.value = 'normal';
-        els.attackRollBonus.value = String(bonus);
+        els.attackRollBonus.value = '0';
         els.attackRollNote.value = attack.notes || '';
         els.attackDamageSummary.textContent = attack.damage.length > 0
             ? `${attack.damage.length} parte(s) de dano`
@@ -1353,6 +1565,7 @@ ${escapeHtml(attack.notes || '')}
                 <div class="hp-row">
                     <div class="hp-controls">
                         <button class="hp-btn hp-minus" data-id="${combatant.id}" type="button" title="-1 PV">-</button>
+                        <button class="hp-btn hp-minus" data-id="${combatant.id}" data-step="-5" type="button" title="-5 PV">-5</button>
                     </div>
                     <div class="hp-pill">${escapeHtml(hpValue)}</div>
                     <div class="hp-controls">
@@ -1424,9 +1637,6 @@ ${escapeHtml(attack.notes || '')}
         if (combatant.ac !== undefined && combatant.ac !== null) {
             meta.push(`CA ${combatant.ac}`);
         }
-        if ((combatant.resistances ?? []).length > 0) {
-            meta.push(`Res ${combatant.resistances.length}`);
-        }
         if ((combatant.vulnerabilities ?? []).length > 0) {
             meta.push(`Vuln ${combatant.vulnerabilities.length}`);
         }
@@ -1439,15 +1649,17 @@ ${escapeHtml(attack.notes || '')}
                         <div class="name-row">
                             <div class="char-name" title="${escapeHtml(combatant.name)}">${escapeHtml(combatant.name)}</div>
                         </div>
-                        <div class="card-meta">
-                            ${meta.map((item) => `<span class="meta-pill">${escapeHtml(item)}</span>`).join('')}
+                        <div class="card-detail-row">
+                            <div class="card-meta">
+                                ${meta.map((item) => `<span class="meta-pill">${escapeHtml(item)}</span>`).join('')}
+                            </div>
+                            <div class="card-link-row">
+                                ${sheetUrl ? `<a href="${escapeHtml(sheetUrl)}" target="_blank" rel="noopener" class="card-link-button btn-inline btn-mini">Ficha</a>` : ''}
+                                <button type="button" class="card-edit-button btn-inline btn-mini edit-combatant" data-id="${combatant.id}">
+                                    Editar
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-link-row">
-                        ${sheetUrl ? `<a href="${escapeHtml(sheetUrl)}" target="_blank" rel="noopener" class="card-link-button btn-inline btn-mini">Ficha</a>` : ''}
-                        <button type="button" class="card-edit-button btn-inline btn-mini edit-combatant" data-id="${combatant.id}">
-                            Editar
-                        </button>
                     </div>
                 </div>
                 ${renderCombatantAttackButtons(combatant)}
@@ -1537,7 +1749,7 @@ ${escapeHtml(attack.notes || '')}
                     return;
                 }
 
-                applyHpDelta(button.dataset.id, -1);
+                applyHpDelta(button.dataset.id, parseInteger(button.dataset.step) ?? -1);
             };
         });
 
@@ -1618,10 +1830,7 @@ ${escapeHtml(attack.notes || '')}
                     <div class="lib-info">
                         <div class="lib-name">${escapeHtml(entry.name)}</div>
                         <div class="lib-meta">
-                            Inic: ${escapeHtml(entry.initFormula || '1d20')}
-                            | CA: ${entry.ac ?? '--'}
-                            | PV: ${entry.hp ?? '--'}
-                            | Ataques: ${(entry.attacks ?? []).length}
+                            ${escapeHtml(formatLibraryMeta(entry) || 'Sem dados adicionais')}
                         </div>
                     </div>
                     <div class="lib-actions">
@@ -1732,7 +1941,7 @@ ${escapeHtml(attack.notes || '')}
                     <div class="quick-result-main">
                         <div class="quick-result-name">${escapeHtml(entry.name)}</div>
                         <div class="quick-meta">
-                            Inic: ${escapeHtml(entry.initFormula || '1d20')} | CA: ${entry.ac ?? '--'} | PV: ${entry.hp ?? '--'}
+                            ${escapeHtml(formatLibraryMeta(entry) || 'Sem dados adicionais')}
                         </div>
                     </div>
                     <div class="quick-result-actions">
@@ -1830,31 +2039,62 @@ ${escapeHtml(attack.notes || '')}
         renderAllWithoutPersist();
     };
 
+    const getNextCombatantNumber = (baseName, type) => {
+        const normalizedBase = normalizeText(baseName);
+        let highest = 0;
+
+        characters.forEach((combatant) => {
+            if (normalizeType(combatant.type) !== type) return;
+
+            const name = cleanWhitespace(combatant.name);
+            if (normalizeText(name) === normalizedBase) {
+                highest = Math.max(highest, 1);
+                return;
+            }
+
+            const match = name.match(/^(.+?)\s+(\d+)$/);
+            if (!match || normalizeText(match[1]) !== normalizedBase) return;
+
+            const number = parseInteger(match[2]);
+            if (Number.isFinite(number)) {
+                highest = Math.max(highest, number);
+            }
+        });
+
+        return highest + 1;
+    };
+
     const addCombatants = (sourceType, sourceEntry, quantity = 1) => {
         const type = normalizeType(sourceType);
         const count = Math.max(1, Number.parseInt(quantity, 10) || 1);
         const baseName = String(sourceEntry.name ?? 'Sem nome').trim() || 'Sem nome';
         const sourceMaxHp = parseInteger(sourceEntry.maxHp ?? sourceEntry.hp);
         const sourceHp = parseInteger(sourceEntry.hp ?? sourceEntry.maxHp);
+        const sourceClone = deepClone(sourceEntry) ?? {};
+        const initFormula = String(sourceClone.initFormula || '1d20');
+        const sharedInitiative = type === 'enemy' && count > 1 ? rollFormula(initFormula) : undefined;
+        const firstCopyNumber = type === 'enemy' ? getNextCombatantNumber(baseName, type) : 1;
+        const shouldNumberCopies = type === 'enemy' && (count > 1 || firstCopyNumber > 1);
 
         for (let index = 0; index < count; index += 1) {
             const combatant = normalizeCombatant({
-                id: generateId('combatant'),
-                name: count > 1 ? `${baseName} ${index + 1}` : baseName,
-                init: rollFormula(sourceEntry.initFormula || '1d20'),
-                initFormula: String(sourceEntry.initFormula || '1d20'),
-                ac: sourceEntry.ac,
+                ...sourceClone,
+                id: generateNumericId(),
+                name: shouldNumberCopies ? `${baseName} ${firstCopyNumber + index}` : baseName,
+                init: Number.isFinite(sharedInitiative) ? sharedInitiative : rollFormula(initFormula),
+                initFormula,
+                ac: sourceClone.ac,
                 hp: Number.isFinite(sourceHp) ? sourceHp : 0,
                 maxHp: Number.isFinite(sourceMaxHp) ? sourceMaxHp : (Number.isFinite(sourceHp) ? sourceHp : undefined),
                 type,
-                sheetUrl: sourceEntry.sheetUrl,
-                monsterSlug: sourceEntry.monsterSlug,
-                attacks: deepClone(normalizeAttacks(sourceEntry.attacks)),
-                resistances: splitList(sourceEntry.resistances),
-                vulnerabilities: splitList(sourceEntry.vulnerabilities),
-                immunities: splitList(sourceEntry.immunities),
-                conditionImmunities: splitList(sourceEntry.conditionImmunities),
-                notes: String(sourceEntry.notes ?? ''),
+                sheetUrl: sourceClone.sheetUrl,
+                monsterSlug: sourceClone.monsterSlug,
+                attacks: deepClone(normalizeAttacks(sourceClone.attacks)),
+                resistances: splitList(sourceClone.resistances),
+                vulnerabilities: splitList(sourceClone.vulnerabilities),
+                immunities: splitList(sourceClone.immunities),
+                conditionImmunities: splitList(sourceClone.conditionImmunities),
+                notes: String(sourceClone.notes ?? ''),
                 deathSaves: { successes: 0, failures: 0 },
                 state: 'alive'
             });
@@ -1918,6 +2158,48 @@ ${escapeHtml(attack.notes || '')}
         characters = [];
         currentTurnId = null;
         clearPendingAttack();
+        renderAll();
+    };
+
+    const finishCombat = () => {
+        if (characters.length === 0) {
+            window.alert('Nenhum combate em andamento.');
+            return;
+        }
+
+        const players = characters.filter((combatant) => combatant.type === 'player');
+        const enemies = characters.filter((combatant) => combatant.type === 'enemy');
+        const totalXp = enemies.reduce((total, enemy) => {
+            const xp = parseLocalizedInteger(enemy.xp);
+            return total + (Number.isFinite(xp) ? xp : 0);
+        }, 0);
+
+        const perPlayer = players.length > 0 ? Math.floor(totalXp / players.length) : 0;
+        const remainder = players.length > 0 ? totalXp % players.length : 0;
+        const playerNames = players.map((player) => player.name).filter(Boolean).join(', ');
+        const lines = [
+            'Resumo do combate',
+            `Monstros na iniciativa: ${enemies.length}`,
+            `XP total: ${formatIntegerPtBr(totalXp)}`,
+            `Jogadores: ${players.length}${playerNames ? ` (${playerNames})` : ''}`,
+            players.length > 0
+                ? `XP por jogador: ${formatIntegerPtBr(perPlayer)}${remainder ? ` (${formatIntegerPtBr(remainder)} XP sobrando)` : ''}`
+                : 'XP por jogador: adicione pelo menos um jogador para dividir.'
+        ];
+
+        const shouldClear = window.confirm(`${lines.join('\n')}\n\nLimpar o combate agora?`);
+        els.combatNotice.textContent = players.length > 0
+            ? `XP por jogador: ${formatIntegerPtBr(perPlayer)}. XP total: ${formatIntegerPtBr(totalXp)}.`
+            : `XP total: ${formatIntegerPtBr(totalXp)}.`;
+
+        if (!shouldClear) {
+            return;
+        }
+
+        characters = [];
+        currentTurnId = null;
+        attackContext = null;
+        document.body.classList.remove('attack-targeting');
         renderAll();
     };
 
@@ -2003,11 +2285,15 @@ ${escapeHtml(attack.notes || '')}
 
         if (!name || !initText) return;
 
+        const groupInitiative = type === 'enemy' && qty > 1 ? rollFormula(initText) : undefined;
+        const firstCopyNumber = type === 'enemy' ? getNextCombatantNumber(name, type) : 1;
+        const shouldNumberCopies = type === 'enemy' && (qty > 1 || firstCopyNumber > 1);
+
         for (let index = 0; index < qty; index += 1) {
             characters.push(normalizeCombatant({
-                id: generateId('combatant'),
-                name: qty > 1 ? `${name} ${index + 1}` : name,
-                init: rollFormula(initText),
+                id: generateNumericId(),
+                name: shouldNumberCopies ? `${name} ${firstCopyNumber + index}` : name,
+                init: Number.isFinite(groupInitiative) ? groupInitiative : rollFormula(initText),
                 initFormula: initText,
                 ac: acValue,
                 hp: hpValue,
@@ -2077,12 +2363,47 @@ ${escapeHtml(attack.notes || '')}
         reader.onload = (readerEvent) => {
             try {
                 const data = JSON.parse(readerEvent.target.result);
-                if (data.players || data.monsters) {
-                    playerLibrary = Array.isArray(data.players) ? data.players.map((entry, index) => normalizeLibraryEntry(entry, index)) : [];
-                    monsterLibrary = Array.isArray(data.monsters) ? data.monsters.map((entry, index) => normalizeLibraryEntry(entry, index)) : [];
+                const encounterData = data.encounter ?? {};
+                const hasPlayers = Object.prototype.hasOwnProperty.call(data, 'players');
+                const hasMonsters = Object.prototype.hasOwnProperty.call(data, 'monsters');
+                const hasCharacters = Object.prototype.hasOwnProperty.call(data, 'characters')
+                    || Object.prototype.hasOwnProperty.call(encounterData, 'characters');
+                const importedPlayers = Array.isArray(data.players) ? data.players : [];
+                const importedMonsters = Array.isArray(data.monsters) ? data.monsters : [];
+                const importedCharacters = Array.isArray(data.characters)
+                    ? data.characters
+                    : (Array.isArray(encounterData.characters) ? encounterData.characters : []);
+
+                if (hasPlayers || hasMonsters || hasCharacters) {
+                    if (hasPlayers) {
+                        playerLibrary = importedPlayers.map((entry, index) => normalizeLibraryEntry(entry, index));
+                    }
+
+                    if (hasMonsters) {
+                        monsterLibrary = importedMonsters.map((entry, index) => normalizeLibraryEntry(entry, index));
+                    }
+
+                    if (hasCharacters) {
+                        characters = importedCharacters.map((entry, index) => normalizeCombatant(entry, `combatant-${index}`));
+                        const importedTurnId = parseInteger(data.currentTurnId ?? encounterData.currentTurnId ?? data.turnId ?? encounterData.turnId);
+                        const importedTurnIndex = parseInteger(data.currentTurnIndex ?? encounterData.currentTurnIndex ?? data.turnIndex ?? encounterData.turnIndex);
+
+                        if (characters.length > 0 && Number.isFinite(importedTurnId) && characters.some((character) => character.id === importedTurnId)) {
+                            currentTurnId = importedTurnId;
+                        } else if (characters.length > 0 && Number.isFinite(importedTurnIndex) && characters[importedTurnIndex]) {
+                            currentTurnId = characters[importedTurnIndex].id;
+                        } else if (characters.length > 0) {
+                            currentTurnId = characters[0].id;
+                        } else {
+                            currentTurnId = null;
+                        }
+                    }
+
                     persistState();
                     renderLibrary();
                     renderQuickSearch();
+                    renderEncounter();
+                    renderSummary();
                     window.alert('Biblioteca importada com sucesso.');
                 } else {
                     window.alert('Arquivo JSON inválido para a biblioteca.');
@@ -2099,9 +2420,13 @@ ${escapeHtml(attack.notes || '')}
 
     function exportLibrary() {
         const data = {
-            version: 2,
+            version: 3,
+            exportedAt: new Date().toISOString(),
             players: playerLibrary,
-            monsters: monsterLibrary
+            monsters: monsterLibrary,
+            characters,
+            currentTurnId,
+            currentTurnIndex: getCurrentTurnIndex()
         };
 
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -2165,9 +2490,16 @@ ${escapeHtml(attack.notes || '')}
         els.saveToLibBtn.onclick = saveToLibraryFromCombatForm;
         els.nextTurnBtn.onclick = () => shiftTurn(1);
         els.prevTurnBtn.onclick = () => shiftTurn(-1);
+        if (els.finishCombatBtn) {
+            els.finishCombatBtn.onclick = finishCombat;
+        }
         els.clearAllBtn.onclick = clearCombatants;
         els.toggleCombatPanelBtn.onclick = () => setPanelState('combat', !isPanelOpen('combat'));
         els.toggleQuickPanelBtn.onclick = () => setPanelState('quick', !isPanelOpen('quick'));
+
+        els.tabBtns.forEach((button) => {
+            button.onclick = () => setActiveTab(button.dataset.tab || 'add');
+        });
 
         els.panelCloseBtns.forEach((button) => {
             button.onclick = () => setPanelState(button.dataset.closePanel, false);

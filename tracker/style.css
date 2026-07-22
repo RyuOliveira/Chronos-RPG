@@ -302,6 +302,16 @@ body.quick-panel-open .side-panel-right {
   background: rgba(231, 76, 60, 0.22);
 }
 
+.btn-finish {
+  background: rgba(46, 204, 113, 0.12);
+  color: #c7f0d7;
+  border: 1px solid rgba(46, 204, 113, 0.18);
+}
+
+.btn-finish:hover {
+  background: rgba(46, 204, 113, 0.2);
+}
+
 .btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -627,7 +637,7 @@ label {
 
 .card-top {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 0.8rem;
   align-items: flex-start;
 }
@@ -652,6 +662,9 @@ label {
 
 .card-core {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .name-row {
@@ -673,7 +686,6 @@ label {
   display: flex;
   gap: 0.35rem;
   flex-wrap: wrap;
-  margin-top: 0.45rem;
 }
 
 .meta-pill {
@@ -689,8 +701,20 @@ label {
 .card-link-row {
   display: flex;
   gap: 0.35rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-end;
+}
+
+.card-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+  flex-wrap: nowrap;
+}
+
+.card-detail-row .card-link-row {
+  margin-left: auto;
 }
 
 .card-link-button {

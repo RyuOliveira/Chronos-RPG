@@ -36,12 +36,23 @@
         </div>
     </div>
 
+    <script src="monstros-data.js"></script>
     <script src="mm-script.js"></script>
     <script>
-        const mm = new MonsterManual();
-        mm.load().then(() => {
-            mm.renderGlossary('glossary-container');
-        });
+        const mm = new window.MonsterManual();
+        const glossaryContainer = document.getElementById('glossary-container');
+        mm.load()
+            .then((data) => {
+                if (data) {
+                    mm.renderGlossary('glossary-container');
+                    return;
+                }
+
+                glossaryContainer.innerHTML = '<div class="alert alert-danger">Não foi possível carregar a lista de monstros. Abra esta página pelo servidor local do XAMPP.</div>';
+            })
+            .catch(() => {
+                glossaryContainer.innerHTML = '<div class="alert alert-danger">Não foi possível carregar a lista de monstros. Abra esta página pelo servidor local do XAMPP.</div>';
+            });
     </script>
 </body>
 
