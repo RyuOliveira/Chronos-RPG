@@ -5,109 +5,406 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&D Initiative Tracker</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-    <h1>Iniciativa D&D</h1>
-
-    <div class="container">
-        <!-- Sidebar: Add Character -->
-        <aside class="card">
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="add">Adicionar</button>
-                <button class="tab-btn" data-tab="library">Biblioteca</button>
+<body class="tracker-page">
+    <div class="page-shell">
+        <header class="tracker-topbar">
+            <div class="title-block">
+                <p class="eyebrow">Chronos RPG</p>
+                <h1>Iniciativa D&D</h1>
+                <p class="subtitle">
+                    Mais espaço para a cena, fichas mais limpas e ataques prontos para resolver alvo por alvo.
+                </p>
             </div>
 
-            <div id="tab-add" class="tab-content active">
-                <h3 class="card-subtitle" style="font-size: 0.9rem; color: var(--primary); margin-bottom: 1rem;">NOVO
-                    COMBATENTE</h3>
-                <form id="char-form">
+            <div class="toolbar-actions">
+                <button type="button" id="toggle-combat-panel" class="btn btn-secondary btn-inline">
+                    Adicionar combatentes
+                </button>
+                <button type="button" id="toggle-quick-panel" class="btn btn-secondary btn-inline">
+                    Busca rápida
+                </button>
+                <button type="button" id="clear-all" class="btn btn-secondary btn-inline btn-danger">
+                    Limpar combate
+                </button>
+            </div>
+        </header>
+
+        <main class="workspace">
+            <aside id="combat-panel" class="side-panel side-panel-left">
+                <div class="card panel-card">
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-kicker">Montar combate</p>
+                            <h2>Painel de combatentes</h2>
+                        </div>
+                        <button type="button" class="panel-close btn btn-secondary btn-inline btn-mini"
+                            data-close-panel="combat">
+                            Fechar
+                        </button>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="add" type="button">Adicionar</button>
+                        <button class="tab-btn" data-tab="library" type="button">Biblioteca</button>
+                    </div>
+
+                    <div id="tab-add" class="tab-content active">
+                        <h3 class="card-subtitle">Novo combatente</h3>
+                        <form id="char-form" class="combat-form">
+                            <div class="form-group">
+                                <label for="name">Nome</label>
+                                <input type="text" id="name" placeholder="Ex: Grog, Orc, etc." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="init">Iniciativa / bônus</label>
+                                <input type="text" id="init" placeholder="1d20+3 ou 15" required>
+                                <p class="form-help">Ex: 15, 1d20+3, 2(1d20+2) para vantagem.</p>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ac">CA</label>
+                                    <input type="number" id="ac" placeholder="15">
+                                </div>
+                                <div class="form-group">
+                                    <label for="hp">PV atual</label>
+                                    <input type="number" id="hp" placeholder="30">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="type">Tipo</label>
+                                    <select id="type">
+                                        <option value="player">Jogador</option>
+                                        <option value="enemy">Monstro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="qty-group" style="display: none;">
+                                    <label for="qty">Quantidade</label>
+                                    <input type="number" id="qty" value="1" min="1">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Entrar no combate</button>
+                            <button type="button" id="save-to-lib" class="btn btn-secondary btn-save-lib">
+                                Salvar na biblioteca
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="tab-library" class="tab-content">
+                        <div class="library-head">
+                            <div>
+                                <h3 class="card-subtitle">Meus salvos</h3>
+                                <p class="form-help">Pesquise por nome e puxe jogadores ou monstros para a iniciativa.</p>
+                            </div>
+                            <div class="library-actions">
+                                <button type="button" id="import-lib" class="btn btn-secondary btn-inline btn-mini">
+                                    Importar
+                                </button>
+                                <button type="button" id="export-lib" class="btn btn-secondary btn-inline btn-mini">
+                                    Exportar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="library-search">Filtrar biblioteca</label>
+                            <input type="search" id="library-search" placeholder="Procure por nome">
+                        </div>
+
+                        <div id="player-library" class="library-list"></div>
+                        <div id="monster-library" class="library-list library-list-spaced"></div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="card board-panel">
+                <div class="board-header">
+                    <div class="board-copy">
+                        <p class="panel-kicker">Ordem de turno</p>
+                        <h2 class="card-title board-title">Iniciativa</h2>
+                        <p id="combat-summary" class="board-summary">
+                            Nenhum combatente adicionado ainda.
+                        </p>
+                        <p id="combat-notice" class="board-notice"></p>
+                    </div>
+
+                    <div class="turn-controls">
+                        <button id="prev-turn" class="btn btn-secondary btn-inline btn-small" type="button">Anterior</button>
+                        <button id="next-turn" class="btn btn-primary btn-inline btn-small" type="button">Próximo turno</button>
+                    </div>
+                </div>
+
+                <div id="initiative-list" class="initiative-list">
+                    <div class="empty-state">
+                        <h3>Sem combatentes na mesa</h3>
+                        <p>
+                            Abra o painel de combatentes para montar a ordem de turno ou use a busca rápida para
+                            trazer algo salvo.
+                        </p>
+                        <div class="empty-actions">
+                            <button type="button" id="open-combat-panel-empty" class="btn btn-primary btn-inline">
+                                Abrir painel
+                            </button>
+                            <button type="button" id="open-quick-panel-empty" class="btn btn-secondary btn-inline">
+                                Busca rápida
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <aside id="quick-panel" class="side-panel side-panel-right">
+                <div class="card panel-card">
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-kicker">Busca e atalhos</p>
+                            <h2>Atalhos narrativos</h2>
+                        </div>
+                        <button type="button" class="panel-close btn btn-secondary btn-inline btn-mini"
+                            data-close-panel="quick">
+                            Fechar
+                        </button>
+                    </div>
+
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <span>Total</span>
+                            <strong id="stat-total">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>Jogadores</span>
+                            <strong id="stat-players">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>Monstros</span>
+                            <strong id="stat-monsters">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>Turno atual</span>
+                            <strong id="stat-current-turn">-</strong>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label for="name">Nome</label>
-                        <input type="text" id="name" placeholder="Ex: Grog, Orc, etc." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="init">Iniciativa / Bônus</label>
-                        <input type="text" id="init" placeholder="1d20+3 ou 15" required>
-                        <p class="form-help">Ex: 15, 1d20+3, 2(1d20+2) para vantagem</p>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label for="ac">CA</label>
-                            <input type="number" id="ac" placeholder="15">
-                        </div>
-                        <div class="form-group">
-                            <label for="hp">PV Atual</label>
-                            <input type="number" id="hp" placeholder="30">
-                        </div>
-                    </div>
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label for="type">Tipo</label>
-                            <select id="type"
-                                style="width:100%; padding:0.75rem; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:white;">
-                                <option value="player">Jogador</option>
-                                <option value="enemy">Monstro</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="qty-group" style="display:none;">
-                            <label for="qty">Qtd</label>
-                            <input type="number" id="qty" value="1" min="1">
-                        </div>
+                        <label for="quick-search-input">Pesquisar nome</label>
+                        <input type="search" id="quick-search-input" placeholder="Ex: Orc, Kyra, Draven">
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Entrar no Combate</button>
-                    <button type="button" id="save-to-lib" class="btn btn-secondary"
-                        style="margin-top: 0.5rem; background: rgba(52, 152, 219, 0.2);">Salvar na Biblioteca</button>
-                </form>
-            </div>
-
-            <div id="tab-library" class="tab-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3 style="font-size: 0.9rem; color: var(--primary);">MEUS SALVOS</h3>
-                    <div style="display:flex; gap: 5px;">
-                        <button id="import-lib" title="Importar JSON" class="btn-small-icon">📥</button>
-                        <button id="export-lib" title="Exportar JSON" class="btn-small-icon">📤</button>
-                    </div>
+                    <div id="quick-results" class="quick-results"></div>
                 </div>
-                <input type="hidden" id="import-input" accept=".json">
-
-                <div id="player-library" class="library-list">
-                    <!-- Loaded via JS -->
-                </div>
-                <div id="monster-library" class="library-list" style="margin-top: 2rem;">
-                    <!-- Loaded via JS -->
-                </div>
-            </div>
-
-            <button type="button" id="clear-all" class="btn btn-secondary"
-                style="margin-top: 2rem; border-color: var(--accent-red); color: var(--accent-red);">Limpar Combate
-                Atual</button>
-        </aside>
-
-        <!-- Main Content: Initiative List -->
-        <main class="card">
-            <div class="tracker-header">
-                <h2 class="card-title" style="margin-bottom:0; border:none; padding:0;">Ordem de Turno</h2>
-                <div class="turn-controls">
-                    <button id="prev-turn" class="btn btn-secondary btn-small">Anterior</button>
-                    <button id="next-turn" class="btn btn-primary btn-small">Próximo Turno</button>
-                </div>
-            </div>
-
-            <div id="initiative-list" class="initiative-list">
-                <!-- Character items will be injected here via JS -->
-                <div style="text-align: center; color: #666; padding: 2rem;">
-                    Nenhum combatente adicionado.
-                </div>
-            </div>
+            </aside>
         </main>
+    </div>
+
+    <div id="sheet-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-backdrop" data-close-modal="sheet"></div>
+        <div class="modal-card modal-sheet">
+            <div class="modal-header">
+                <div>
+                    <p class="panel-kicker">Ficha</p>
+                    <h3 id="sheet-modal-title">Editar combatente</h3>
+                </div>
+                <button type="button" class="btn btn-secondary btn-inline btn-mini" data-close-modal="sheet">
+                    Fechar
+                </button>
+            </div>
+
+            <form id="sheet-form" class="modal-body">
+                <input type="hidden" id="sheet-context-kind">
+                <input type="hidden" id="sheet-context-type">
+                <input type="hidden" id="sheet-context-id">
+                <input type="hidden" id="sheet-context-index">
+                <input type="hidden" id="sheet-editing-attack-index">
+
+                <div class="sheet-grid">
+                    <div class="form-group">
+                        <label for="sheet-name">Nome</label>
+                        <input type="text" id="sheet-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sheet-init">Iniciativa</label>
+                        <input type="text" id="sheet-init" placeholder="1d20+3 ou 15">
+                    </div>
+                    <div class="form-group">
+                        <label for="sheet-ac">CA</label>
+                        <input type="number" id="sheet-ac">
+                    </div>
+                    <div class="form-group">
+                        <label for="sheet-hp">PV atual</label>
+                        <input type="number" id="sheet-hp">
+                    </div>
+                    <div class="form-group">
+                        <label for="sheet-max-hp">PV máximo</label>
+                        <input type="number" id="sheet-max-hp">
+                    </div>
+                    <div class="form-group">
+                        <label for="sheet-url">Link da ficha</label>
+                        <input type="url" id="sheet-url" placeholder="https://... ou ../mm/monster.html?slug=...">
+                    </div>
+                </div>
+
+                <div class="sheet-grid sheet-grid-three">
+                    <div class="form-group">
+                        <label for="sheet-resistances">Resistências</label>
+                        <input type="text" id="sheet-resistances" placeholder="fogo, necrótico">
+                    </div>
+                    <div class="form-group">
+                        <label for="sheet-vulnerabilities">Vulnerabilidades</label>
+                        <input type="text" id="sheet-vulnerabilities" placeholder="frio, elétrico">
+                    </div>
+                    <div class="form-group">
+                        <label for="sheet-immunities">Imunidades</label>
+                        <input type="text" id="sheet-immunities" placeholder="veneno, cego">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sheet-notes">Notas</label>
+                    <textarea id="sheet-notes" rows="4" placeholder="Pistas, efeitos especiais, lembretes..."></textarea>
+                </div>
+
+                <div class="modal-section">
+                    <div class="section-head">
+                        <div>
+                            <h4>Ataques</h4>
+                            <p class="form-help">Uma linha por dano. Ex: <code>1d8+5 cortante</code></p>
+                        </div>
+                    </div>
+
+                    <div id="sheet-attacks-list" class="attack-list"></div>
+
+                    <div class="attack-editor">
+                        <input type="hidden" id="attack-editor-id">
+                        <div class="sheet-grid sheet-grid-three">
+                            <div class="form-group">
+                                <label for="attack-name">Nome do ataque</label>
+                                <input type="text" id="attack-name" placeholder="Toque de Vida Drenante">
+                            </div>
+                            <div class="form-group">
+                                <label for="attack-bonus">Bônus para acertar</label>
+                                <input type="number" id="attack-bonus" placeholder="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="attack-save-dc">CD de salvaguarda</label>
+                                <input type="number" id="attack-save-dc" placeholder="14">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="attack-damage">Danos</label>
+                            <textarea id="attack-damage" rows="3" placeholder="1d8+5 cortante&#10;3d6 necrótico"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="attack-notes">Notas</label>
+                            <textarea id="attack-notes" rows="2" placeholder="Efeito, condição, recarga..."></textarea>
+                        </div>
+
+                        <div class="modal-actions modal-actions-inline">
+                            <button type="button" id="attack-cancel-edit" class="btn btn-secondary btn-inline btn-mini">
+                                Cancelar edição
+                            </button>
+                            <button type="button" id="attack-save" class="btn btn-primary btn-inline btn-mini">
+                                Adicionar ataque
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions modal-actions-inline modal-footer">
+                    <button type="button" id="sheet-open-link" class="btn btn-secondary btn-inline">
+                        Abrir ficha
+                    </button>
+                    <button type="button" id="sheet-save-library" class="btn btn-secondary btn-inline">
+                        Salvar na biblioteca
+                    </button>
+                    <button type="submit" id="sheet-save" class="btn btn-primary btn-inline">
+                        Salvar ficha
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="attack-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-backdrop" data-close-modal="attack"></div>
+        <div class="modal-card modal-attack">
+            <div class="modal-header">
+                <div>
+                    <p class="panel-kicker">Ataque</p>
+                    <h3 id="attack-modal-title">Resolver ataque</h3>
+                    <p id="attack-modal-subtitle" class="board-notice"></p>
+                </div>
+                <button type="button" class="btn btn-secondary btn-inline btn-mini" data-close-modal="attack">
+                    Fechar
+                </button>
+            </div>
+
+            <form id="attack-form" class="modal-body">
+                <div class="attack-setup">
+                    <div class="attack-setup-box">
+                        <div class="attack-setup-label">Atacante</div>
+                        <div id="attack-source-name" class="attack-setup-value"></div>
+                    </div>
+                    <div class="attack-setup-box">
+                        <div class="attack-setup-label">Alvo</div>
+                        <div id="attack-target-name" class="attack-setup-value"></div>
+                    </div>
+                </div>
+
+                <div class="sheet-grid sheet-grid-three">
+                    <div class="form-group">
+                        <label for="attack-roll-mode">Rolagem</label>
+                        <select id="attack-roll-mode">
+                            <option value="normal">Normal</option>
+                            <option value="advantage">Vantagem</option>
+                            <option value="disadvantage">Desvantagem</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="attack-roll-bonus">Bônus extra</label>
+                        <input type="number" id="attack-roll-bonus" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="attack-roll-note">Nota rápida</label>
+                        <input type="text" id="attack-roll-note" placeholder="Cobertura, condição, etc.">
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="section-head">
+                        <div>
+                            <h4>Dano</h4>
+                            <p id="attack-damage-summary" class="form-help"></p>
+                        </div>
+                    </div>
+                    <div id="attack-damage-lines" class="damage-lines"></div>
+                </div>
+
+                <div id="attack-result-preview" class="attack-result-preview"></div>
+
+                <div class="modal-actions modal-actions-inline modal-footer">
+                    <button type="button" id="attack-cancel" class="btn btn-secondary btn-inline">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="attack-apply" class="btn btn-primary btn-inline">
+                        Aplicar ataque
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
