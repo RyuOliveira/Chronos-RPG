@@ -10281,5 +10281,193 @@ window.CHRONOS_MONSTROS_DATA = [
         "descricaoGeral": "Os yetis caçam nas neves eternas, emboscando viajantes e uivando em meio às tempestades para espalhar o medo."
       }
     ]
+  },
+  {
+    "slug": "criminosos",
+    "titulo_pagina": "Criminosos",
+    "imagem_principal": "imagens/criminosos.png",
+    "descricao_pagina": "Criaturas maléficas que vivem nas sombras, os criminosos são assassinos e ladrões astutos, sempre visando o lucro e a sobrevivência. Eles são mestres da furtividade e da extorção.",
+    "monstros": [
+      {
+        "nome": "Subchefe de Gangue",
+        "desafioCR_text": "2",
+        "xp": "450",
+        "tamanho": "Médio",
+        "tipo": "Humanoide (qualquer raça)",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "15",
+        "pontosVida": "45 (6d8 + 18)",
+        "deslocamento": "9m",
+        "imagem": "imagens/criminosos_card.png",
+        "forca": "12 (+1)",
+        "destreza": "17 (+3)",
+        "constituicao": "16 (+3)",
+        "inteligencia": "14 (+2)",
+        "sabedoria": "16 (+3)",
+        "carisma": "15 (+2)",
+        "testesResistencia": null,
+        "pericias": null,
+        "sentidos": null,
+        "idiomas": null,
+        "habilidadesEspeciais": [
+          {
+            "nome": "Reputação Temida",
+            "descricao": "Faz teste de intimidação com vantagem.",
+            "icone": "fas fa-slash"
+          },
+          {
+            "nome": "Estocada Mortal (1/dia)",
+            "descricao": "Com a ação bônus, ele ordena que membros da gangue realizem um ataque repentido e brutal. Aliados a 9m, que possam ouvi-lo fazem jogadas de ataque com vantagem contra inimigos que não agiram no turno.",
+            "icone": "fas fa-spear"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Lâmina do Assassino",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +5 para acertar, alcance 1,5m. <em>Acerto:</em> 7 (1d8 + 3) de dano perfurante mais 10 (3d6) de dano venenoso.",
+            "icone": "fas fa-spear"
+          },
+          {
+            "nome": "Pistola",
+            "descricao": "<em>Ataque à Distância:</em> +5 para acertar, alcance 9/27m. <em>Acerto:</em> 7 (1d8 + 3) de dano perfurante.",
+            "icone": "fas fa-gun"
+          }
+        ],
+        "reacoes": [
+          {
+            "nome": "Cuide da Retaguarda",
+            "descricao": "Se o subchefe for alvo de um ataque e pelo menos um de seus aliados estiver a até 1,5 m dele, o subchefe pode usar sua reação para fazer o atacante jogar com desvantagem.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "descricaoGeral": "O Subchefe de Gangue é um líder astuto e cruel, conhecido por sua habilidade em manipular e controlar seus subordinados."
+      },
+      {
+        "nome": "Degolador da Gangue",
+        "desafioCR_text": "1/4",
+        "xp": "50",
+        "tamanho": "Médio",
+        "tipo": "Humanoide (qualquer raça)",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "13 (gibão de peles)",
+        "pontosVida": "13 (2d8 + 4)",
+        "deslocamento": "9m",
+        "imagem": "imagens/criminosos_card.png",
+        "forca": "13 (+1)",
+        "destreza": "13 (+1)",
+        "constituicao": "15 (+2)",
+        "inteligencia": "10 (+0)",
+        "sabedoria": "12 (+1)",
+        "carisma": "10 (+0)",
+        "testesResistencia": null,
+        "pericias": "Furtividade +3, Intimidação +2",
+        "sentidos": "Percepção passiva 11",
+        "idiomas": "Língua dos Cinco, um idioma apropriado para a região.",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Fuga Ágil",
+            "descricao": "O degolador pode realizar a ação Desengajar ou Esconder-se com uma ação bônus em cada um de seus turnos.",
+            "icone": "fas fa-running"
+          },
+          {
+            "nome": "Ataque Furtivo",
+            "descricao": "Uma vez por turno, o degolador causa 7 (2d6) pontos de dano adicionais ao atingir o alvo com um ataque armado no qual tenha vantagem na jogada de ataque, ou quando o alvo estiver a até 1,5 metro de um aliado do degolador que não esteja incapacitado, caso o degolador não tenha desvantagem na jogada de ataque.",
+            "icone": "fas fa-hand-point-right"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Espada Curta",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +3 para acertar, alcance 1,5 m, um alvo. <em>Acerto:</em> 4 (1d6 + 1) de dano perfurante.",
+            "icone": "fas fa-sword"
+          },
+          {
+            "nome": "Pistola",
+            "descricao": "<em>Ataque à Distância:</em> +3 para acertar, alcance 9/27 m, um alvo. <em>Acerto:</em> 5 (1d8 + 1) de dano perfurante.",
+            "icone": "fas fa-gun"
+          }
+        ],
+        "descricaoGeral": "O degolador da gangue age nas sombras, usando furtividade e golpes precisos para eliminar seus alvos antes que percebam sua presença."
+      },
+      {
+        "nome": "Assassino da Gangue",
+        "desafioCR_text": "1/2",
+        "xp": "100",
+        "tamanho": "Médio",
+        "tipo": "Humanoide (qualquer raça)",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "14 (armadura de couro)",
+        "pontosVida": "32 (5d8 + 10)",
+        "deslocamento": "9m",
+        "imagem": "imagens/criminosos_card.png",
+        "forca": "10 (+0)",
+        "destreza": "17 (+3)",
+        "constituicao": "14 (+2)",
+        "inteligencia": "12 (+1)",
+        "sabedoria": "14 (+2)",
+        "carisma": "10 (+0)",
+        "testesResistencia": null,
+        "pericias": "Enganação +2, Furtividade +5, Percepção +2",
+        "sentidos": "Percepção passiva 14",
+        "idiomas": "Língua dos Cinco, um idioma apropriado para a região.",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Ardilosa",
+            "descricao": "Em cada um de seus turnos, o assassino pode usar uma ação bônus para executar a ação Correr, Desengajar ou Esconder-se.",
+            "icone": "fas fa-bolt"
+          },
+          {
+            "nome": "Surpresa (Recarga após um Descanso Curto ou Longo)",
+            "descricao": "Se o assassino surpreender uma criatura e acertá-la com um ataque durante o primeiro turno de combate, o alvo sofre 9 (2d8) de dano perfurante adicional pelo ataque.",
+            "icone": "fas fa-eye"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Lâmina do Assassino",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +5 para acertar, alcance 1,5 m, uma criatura. <em>Acerto:</em> 7 (1d8 + 3) de dano perfurante mais 10 (3d6) de dano venenoso.",
+            "icone": "fas fa-sword"
+          }
+        ],
+        "descricaoGeral": "O assassino da gangue é implacável e veloz, atacando com precisão antes que seus inimigos possam reagir."
+      },
+      {
+        "nome": "Capanga da Gangue",
+        "desafioCR_text": "1/8",
+        "xp": "25",
+        "tamanho": "Médio",
+        "tipo": "Humanoide (qualquer raça)",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "13 (gibão de peles)",
+        "pontosVida": "13 (2d8 + 4)",
+        "deslocamento": "9m",
+        "imagem": "imagens/criminosos_card.png",
+        "forca": "13 (+1)",
+        "destreza": "13 (+1)",
+        "constituicao": "15 (+2)",
+        "inteligencia": "10 (+0)",
+        "sabedoria": "12 (+1)",
+        "carisma": "10 (+0)",
+        "testesResistencia": null,
+        "pericias": "Atletismo +3, Intimidação +2",
+        "sentidos": "Percepção passiva 11",
+        "idiomas": "Língua dos Cinco, um idioma apropriado para a região.",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Táticas de Grupo",
+            "descricao": "O capanga tem vantagem em uma jogada de ataque contra uma criatura se ao menos um de seus aliados estiver a até 1,5 metro da criatura e o aliado não estiver incapacitado.",
+            "icone": "fas fa-users"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Clava",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +3 para acertar, alcance 1,5 m, um alvo. <em>Acerto:</em> 3 (1d4 + 1) de dano contundente.",
+            "icone": "fas fa-hammer"
+          }
+        ],
+        "descricaoGeral": "O capanga da gangue usa força bruta e táticas de grupo para intimidar e subjugar suas vítimas."
+      }
+    ]
   }
 ];
