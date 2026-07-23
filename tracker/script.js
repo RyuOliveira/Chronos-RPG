@@ -75,6 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
         attackRollMode: document.getElementById('attack-roll-mode'),
         attackRollBonus: document.getElementById('attack-roll-bonus'),
         attackRollNote: document.getElementById('attack-roll-note'),
+        attackRollButton: document.getElementById('attack-roll-button'),
+        attackCritical: document.getElementById('attack-critical'),
+        attackDamageSection: document.getElementById('attack-damage-section'),
         attackDamageSummary: document.getElementById('attack-damage-summary'),
         attackDamageLines: document.getElementById('attack-damage-lines'),
         attackResultPreview: document.getElementById('attack-result-preview'),
@@ -739,6 +742,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const rollDie = (faces) => Math.floor(Math.random() * faces) + 1;
 
+    const rollDiceTotal = (count, faces) => {
+        const diceCount = Math.max(0, Number.parseInt(count, 10) || 0);
+        const diceFaces = Math.max(0, Number.parseInt(faces, 10) || 0);
+
+        let total = 0;
+        for (let index = 0; index < diceCount; index += 1) {
+            total += rollDie(diceFaces);
+        }
+
+        return total;
+    };
+
+    const replaceDamageDiceTerms = (formula, resolver) => {
+        const sanitized = String(formula ?? '')
+            .replace(/[âˆ’â€“]/g, '-')
+            .replace(/\s+/g, '');
+
+        if (!sanitized) return '0';
+
+        return sanitized.replace(/(\d*)d(\d+)/gi, (_, count, faces) => {
+            const diceCount = count ? Number.parseInt(count, 10) : 1;
+            const diceFaces = Number.parseInt(faces, 10);
+
+            if (!Number.isFinite(diceCount) || !Number.isFinite(diceFaces)) {
+                return '0';
+            }
+
+            const replacement = resolver(diceCount, diceFaces);
+            return Number.isFinite(replacement) ? String(replacement) : '0';
+        });
+    };
+
     const evaluateSimpleExpression = (expression) => {
         const sanitized = String(expression)
             .replace(/[−–]/g, '-')
@@ -786,6 +821,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         return evaluateSimpleExpression(normalized);
+    };
+
+    const rollDamageFormula = (formula) => evaluateSimpleExpression(
+        replaceDamageDiceTerms(formula, (count, faces) => rollDiceTotal(count, faces))
+    );
+
+    const getCriticalDamageBonus = (formula) => {
+        const maxDiceExpression = replaceDamageDiceTerms(formula, (count, faces) => count * faces);
+        const noDiceExpression = replaceDamageDiceTerms(formula, () => 0);
+        return Math.max(
+            0,
+            evaluateSimpleExpression(maxDiceExpression) - evaluateSimpleExpression(noDiceExpression)
+        );
     };
 
     const rollAttackCheck = (attackBonus, mode, extraBonus) => {
@@ -998,6 +1046,67 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAllWithoutPersist();
     };
 
+    const setupAttackModalLayout = () => {
+        if (els.attackRollNote && els.attackRollNote.tagName !== 'TEXTAREA') {
+            const textarea = document.createElement('textarea');
+            textarea.id = els.attackRollNote.id;
+            textarea.rows = 2;
+            textarea.value = els.attackRollNote.value;
+            textarea.placeholder = 'Cobertura, condicao, alcance, efeito...';
+            els.attackRollNote.replaceWith(textarea);
+            els.attackRollNote = textarea;
+        }
+
+        const noteGroup = els.attackRollNote?.closest('.form-group');
+        if (noteGroup) {
+            noteGroup.classList.add('attack-note-field');
+            const noteLabel = noteGroup.querySelector('label');
+            if (noteLabel) noteLabel.textContent = 'Nota rapida';
+        }
+
+        const rollGrid = els.attackRollMode?.closest('.sheet-grid');
+        if (rollGrid) {
+            rollGrid.classList.add('attack-roll-grid');
+            rollGrid.classList.remove('sheet-grid-three');
+            if (noteGroup && noteGroup.parentElement === rollGrid) {
+                rollGrid.insertBefore(noteGroup, rollGrid.firstElementChild);
+            }
+        }
+
+        const bonusLabel = document.querySelector('label[for="attack-roll-bonus"]');
+        if (bonusLabel) bonusLabel.textContent = 'Bonus/Penalidade';
+
+        if (!els.attackRollButton) {
+            const rollButton = document.createElement('button');
+            rollButton.type = 'button';
+            rollButton.id = 'attack-roll-button';
+            rollButton.className = 'btn btn-primary btn-inline attack-roll-button';
+            rollButton.textContent = 'Rolar dado';
+            els.attackRollBonus?.closest('.form-group')?.insertAdjacentElement('afterend', rollButton);
+            els.attackRollButton = rollButton;
+        }
+
+        if (!els.attackDamageSection) {
+            els.attackDamageSection = els.attackDamageLines?.closest('.modal-section');
+            if (els.attackDamageSection) {
+                els.attackDamageSection.id = 'attack-damage-section';
+            }
+        }
+
+        const criticalWrap = els.attackCritical?.closest('.attack-critical-toggle');
+        const damageHead = els.attackDamageSection?.querySelector('.section-head');
+        if (criticalWrap && damageHead && !damageHead.contains(criticalWrap)) {
+            damageHead.appendChild(criticalWrap);
+            criticalWrap.querySelector('.form-help')?.remove();
+            const criticalLabel = criticalWrap.querySelector('span');
+            if (criticalLabel) criticalLabel.textContent = 'Critico';
+        }
+
+        if (els.attackApplyBtn) {
+            els.attackApplyBtn.textContent = 'Confirmar';
+        }
+    };
+
     const openSheetEditor = (context) => {
         const kind = context?.kind === 'library' ? 'library' : 'combatant';
         const type = normalizeType(context?.type ?? context?.entity?.type ?? 'player');
@@ -1015,6 +1124,8 @@ document.addEventListener('DOMContentLoaded', () => {
             id: kind === 'combatant' ? source.id : undefined,
             index: kind === 'library' ? parseInteger(context?.index) : undefined,
             monsterSlug: source.monsterSlug,
+            monsterKey: source.monsterKey,
+            monsterIndex: source.monsterIndex,
             conditionImmunities: source.conditionImmunities
         };
 
@@ -1282,6 +1393,8 @@ ${escapeHtml(attack.notes || '')}
             maxHp: Number.isFinite(hpForLibrary) ? hpForLibrary : undefined,
             sheetUrl: values.sheetUrl || baseEntry.sheetUrl || undefined,
             monsterSlug: sheetContext?.monsterSlug ?? baseEntry.monsterSlug,
+            monsterKey: source?.monsterKey ?? baseEntry.monsterKey ?? sheetContext?.monsterKey,
+            monsterIndex: source?.monsterIndex ?? baseEntry.monsterIndex ?? sheetContext?.monsterIndex,
             attacks: deepClone(sheetAttacks),
             resistances: values.resistances,
             vulnerabilities: values.vulnerabilities,
@@ -1293,14 +1406,49 @@ ${escapeHtml(attack.notes || '')}
 
     const findLibraryMatchIndex = (type, entry) => {
         const list = type === 'player' ? playerLibrary : monsterLibrary;
-        const sheetUrl = String(entry.sheetUrl ?? '').trim();
-        const monsterSlug = String(entry.monsterSlug ?? '').trim();
-        const nameKey = normalizeText(entry.name);
+        const isEnemy = type === 'enemy';
+        const entryMonsterKey = cleanWhitespace(entry.monsterKey ?? '');
+        const entryMonsterSlug = cleanWhitespace(entry.monsterSlug ?? '');
+        const entryMonsterIndex = parseInteger(entry.monsterIndex);
+        const entrySheetUrl = cleanWhitespace(entry.sheetUrl ?? '');
+        const entryNameKey = normalizeText(entry.name);
 
         return list.findIndex((candidate) => {
-            if (sheetUrl && candidate.sheetUrl && String(candidate.sheetUrl).trim() === sheetUrl) return true;
-            if (monsterSlug && candidate.monsterSlug && String(candidate.monsterSlug).trim() === monsterSlug) return true;
-            return normalizeText(candidate.name) === nameKey;
+            const candidateMonsterKey = cleanWhitespace(candidate.monsterKey ?? '');
+            const candidateMonsterSlug = cleanWhitespace(candidate.monsterSlug ?? '');
+            const candidateMonsterIndex = parseInteger(candidate.monsterIndex);
+            const candidateSheetUrl = cleanWhitespace(candidate.sheetUrl ?? '');
+            const candidateNameKey = normalizeText(candidate.name);
+
+            if (isEnemy) {
+                if (entryMonsterKey && candidateMonsterKey && entryMonsterKey === candidateMonsterKey) {
+                    return true;
+                }
+
+                if (
+                    entryMonsterSlug
+                    && candidateMonsterSlug
+                    && entryMonsterSlug === candidateMonsterSlug
+                ) {
+                    if (
+                        Number.isFinite(entryMonsterIndex)
+                        && Number.isFinite(candidateMonsterIndex)
+                    ) {
+                        return entryMonsterIndex === candidateMonsterIndex;
+                    }
+
+                    return candidateNameKey === entryNameKey;
+                }
+
+                if (!entryMonsterSlug && !candidateMonsterSlug) {
+                    return candidateNameKey === entryNameKey;
+                }
+
+                return false;
+            }
+
+            if (entrySheetUrl && candidateSheetUrl && candidateSheetUrl === entrySheetUrl) return true;
+            return candidateNameKey === entryNameKey;
         });
     };
 
@@ -1310,15 +1458,27 @@ ${escapeHtml(attack.notes || '')}
 
         const type = entry.type === 'enemy' ? 'enemy' : 'player';
         const list = type === 'player' ? playerLibrary : monsterLibrary;
-        const matchIndex = findLibraryMatchIndex(type, entry);
-
-        if (matchIndex >= 0) {
-            list[matchIndex] = normalizeLibraryEntry({
-                ...list[matchIndex],
-                ...entry
-            }, matchIndex);
+        if (sheetContext?.kind === 'library') {
+            const currentIndex = parseInteger(sheetContext.index);
+            if (Number.isFinite(currentIndex) && list[currentIndex]) {
+                list[currentIndex] = normalizeLibraryEntry({
+                    ...list[currentIndex],
+                    ...entry
+                }, currentIndex);
+            } else {
+                list.push(normalizeLibraryEntry(entry, list.length));
+            }
         } else {
-            list.push(normalizeLibraryEntry(entry, list.length));
+            const matchIndex = findLibraryMatchIndex(type, entry);
+
+            if (matchIndex >= 0) {
+                list[matchIndex] = normalizeLibraryEntry({
+                    ...list[matchIndex],
+                    ...entry
+                }, matchIndex);
+            } else {
+                list.push(normalizeLibraryEntry(entry, list.length));
+            }
         }
 
         persistState();
@@ -1348,8 +1508,7 @@ ${escapeHtml(attack.notes || '')}
             targetId: target.id,
             attackId: attack.id,
             damageRolls: (attack.damage ?? []).map((part) => ({
-                ...part,
-                rolled: rollFormula(part.formula)
+                ...part
             }))
         };
 
@@ -1360,6 +1519,7 @@ ${escapeHtml(attack.notes || '')}
         els.attackRollMode.value = 'normal';
         els.attackRollBonus.value = '0';
         els.attackRollNote.value = attack.notes || '';
+        els.attackCritical.checked = false;
         els.attackDamageSummary.textContent = attack.damage.length > 0
             ? `${attack.damage.length} parte(s) de dano`
             : 'Sem dano registrado';
@@ -1370,7 +1530,7 @@ ${escapeHtml(attack.notes || '')}
                     <div class="damage-line-main">
                         <div class="damage-line-label">${escapeHtml(part.type || `Dano ${index + 1}`)}</div>
                         <div class="damage-line-formula">
-                            ${escapeHtml(part.formula || '0')} = <strong class="damage-base-roll">${attackContext.damageRolls[index].rolled}</strong>
+                            ${escapeHtml(part.formula || '0')}
                         </div>
                     </div>
                     <div class="form-group">
@@ -1384,7 +1544,7 @@ ${escapeHtml(attack.notes || '')}
                     </div>
                     <div class="damage-line-total">
                         <span class="damage-line-label">Final</span>
-                        <strong data-final-damage="${index}">0</strong>
+                        <strong data-final-damage="${index}">-</strong>
                     </div>
                 </div>
             `;
@@ -1392,7 +1552,7 @@ ${escapeHtml(attack.notes || '')}
 
         openModal(els.attackModal);
         document.body.classList.remove('attack-targeting');
-        updateAttackPreview();
+        renderAttackSelectionSummary();
         window.setTimeout(() => {
             els.attackRollMode.focus();
         }, 30);
@@ -1427,8 +1587,13 @@ ${escapeHtml(attack.notes || '')}
         const attackBonus = Number.isFinite(context.attack.bonus) ? context.attack.bonus : 0;
         const attackRoll = rollAttackCheck(attackBonus, mode, extraBonus);
         const targetAc = Number.isFinite(context.target.ac) ? context.target.ac : null;
+        const manualCritical = Boolean(els.attackCritical?.checked);
+        const isCritical = manualCritical || attackRoll.chosen === 20;
+        if (els.attackCritical) {
+            els.attackCritical.checked = isCritical;
+        }
         const hasAttackRoll = Number.isFinite(context.attack.bonus) || extraBonus !== 0 || mode !== 'normal';
-        const hit = !hasAttackRoll || targetAc === null ? true : attackRoll.total >= targetAc;
+        const hit = !hasAttackRoll || targetAc === null ? true : isCritical || attackRoll.total >= targetAc;
         const note = els.attackRollNote.value.trim();
 
         let totalDamage = 0;
@@ -1438,13 +1603,15 @@ ${escapeHtml(attack.notes || '')}
             const select = document.querySelector(`.damage-mode-select[data-damage-index="${index}"]`);
             const modeValue = select?.value || getDamageModeForType(part.type, context.target);
             const multiplier = modeValue === 'resistance' ? 0.5 : modeValue === 'vulnerability' ? 2 : modeValue === 'immune' ? 0 : 1;
-            const finalDamage = Math.floor((part.rolled ?? 0) * multiplier);
+            const critBonus = isCritical ? getCriticalDamageBonus(part.formula) : 0;
+            const baseDamage = Number.isFinite(part.rolled) ? part.rolled : 0;
+            const finalDamage = Math.floor((baseDamage + critBonus) * multiplier);
             const finalSlot = document.querySelector(`[data-final-damage="${index}"]`);
             if (finalSlot) {
                 finalSlot.textContent = String(finalDamage);
             }
             totalDamage += finalDamage;
-            selectedLines.push(`${part.type || `Dano ${index + 1}`}: ${part.rolled}${multiplier !== 1 ? ` x${multiplier}` : ''} = ${finalDamage}`);
+            selectedLines.push(`${part.type || `Dano ${index + 1}`}: ${baseDamage}${critBonus > 0 ? ` + crítico ${critBonus}` : ''}${multiplier !== 1 ? ` x${multiplier}` : ''} = ${finalDamage}`);
         });
 
         const attackLine = hasAttackRoll
@@ -1452,12 +1619,13 @@ ${escapeHtml(attack.notes || '')}
             : `Sem rolagem automática${targetAc !== null ? ` • CA ${targetAc}` : ''}`;
 
         const resultLine = hit
-            ? `Acerto. Dano total: ${totalDamage}.`
+            ? `Acerto${isCritical ? ' crítico' : ''}. Dano total: ${totalDamage}.`
             : 'Erro. Nenhum dano será aplicado.';
 
         els.attackDamageSummary.textContent = selectedLines.join(' • ') || 'Sem dano registrado';
         els.attackResultPreview.innerHTML = `
-            <strong>${escapeHtml(attackLine)}</strong>
+            <strong>${escapeHtml(attackLine)}${isCritical ? ' • crítico' : ''}</strong>
+            ${isCritical ? '<br><span>Crítico: cada dado de dano recebe o valor máximo extra.</span>' : ''}
             <br>${escapeHtml(resultLine)}
             ${note ? `<br>${escapeHtml(note)}` : ''}
         `;
@@ -1466,24 +1634,193 @@ ${escapeHtml(attack.notes || '')}
             hit,
             totalDamage,
             attackRoll,
-            note
+            note,
+            isCritical
+        };
+    };
+
+    const renderAttackSelectionSummary = () => {
+        const context = getAttackContext();
+        if (!context) {
+            els.attackResultPreview.textContent = 'Nenhum ataque carregado.';
+            return;
+        }
+
+        attackContext.stage = 'ready';
+        attackContext.preview = null;
+        attackContext.rollResult = null;
+
+        els.attackDamageSection?.classList.add('hidden');
+        els.attackResultPreview.classList.add('hidden');
+        els.attackApplyBtn.classList.add('hidden');
+        els.attackRollButton?.classList.remove('hidden');
+
+        [els.attackRollMode, els.attackRollBonus, els.attackRollNote].forEach((field) => {
+            if (field) field.disabled = false;
+        });
+
+        if (els.attackCritical) {
+            els.attackCritical.checked = false;
+            els.attackCritical.disabled = false;
+        }
+
+        (attackContext.damageRolls ?? []).forEach((part) => {
+            delete part.rolled;
+        });
+
+        document.querySelectorAll('[data-final-damage]').forEach((slot) => {
+            slot.textContent = '-';
+        });
+
+        els.attackDamageSummary.textContent = 'Role o acerto primeiro.';
+    };
+
+    const resolveAttackDamage = () => {
+        const context = getAttackContext();
+        if (!context) return null;
+
+        const extraBonus = parseInteger(els.attackRollBonus.value) ?? 0;
+        const mode = els.attackRollMode.value;
+        const attackBonus = Number.isFinite(context.attack.bonus) ? context.attack.bonus : 0;
+        const attackRoll = rollAttackCheck(attackBonus, mode, extraBonus);
+        const targetAc = Number.isFinite(context.target.ac) ? context.target.ac : null;
+        const manualCritical = Boolean(els.attackCritical?.checked);
+        const isCritical = manualCritical || attackRoll.chosen === 20;
+        if (els.attackCritical) {
+            els.attackCritical.checked = isCritical;
+        }
+        const hasAttackRoll = Number.isFinite(context.attack.bonus) || extraBonus !== 0 || mode !== 'normal';
+        const hit = !hasAttackRoll || targetAc === null ? true : isCritical || attackRoll.total >= targetAc;
+        const note = els.attackRollNote.value.trim();
+
+        attackContext.stage = 'rolled';
+        [els.attackRollMode, els.attackRollBonus, els.attackRollNote].forEach((field) => {
+            if (field) field.disabled = true;
+        });
+        els.attackRollButton?.classList.add('hidden');
+        els.attackApplyBtn.classList.remove('hidden');
+        els.attackApplyBtn.textContent = hit ? 'Confirmar dano' : 'Confirmar erro';
+        els.attackResultPreview.classList.remove('hidden');
+
+        attackContext.rollResult = {
+            hit,
+            attackRoll,
+            note,
+            isAutoCritical: attackRoll.chosen === 20,
+            hasAttackRoll,
+            targetAc,
+            attackBonus,
+            extraBonus,
+            mode
+        };
+
+        if (!hit) {
+            els.attackDamageSection?.classList.add('hidden');
+            els.attackResultPreview.innerHTML = `
+                <strong>${escapeHtml(hasAttackRoll
+                    ? `Rolagem ${attackRoll.rolls.join(mode === 'normal' ? '' : ' / ')} + ${attackBonus + extraBonus} = ${attackRoll.total}${targetAc !== null ? ` contra CA ${targetAc}` : ''}`
+                    : `Sem rolagem automatica${targetAc !== null ? ` | CA ${targetAc}` : ''}`)}</strong>
+                <br>${escapeHtml('Erro. Nenhum dano sera aplicado.')}
+                ${note ? `<br>${escapeHtml(note)}` : ''}
+            `;
+            attackContext.preview = {
+                hit,
+                totalDamage: 0,
+                attackRoll,
+                note,
+                isCritical: false
+            };
+            return attackContext.preview;
+        }
+
+        els.attackDamageSection?.classList.remove('hidden');
+        if (els.attackCritical) {
+            els.attackCritical.checked = isCritical;
+            els.attackCritical.disabled = attackRoll.chosen === 20;
+        }
+
+        attackContext.damageRolls = (attackContext.damageRolls ?? []).map((part) => ({
+            ...part,
+            rolled: rollDamageFormula(part.formula)
+        }));
+
+        return refreshResolvedDamage();
+    };
+
+    const refreshResolvedDamage = () => {
+        const context = getAttackContext();
+        const rollResult = attackContext?.rollResult;
+        if (!context || !rollResult?.hit) return attackContext?.preview ?? null;
+
+        const isCritical = Boolean(rollResult.isAutoCritical || els.attackCritical?.checked);
+        let totalDamage = 0;
+        const selectedLines = [];
+
+        (attackContext.damageRolls ?? []).forEach((part, index) => {
+            const select = document.querySelector(`.damage-mode-select[data-damage-index="${index}"]`);
+            const modeValue = select?.value || getDamageModeForType(part.type, context.target);
+            const multiplier = modeValue === 'resistance' ? 0.5 : modeValue === 'vulnerability' ? 2 : modeValue === 'immune' ? 0 : 1;
+            const rolledDamage = Number.isFinite(part.rolled) ? part.rolled : 0;
+            const critBonus = isCritical ? getCriticalDamageBonus(part.formula) : 0;
+            const finalDamage = Math.floor((rolledDamage + critBonus) * multiplier);
+            const finalSlot = document.querySelector(`[data-final-damage="${index}"]`);
+            if (finalSlot) {
+                finalSlot.textContent = String(finalDamage);
+            }
+            totalDamage += finalDamage;
+            selectedLines.push(`${part.type || `Dano ${index + 1}`}: ${rolledDamage}${critBonus > 0 ? ` + critico ${critBonus}` : ''}${multiplier !== 1 ? ` x${multiplier}` : ''} = ${finalDamage}`);
+        });
+
+        attackContext.preview = {
+            hit: true,
+            totalDamage,
+            attackRoll: rollResult.attackRoll,
+            note: rollResult.note,
+            isCritical
+        };
+
+        const attackLine = rollResult.hasAttackRoll
+            ? `Rolagem ${rollResult.attackRoll.rolls.join(rollResult.mode === 'normal' ? '' : ' / ')} + ${rollResult.attackBonus + rollResult.extraBonus} = ${rollResult.attackRoll.total}${rollResult.targetAc !== null ? ` contra CA ${rollResult.targetAc}` : ''}`
+            : `Sem rolagem automatica${rollResult.targetAc !== null ? ` | CA ${rollResult.targetAc}` : ''}`;
+        const resultLine = `Acerto${isCritical ? ' critico' : ''}. Dano total: ${totalDamage}.`;
+
+        els.attackDamageSummary.textContent = selectedLines.join(' | ') || 'Sem dano registrado';
+        els.attackResultPreview.innerHTML = `
+            <strong>${escapeHtml(attackLine)}${isCritical ? ' | critico' : ''}</strong>
+            <br>${escapeHtml(resultLine)}
+            ${rollResult.note ? `<br>${escapeHtml(rollResult.note)}` : ''}
+        `;
+
+        return {
+            ...attackContext.preview,
+            selectedLines,
+            attackLine,
+            resultLine
         };
     };
 
     const applyAttackDamage = () => {
         const context = getAttackContext();
-        if (!context || !attackContext?.preview) return;
+        if (!attackContext?.rollResult) {
+            resolveAttackDamage();
+            return;
+        }
 
-        if (!attackContext.preview.hit) {
-            els.combatNotice.textContent = `${context.source.name} errou ${context.target.name}.`;
+        const preview = attackContext.rollResult.hit
+            ? refreshResolvedDamage()
+            : attackContext.preview;
+        if (!context || !preview) return;
+
+        if (!preview.hit) {
             closeAttackModal();
-            refreshAll();
+            els.combatNotice.textContent = `${context.source.name} errou ${context.target.name}.`;
             return;
         }
 
         const target = context.target;
         const source = context.source;
-        const totalDamage = Math.max(0, attackContext.preview.totalDamage ?? 0);
+        const attackName = context.attack?.name || 'o ataque';
+        const totalDamage = Math.max(0, preview.totalDamage ?? 0);
         const hpBefore = Number.isFinite(target.hp) ? target.hp : 0;
         let hpAfter = hpBefore;
         let deathSaveTriggered = false;
@@ -1518,15 +1855,16 @@ ${escapeHtml(attack.notes || '')}
 
         syncCombatantState(target);
         persistState();
-        renderAllWithoutPersist();
 
-        const damageText = totalDamage > 0 ? `${totalDamage} de dano` : 'sem dano';
+        const damageText = totalDamage > 0
+            ? `${totalDamage} de dano${preview.isCritical ? ' critico' : ''}`
+            : 'sem dano';
         const suffix = deathSaveTriggered
             ? ' e recebeu um fracasso de salvaguarda'
             : '';
-        els.combatNotice.textContent = `${source.name} acertou ${target.name} com ${attackContext.attackId ? getAttackContext()?.attack?.name ?? 'o ataque' : 'o ataque'}: ${damageText}${suffix}.`;
 
         closeAttackModal();
+        els.combatNotice.textContent = `${source.name} acertou ${target.name} com ${attackName}: ${damageText}${suffix}.`;
     };
 
     const renderCombatantAttackButtons = (combatant) => {
@@ -1562,14 +1900,16 @@ ${escapeHtml(attack.notes || '')}
 
         if (status === 'alive') {
             return `
-                <div class="hp-row">
+                <div class="hp-row hp-row--alive">
                     <div class="hp-controls">
-                        <button class="hp-btn hp-minus" data-id="${combatant.id}" type="button" title="-1 PV">-</button>
                         <button class="hp-btn hp-minus" data-id="${combatant.id}" data-step="-5" type="button" title="-5 PV">-5</button>
                     </div>
-                    <div class="hp-pill">${escapeHtml(hpValue)}</div>
+                    <div class="hp-pill hp-pill--split" role="group" aria-label="Ajustar pontos de vida">
+                        <button class="hp-pill-edge hp-minus" data-id="${combatant.id}" data-step="-1" type="button" title="-1 PV">-</button>
+                        <span class="hp-pill-value">${escapeHtml(hpValue)}</span>
+                        <button class="hp-pill-edge hp-plus" data-id="${combatant.id}" data-step="1" type="button" title="+1 PV">+</button>
+                    </div>
                     <div class="hp-controls">
-                        <button class="hp-btn hp-plus" data-id="${combatant.id}" type="button" title="+1 PV">+</button>
                         <button class="hp-btn hp-quick" data-id="${combatant.id}" data-step="5" type="button" title="+5 PV">+5</button>
                     </div>
                 </div>
@@ -1801,6 +2141,8 @@ ${escapeHtml(attack.notes || '')}
 
     const renderLibraryList = (list, element, type) => {
         const label = type === 'player' ? 'Jogadores salvos' : 'Monstros salvos';
+        const isCompact = type === 'enemy';
+        const showSheetLink = type !== 'enemy';
         const filtered = list
             .map((entry, index) => ({ entry, index }))
             .filter(({ entry }) => matchesSearch(entry, librarySearchTerm));
@@ -1826,15 +2168,17 @@ ${escapeHtml(attack.notes || '')}
         element.innerHTML = `
             <div class="library-section-title">${label}</div>
             ${filtered.map(({ entry, index }) => `
-                <div class="lib-item">
+                <div class="lib-item${isCompact ? ' lib-item--compact' : ''}">
                     <div class="lib-info">
                         <div class="lib-name">${escapeHtml(entry.name)}</div>
-                        <div class="lib-meta">
-                            ${escapeHtml(formatLibraryMeta(entry) || 'Sem dados adicionais')}
-                        </div>
+                        ${isCompact ? '' : `
+                            <div class="lib-meta">
+                                ${escapeHtml(formatLibraryMeta(entry) || 'Sem dados adicionais')}
+                            </div>
+                        `}
                     </div>
                     <div class="lib-actions">
-                        ${buildSheetUrl(entry) ? `<a href="${escapeHtml(buildSheetUrl(entry))}" target="_blank" rel="noopener" class="card-link-button btn-small-icon">Ficha</a>` : ''}
+                        ${showSheetLink && buildSheetUrl(entry) ? `<a href="${escapeHtml(buildSheetUrl(entry))}" target="_blank" rel="noopener" class="card-link-button btn-small-icon">Ficha</a>` : ''}
                         <button class="btn-small-icon btn-edit-lib edit-library-entry" data-type="${type}" data-idx="${index}" title="Editar" type="button">Editar</button>
                         <button class="btn-small-icon btn-add-lib add-library-entry" data-type="${type}" data-idx="${index}" title="Adicionar ao combate" type="button">+</button>
                         <button class="btn-small-icon btn-del-lib delete-library-entry" data-type="${type}" data-idx="${index}" title="Excluir da biblioteca" type="button">Excluir</button>
@@ -1936,16 +2280,20 @@ ${escapeHtml(attack.notes || '')}
 
         const buildLibraryItem = (entry, index, type) => {
             const sheetUrl = buildSheetUrl(entry);
+            const isCompact = type === 'enemy';
+            const showSheetLink = type !== 'enemy';
             return `
-                <div class="quick-result">
+                <div class="quick-result${isCompact ? ' quick-result--compact' : ''}">
                     <div class="quick-result-main">
                         <div class="quick-result-name">${escapeHtml(entry.name)}</div>
-                        <div class="quick-meta">
-                            ${escapeHtml(formatLibraryMeta(entry) || 'Sem dados adicionais')}
-                        </div>
+                        ${isCompact ? '' : `
+                            <div class="quick-meta">
+                                ${escapeHtml(formatLibraryMeta(entry) || 'Sem dados adicionais')}
+                            </div>
+                        `}
                     </div>
                     <div class="quick-result-actions">
-                        ${sheetUrl ? `<a href="${escapeHtml(sheetUrl)}" target="_blank" rel="noopener" class="btn-sheet-link">Ficha</a>` : ''}
+                        ${showSheetLink && sheetUrl ? `<a href="${escapeHtml(sheetUrl)}" target="_blank" rel="noopener" class="btn-sheet-link">Ficha</a>` : ''}
                         <button type="button" class="btn btn-secondary btn-inline btn-mini quick-edit-library" data-type="${type}" data-idx="${index}">Editar</button>
                         <button type="button" class="btn btn-primary btn-inline btn-mini quick-add" data-type="${type}" data-idx="${index}">+</button>
                     </div>
@@ -2440,7 +2788,11 @@ ${escapeHtml(attack.notes || '')}
 
     function updateAttackPreviewFromInputs() {
         if (!attackContext) return;
-        updateAttackPreview();
+        if (attackContext.stage === 'rolled') {
+            refreshResolvedDamage();
+            return;
+        }
+        renderAttackSelectionSummary();
     }
 
     function removeSheetAttackEditFocus() {
@@ -2479,9 +2831,15 @@ ${escapeHtml(attack.notes || '')}
         els.attackCancelBtn.onclick = () => {
             closeAttackModal();
         };
+        if (els.attackRollButton) {
+            els.attackRollButton.onclick = resolveAttackDamage;
+        }
         els.attackRollMode.onchange = updateAttackPreviewFromInputs;
         els.attackRollBonus.oninput = updateAttackPreviewFromInputs;
         els.attackRollNote.oninput = updateAttackPreviewFromInputs;
+        if (els.attackCritical) {
+            els.attackCritical.onchange = updateAttackPreviewFromInputs;
+        }
         els.attackDamageLines.onchange = updateAttackPreviewFromInputs;
     }
 
@@ -2575,6 +2933,7 @@ ${escapeHtml(attack.notes || '')}
     }
 
     initializeState();
+    setupAttackModalLayout();
     setupGlobalHandlers();
     normalizeAndShowDefaults();
 
@@ -2621,11 +2980,13 @@ ${escapeHtml(attack.notes || '')}
     });
 
     els.sheetOpenLinkBtn.disabled = true;
-    els.attackRollMode.addEventListener('change', updateAttackPreview);
-    els.attackRollBonus.addEventListener('input', updateAttackPreview);
-    els.attackRollNote.addEventListener('input', updateAttackPreview);
-    els.attackDamageLines.addEventListener('change', updateAttackPreview);
-
+    els.attackRollMode.addEventListener('change', updateAttackPreviewFromInputs);
+    els.attackRollBonus.addEventListener('input', updateAttackPreviewFromInputs);
+    els.attackRollNote.addEventListener('input', updateAttackPreviewFromInputs);
+    els.attackDamageLines.addEventListener('change', updateAttackPreviewFromInputs);
+    if (els.attackCritical) {
+        els.attackCritical.addEventListener('change', updateAttackPreviewFromInputs);
+    }
     if (els.sheetModal.querySelector('[data-close-modal="sheet"]')) {
         els.sheetModal.querySelector('[data-close-modal="sheet"]').onclick = closeSheetModal;
     }

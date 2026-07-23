@@ -8,6 +8,8 @@ const cleanWhitespace = (value) => String(value ?? '')
     .replace(/\s+/g, ' ')
     .trim();
 
+const normalizeToken = (value) => cleanWhitespace(value).toLowerCase();
+
 const stripHtml = (value) => String(value ?? '')
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<\/p>/gi, '\n')
@@ -144,9 +146,10 @@ const clonePlainObject = (value) => {
     return JSON.parse(JSON.stringify(value));
 };
 
-const buildMonsterTrackerPayload = (monster, slug, group) => {
+const buildMonsterTrackerPayload = (monster, slug, group, monsterIndex = 0) => {
     const hpInfo = parseHpText(monster.pontosVida);
     const dexBonus = parseAbilityModifier(monster.destreza);
+    const monsterKey = `${slug}:${monsterIndex}`;
     const groupInfo = {
         slug: group?.slug,
         title: group?.titulo_pagina,
@@ -169,6 +172,8 @@ const buildMonsterTrackerPayload = (monster, slug, group) => {
         initBonus: Number.isFinite(dexBonus) ? dexBonus : undefined,
         sheetUrl: buildMonsterSheetUrl(slug),
         monsterSlug: slug,
+        monsterKey,
+        monsterIndex,
         groupSlug: groupInfo.slug,
         groupTitle: groupInfo.title,
         groupImage: groupInfo.image,
@@ -312,7 +317,7 @@ class MonsterManual {
     generateMonsterCard(m, slug, group, index) {
         const sheetUrl = buildMonsterSheetUrl(slug);
         const monsterKey = `${slug}:${index}`;
-        const monsterData = buildMonsterTrackerPayload(m, slug, group);
+        const monsterData = buildMonsterTrackerPayload(m, slug, group, index);
         trackerPayloadCache.set(monsterKey, monsterData);
 
         return `
@@ -431,11 +436,64 @@ function sendToTracker(event, monsterData) {
         monsterLibrary = [];
     }
 
-    const index = monsterLibrary.findIndex((entry) => (
-        (payload.monsterSlug && entry.monsterSlug === payload.monsterSlug)
-        || (payload.sheetUrl && entry.sheetUrl === payload.sheetUrl)
-        || (payload.name && entry.name === payload.name && entry.sheetUrl === payload.sheetUrl)
-    ));
+    const payloadMonsterKey = cleanWhitespace(payload.monsterKey ?? '');
+    const payloadMonsterSlug = normalizeToken(payload.monsterSlug ?? '');
+    const payloadMonsterIndex = parseInteger(payload.monsterIndex);
+    const payloadName = normalizeToken(payload.name ?? '');
+    const payloadSheetUrl = cleanWhitespace(payload.sheetUrl ?? '');
+
+    const index = monsterLibrary.findIndex((entry) => {
+        const entryMonsterKey = cleanWhitespace(entry.monsterKey ?? '');
+        const entryMonsterSlug = normalizeToken(entry.monsterSlug ?? '');
+        const entryMonsterIndex = parseInteger(entry.monsterIndex);
+        const entryName = normalizeToken(entry.name ?? '');
+        const entrySheetUrl = cleanWhitespace(entry.sheetUrl ?? '');
+
+        if (payloadMonsterKey && entryMonsterKey && payloadMonsterKey === entryMonsterKey) {
+            return true;
+        }
+
+        if (
+            payloadMonsterSlug
+            && entryMonsterSlug
+            && payloadMonsterSlug === entryMonsterSlug
+            && Number.isFinite(payloadMonsterIndex)
+            && Number.isFinite(entryMonsterIndex)
+            && payloadMonsterIndex === entryMonsterIndex
+        ) {
+            return true;
+        }
+
+        if (
+            payloadMonsterSlug
+            && entryMonsterSlug
+            && payloadMonsterSlug === entryMonsterSlug
+            && payloadName
+            && entryName
+            && payloadName === entryName
+        ) {
+            return true;
+        }
+
+        if (
+            !payloadMonsterSlug
+            && !entryMonsterSlug
+            && payloadName
+            && entryName
+            && payloadName === entryName
+        ) {
+            return true;
+        }
+
+        return Boolean(
+            payloadSheetUrl
+            && entrySheetUrl
+            && payloadSheetUrl === entrySheetUrl
+            && payloadName
+            && entryName
+            && payloadName === entryName
+        );
+    });
 
     if (index >= 0) {
         monsterLibrary[index] = {
