@@ -10492,6 +10492,57 @@
           }
         ],
         "descricaoGeral": "O capanga da gangue usa força bruta e táticas de grupo para intimidar e subjugar suas vítimas."
+      },
+      {
+        "nome": "Agente da Gangue",
+        "desafioCR_text": "1/2",
+        "xp": "100",
+        "tamanho": "Médio",
+        "tipo": "Humanoide (qualquer raça)",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "14 (armadura de couro batido)",
+        "pontosVida": "32 (5d8 + 10)",
+        "deslocamento": "9m",
+        "imagem": "imagens/criminosos_card.png",
+        "forca": "15 (+2)",
+        "destreza": "15 (+2)",
+        "constituicao": "14 (+2)",
+        "inteligencia": "11 (+0)",
+        "sabedoria": "10 (+0)",
+        "carisma": "10 (+0)",
+        "pericias": "Enganação +3, Furtividade +4, Percepção +3",
+        "sentidos": "Percepção passiva 13",
+        "idiomas": "Língua dos Cinco, mais um idioma.",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Pra Dentro Deles",
+            "descricao": "Em cada um de seus turnos, o agente pode fazer com que um aliado a até 24 metros se mova até seu deslocamento como uma ação bônus.",
+            "icone": "fas fa-user-shield"
+          },
+          {
+            "nome": "A Queima Roupa",
+            "descricao": "O agente não tem desvantagem nos ataques com canhão de mão feitos contra um alvo a menos de 1,5 metro.",
+            "icone": "fas fa-fire"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataque Múltiplo",
+            "descricao": "O executor faz um ataque de alfanje e um ataque de canhão de mão.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Alfanje",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +4 para acertar, alcance 1,5 m, um alvo. <em>Acerto:</em> 6 (1d8 + 2) de dano cortante.",
+            "icone": "fas fa-sword"
+          },
+          {
+            "nome": "Canhão de Mão",
+            "descricao": "<em>Ataque à Distância:</em> +4 para acertar, alcance 24/72 m, um alvo. <em>Acerto:</em> 9 (2d6 + 2) de dano perfurante.",
+            "icone": "fas fa-gun"
+          }
+        ],
+        "descricaoGeral": "O agente da gangue é um executor ágil e agressivo, que combina intimidação, infiltração e apoio tático para abrir caminho para a quadrilha."
       }
     ]
   }
