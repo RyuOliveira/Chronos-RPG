@@ -10520,5 +10520,66 @@ window.CHRONOS_MONSTROS_DATA = [
         "descricaoGeral": "O agente da gangue é um executor ágil e agressivo, que combina intimidação, infiltração e apoio tático para abrir caminho para a quadrilha."
       }
     ]
+  },
+  {
+    "slug": "otyugh-mutante",
+    "titulo_pagina": "Otyugh Mutante",
+    "imagem_principal": "imagens/otyugh_mutante.png",
+    "descricao_pagina": "Uma aberração grande e grotesca, o Otyugh Mutante mistura carapaça quitinosa, tentáculos e um hálito tóxico capaz de envenenar o campo de batalha.",
+    "monstros": [
+      {
+        "nome": "Otyugh Mutante",
+        "desafioCR_text": "6",
+        "xp": "2.300",
+        "tamanho": "Grande",
+        "tipo": "Aberração",
+        "alinhamento": "Neutro",
+        "classeArmadura": "16 (armadura natural)",
+        "pontosVida": "76 (8d10 + 32)",
+        "deslocamento": "9m",
+        "imagem": "imagens/otyugh_mutante_card.png",
+        "forca": "19 (+4)",
+        "destreza": "11 (+0)",
+        "constituicao": "18 (+4)",
+        "inteligencia": "10 (+0)",
+        "sabedoria": "15 (+2)",
+        "carisma": "6 (-2)",
+        "testesResistencia": "Força +7, Constituição +7",
+        "sentidos": "visão no escuro 36m, percepção passiva 12",
+        "idiomas": "Otyugh, telepatia 36m",
+        "imunidadesDano": "veneno",
+        "imunidadesCondicoes": "envenenado",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Hálito Virulento",
+            "descricao": "No início do turno do mutante, cada criatura a até 1,5m dele deve fazer um teste de resistência de Constituição CD 15 ou sofrer 3 (1d6) de dano venenoso.",
+            "icone": "fas fa-skull"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataques Múltiplos",
+            "descricao": "O mutante faz dois ataques de Mordida ou Tentáculo. Ele pode substituir um desses ataques por Investida de Quitina.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Mordida",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 1,5m. <em>Acerto:</em> 13 (2d8 + 4) de dano perfurante. Se o alvo for uma criatura, ele deve fazer um teste de resistência de Constituição CD 15 ou ficar envenenado. A cada 24 horas, o alvo repete o teste, reduzindo seu máximo de pontos de vida em 5 (1d10) em caso de falha. Em caso de sucesso, o alvo não fica mais envenenado. O alvo morre se seu máximo de pontos de vida for reduzido a 0.",
+            "icone": "fas fa-tooth"
+          },
+          {
+            "nome": "Tentáculo",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 3m. <em>Acerto:</em> 13 (2d8 + 4) de dano contuso e, se o alvo for uma criatura Média ou menor, ele fica agarrado (CD 15 para escapar) e contido até o fim desse agarrão. O mutante tem dois tentáculos, cada um podendo agarrar um alvo.",
+            "icone": "fas fa-splotch"
+          },
+          {
+            "nome": "Investida de Quitina",
+            "descricao": "O mutante mira em uma criatura que está agarrando, arremessando-a contra sua carapaça quitinosa. A criatura deve fazer um teste de resistência de Constituição CD 15 ou sofrer 16 (3d10) de dano contuso e ficar atordoada até o fim do próximo turno do mutante.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "descricaoGeral": "Uma aberração colossal e brutal, o Otyugh Mutante é uma mistura de carapaça quitinosa e tentáculos, projetada para esmagar, envenenar e dominar o campo de batalha."
+      }
+    ]
   }
 ];

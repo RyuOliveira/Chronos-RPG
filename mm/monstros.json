@@ -10545,6 +10545,166 @@
         "descricaoGeral": "O agente da gangue é um executor ágil e agressivo, que combina intimidação, infiltração e apoio tático para abrir caminho para a quadrilha."
       }
     ]
+  },
+  {
+    "slug": "otyugh-mutante",
+    "titulo_pagina": "Otyugh Mutante",
+    "imagem_principal": "https://i.pinimg.com/736x/5f/a2/d7/5fa2d7dacf08e9d7ce73efdc022b3af0.jpg",
+    "descricao_pagina": "Uma aberração grande e grotesca, o Otyugh Mutante mistura carapaça quitinosa, tentáculos e um hálito tóxico capaz de envenenar o campo de batalha.",
+    "monstros": [
+      {
+        "nome": "Otyugh Mutante",
+        "desafioCR_text": "6",
+        "xp": "2.300",
+        "tamanho": "Grande",
+        "tipo": "Aberração",
+        "alinhamento": "Neutro",
+        "classeArmadura": "16 (armadura natural)",
+        "pontosVida": "76 (8d10 + 32)",
+        "deslocamento": "9m",
+        "imagem": "imagens/otyugh_mutante_card.png",
+        "forca": "19 (+4)",
+        "destreza": "11 (+0)",
+        "constituicao": "18 (+4)",
+        "inteligencia": "10 (+0)",
+        "sabedoria": "15 (+2)",
+        "carisma": "6 (-2)",
+        "testesResistencia": "Força +7, Constituição +7",
+        "sentidos": "visão no escuro 36m, percepção passiva 12",
+        "idiomas": "Otyugh, telepatia 36m",
+        "imunidadesDano": "veneno",
+        "imunidadesCondicoes": "envenenado",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Hálito Virulento",
+            "descricao": "No início do turno do mutante, cada criatura a até 1,5m dele deve fazer um teste de resistência de Constituição CD 15 ou sofrer 3 (1d6) de dano venenoso.",
+            "icone": "fas fa-skull"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataques Múltiplos",
+            "descricao": "O mutante faz três ataques de Mordida ou Tentáculo. Ele pode substituir um desses ataques por Investida de Quitina.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Mordida",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 1,5m. <em>Acerto:</em> 13 (2d8 + 4) de dano perfurante. Se o alvo for uma criatura, ele deve fazer um teste de resistência de Constituição CD 15 ou ficar envenenado. A cada 24 horas, o alvo repete o teste, reduzindo seu máximo de pontos de vida em 5 (1d10) em caso de falha. Em caso de sucesso, o alvo não fica mais envenenado. O alvo morre se seu máximo de pontos de vida for reduzido a 0.",
+            "icone": "fas fa-tooth"
+          },
+          {
+            "nome": "Tentáculo",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 3m. <em>Acerto:</em> 13 (2d8 + 4) de dano contuso e, se o alvo for uma criatura Média ou menor, ele fica agarrado (CD 15 para escapar) e contido até o fim desse agarrão. O mutante tem dois tentáculos, cada um podendo agarrar um alvo.",
+            "icone": "fas fa-splotch"
+          },
+          {
+            "nome": "Investida de Quitina",
+            "descricao": "O mutante mira em uma criatura que está agarrando, arremessando-a contra sua carapaça quitinosa. A criatura deve fazer um teste de resistência de Constituição CD 15 ou sofrer 16 (3d10) de dano contuso e ficar atordoada até o fim do próximo turno do mutante.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "descricaoGeral": "Uma aberração colossal e brutal, o Otyugh Mutante é uma mistura de carapaça quitinosa e tentáculos, projetada para esmagar, envenenar e dominar o campo de batalha."
+      }
+    ]
+  },
+  {
+    "slug": "fuliginoso",
+    "titulo_pagina": "Fuliginoso",
+    "imagem_principal": "imagens/fuliginoso.png",
+    "descricao_pagina": "Os fuliginosos são mortos-vivos corroídos pela fumaça, a dor e a memória de vidas esquecidas. Entre eles, os ferais atacam por instinto e os psíquicos por meio de uma presença espectral que dilacera a mente.",
+    "monstros": [
+      {
+        "nome": "Inumano Fuliginoso Feral",
+        "desafioCR_text": "5",
+        "xp": "1.800",
+        "tamanho": "Médio",
+        "tipo": "Morto-vivo",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "16 (armadura natural)",
+        "pontosVida": "65 (10d8 + 20)",
+        "deslocamento": "7,5m",
+        "imagem": "imagens/fuliginoso_feral.png",
+        "forca": "19 (+4)",
+        "destreza": "13 (+1)",
+        "constituicao": "15 (+2)",
+        "inteligencia": "4 (-3)",
+        "sabedoria": "14 (+2)",
+        "carisma": "6 (-2)",
+        "testesResistencia": "Força +7, Constituição +5",
+        "resistenciasDano": "necrótico, veneno",
+        "imunidadesCondicoes": "encantado, exaustão, amedrontado, paralisado, envenenado, inconsciente",
+        "sentidos": "visão no escuro 36m, percepção passiva 12",
+        "idiomas": "entende os idiomas que conheceu na vida, mas não consegue falar",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Inumano Fuliginoso",
+            "descricao": "O inumano fuliginoso é uma criatura de essência sombria e instintiva, movendo-se com ferocidade bruta e resistência sobrenatural.",
+            "icone": "fas fa-skull"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataques Múltiplos",
+            "descricao": "O inumano realiza dois ataques de Estilhaço Necrótico.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Estilhaço Necrótico",
+            "descricao": "<em>Ataque Corpo a Corpo ou à Distância:</em> +7 para acertar, alcance 1,5m ou 18m. <em>Acerto:</em> 7 (1d6 + 4) de dano necrótico. Se o alvo for uma criatura, ele terá desvantagem na próxima jogada de ataque antes do final do próximo turno.",
+            "icone": "fas fa-bolt"
+          }
+        ],
+        "descricaoGeral": "Um morto-vivo feral, o Inumano Fuliginoso é impulsionado por dor, raiva e uma presença de fumaça negra que arrasta seus inimigos para a desordem e o terror."
+      },
+      {
+        "nome": "Inumano Fuliginoso Psíquico",
+        "desafioCR_text": "7",
+        "xp": "2.900",
+        "tamanho": "Médio",
+        "tipo": "Morto-vivo",
+        "alinhamento": "Neutro",
+        "classeArmadura": "16 (armadura natural)",
+        "pontosVida": "78 (12d8 + 24)",
+        "deslocamento": "7,5m",
+        "imagem": "imagens/fuliginoso_psiquico.png",
+        "forca": "19 (+4)",
+        "destreza": "13 (+1)",
+        "constituicao": "15 (+2)",
+        "inteligencia": "17 (+3)",
+        "sabedoria": "14 (+2)",
+        "carisma": "6 (-2)",
+        "testesResistencia": "Força +7, Constituição +5, Inteligência +6, Sabedoria +5",
+        "resistenciasDano": "necrótico, venenoso, psíquico",
+        "imunidadesCondicoes": "amedrontado, enfeitiçado, exaustão, paralisado, petrificado, envenenado, inconsciente",
+        "sentidos": "percepção passiva 12",
+        "idiomas": "telepatia 36m, compreende os idiomas que conhecia em vida, mas não pode falar",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Conjurador (Psiônico)",
+            "descricao": "O inumano fuliginoso psíquico conjura Mãos Mágicas à vontade e Acalmar Emoções 1/dia, sem componentes e utilizando Inteligência como habilidade de conjuração (CD 14 para evitar magia).",
+            "icone": "fas fa-brain"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataques Múltiplos",
+            "descricao": "O inumano fuliginoso psíquico realiza dois ataques de Estilhaço Necrótico. Ele também usa Coroa Psíquica, se disponível.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Estilhaço Necrótico",
+            "descricao": "<em>Ataque Corpo a Corpo ou à Distância:</em> +7 para acertar, alcance 1,5m ou 18m. <em>Acerto:</em> 7 (1d6 + 4) de dano perfurante mais 9 (2d8) de dano necrótico. Se o alvo for uma criatura, ele terá desvantagem na próxima jogada de ataque antes do final do próximo turno.",
+            "icone": "fas fa-bolt"
+          },
+          {
+            "nome": "Coroa Psíquica (Recarga 5–6)",
+            "descricao": "O inumano fuliginoso envolve a cabeça de uma criatura que ele possa ver a até 18m com uma coroa de cristais espectrais pontiagudos. O alvo deve ser bem-sucedido em uma salvaguarda de Sabedoria CD 14 ou ficar amedrontado por 1 minuto. Enquanto estiver amedrontado dessa forma, os pensamentos do alvo ficam lentos; ele não pode realizar reações, seu deslocamento é reduzido pela metade, e sofre 9 (2d8) de dano psíquico no início de cada um de seus turnos. O alvo pode repetir a salvaguarda no final de cada um dos turnos, encerrando o efeito com sucesso.",
+            "icone": "fas fa-eye"
+          }
+        ],
+        "descricaoGeral": "O Inumano Fuliginoso Psíquico é um morto-vivo que canaliza um terror espectral por meio de cristais negros e uma presença psíquica devastadora."
+      }
+    ]
   }
 
 ]
