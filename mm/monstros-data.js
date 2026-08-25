@@ -1225,10 +1225,14 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "beholder",
-    "titulo_pagina": "Beholder",
-    "imagem_principal": "imagens/beholder_group.png",
-    "descricao_pagina": "Os beholders são aberrações flutuantes com um enorme olho central e múltiplos tentáculos oculares. Paranoicos e poderosos, moldam a realidade à sua vontade.",
+    "slug": "beholders",
+    "aliases": [
+      "beholder",
+      "beholder-zumbi"
+    ],
+    "titulo_pagina": "Beholders",
+    "imagem_principal": "imagens/beholder.png",
+    "descricao_pagina": "Beholders vivos e mortos-vivos reunidos em uma só página, preservando suas variações de olhares e ameaças aberrantes.",
     "monstros": [
       {
         "nome": "Beholder",
@@ -1272,15 +1276,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Beholders acreditam ser as formas de vida perfeitas. Cada um é um império paranoico flutuante, governando servos e mundos com o poder de seus olhares mágicos."
-      }
-    ]
-  },
-  {
-    "slug": "beholder-zumbi",
-    "titulo_pagina": "Beholder Zumbi",
-    "imagem_principal": "imagens/beholder_zumbi_group.png",
-    "descricao_pagina": "Um Beholder Zumbi é o que resta de um dos seres mais temidos do multiverso quando cai perante a necromancia. Privado de sua astúcia, mas não de seu poder destrutivo, ele continua sendo uma ameaça flutuante e imprevisível.",
-    "monstros": [
+      },
       {
         "nome": "Beholder Zumbi",
         "desafioCR_text": "5",
@@ -1651,10 +1647,17 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "cataclismo-elemental",
-    "titulo_pagina": "Cataclismo Elemental",
-    "imagem_principal": "imagens/cataclismo_elemental_group.png",
-    "descricao_pagina": "Uma fusão colérica dos quatro elementos primordiais, o Cataclismo Elemental é uma força da natureza viva — devastação encarnada em pedra, fogo, vento e água em fúria.",
+    "slug": "elementais",
+    "aliases": [
+      "cataclismo-elemental",
+      "elemental-ar",
+      "elemental-agua",
+      "elemental-fogo",
+      "elemental-terra"
+    ],
+    "titulo_pagina": "Elementais",
+    "imagem_principal": "imagens/elemental_fogo.png",
+    "descricao_pagina": "Elementais e manifestações primordiais dos quatro elementos, reunidos para consulta rápida durante encontros planares ou cataclísmicos.",
     "monstros": [
       {
         "nome": "Cataclismo Elemental",
@@ -1703,6 +1706,185 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "O Cataclismo Elemental representa o caos puro da criação. Cada golpe é uma mistura de fogo, vento e pedra, e sua presença é suficiente para alterar o clima, secar rios e incendiar florestas."
+      },
+      {
+        "nome": "Elemental do Ar",
+        "desafioCR_text": "5",
+        "xp": "1.800",
+        "tamanho": "Grande",
+        "tipo": "Elemental",
+        "alinhamento": "Neutro",
+        "classeArmadura": "15",
+        "pontosVida": "90 (12d10 + 24)",
+        "deslocamento": "0m, voo 27m",
+        "imagem": "imagens/elemental_ar_card.png",
+        "forca": "14 (+2)",
+        "destreza": "20 (+5)",
+        "constituicao": "14 (+2)",
+        "inteligencia": "6 (-2)",
+        "sabedoria": "10 (+0)",
+        "carisma": "6 (-2)",
+        "imunidadesDano": "veneno, trovejante, perfurante e cortante de armas não mágicas",
+        "imunidadesCondicoes": "exausto, agarrado, paralisado, petrificado, envenenado, caído, contido, inconsciente",
+        "sentidos": "visão cega 18m, percepção passiva 10",
+        "idiomas": "Auran",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Forma de Ar",
+            "descricao": "O elemental pode se mover através de um espaço tão estreito quanto 2,5 cm sem sofrer dano.",
+            "icone": "fas fa-wind"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Multiataque",
+            "descricao": "Dois ataques de pancada.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Pancada",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +8 para acertar, alcance 1,5m. <em>Acerto:</em> 14 (2d8 + 5) de dano de concussão.",
+            "icone": "fas fa-cloud"
+          },
+          {
+            "nome": "Redemoinho (Recarga 4–6)",
+            "descricao": "Cada criatura no espaço do elemental deve passar em um teste de Força CD 13 ou sofrer 15 (3d8 + 2) de dano e ser arremessada a 6m.",
+            "icone": "fas fa-sync"
+          }
+        ],
+        "descricaoGeral": "Os Elementais do Ar são servos dos ventos eternos, criados em tempestades primordiais. Sua presença distorce o ar e o som ao redor."
+      },
+      {
+        "nome": "Elemental da Água",
+        "desafioCR_text": "5",
+        "xp": "1.800",
+        "tamanho": "Grande",
+        "tipo": "Elemental",
+        "alinhamento": "Neutro",
+        "classeArmadura": "14",
+        "pontosVida": "114 (12d10 + 48)",
+        "deslocamento": "9m, natação 27m",
+        "imagem": "imagens/elemental_agua_card.png",
+        "forca": "18 (+4)",
+        "destreza": "14 (+2)",
+        "constituicao": "18 (+4)",
+        "inteligencia": "5 (-3)",
+        "sabedoria": "10 (+0)",
+        "carisma": "8 (-1)",
+        "imunidadesDano": "veneno, perfurante e cortante de armas não mágicas",
+        "imunidadesCondicoes": "exausto, agarrado, paralisado, petrificado, envenenado, caído, contido, inconsciente",
+        "sentidos": "visão cega 18m, percepção passiva 10",
+        "idiomas": "Aquan",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Forma de Água",
+            "descricao": "O elemental pode entrar em um espaço de 2,5 cm de largura sem sofrer dano e pode respirar debaixo d'água.",
+            "icone": "fas fa-water"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Multiataque",
+            "descricao": "Dois ataques de pancada.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Pancada",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 1,5m. <em>Acerto:</em> 13 (2d8 + 4) de dano de concussão.",
+            "icone": "fas fa-hand-holding-water"
+          },
+          {
+            "nome": "Forma de Onda (Recarga 4–6)",
+            "descricao": "Todas as criaturas em um espaço de 9m devem fazer um teste de Força CD 15. Em falha, sofrem 18 (4d8) de dano e são derrubadas.",
+            "icone": "fas fa-water"
+          }
+        ],
+        "descricaoGeral": "Feitos de mar revolto e rios furiosos, os Elementais da Água são invocados para destruir ou proteger portos e templos marinhos."
+      },
+      {
+        "nome": "Elemental do Fogo",
+        "desafioCR_text": "5",
+        "xp": "1.800",
+        "tamanho": "Grande",
+        "tipo": "Elemental",
+        "alinhamento": "Neutro",
+        "classeArmadura": "13",
+        "pontosVida": "102 (12d10 + 36)",
+        "deslocamento": "15m",
+        "imagem": "imagens/elemental_fogo_card.png",
+        "forca": "10 (+0)",
+        "destreza": "17 (+3)",
+        "constituicao": "16 (+3)",
+        "inteligencia": "6 (-2)",
+        "sabedoria": "10 (+0)",
+        "carisma": "7 (-2)",
+        "imunidadesDano": "fogo, veneno; perfurante e cortante de armas não mágicas",
+        "vulnerabilidadesDano": "frio",
+        "imunidadesCondicoes": "pego em fogo, envenenado, inconsciente",
+        "sentidos": "visão cega 18m, percepção passiva 10",
+        "idiomas": "Ignan",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Corpo em Chamas",
+            "descricao": "Uma criatura que toque o elemental ou o atinja corpo a corpo sofre 5 (1d10) de dano de fogo.",
+            "icone": "fas fa-fire"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Multiataque",
+            "descricao": "Dois ataques de toque.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Toque Flamejante",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +6 para acertar, alcance 1,5m. <em>Acerto:</em> 10 (2d6 + 3) de dano de fogo.",
+            "icone": "fas fa-fire"
+          }
+        ],
+        "descricaoGeral": "Os Elementais do Fogo são labaredas vivas, libertadas do Plano Elemental do Fogo. Onde passam, o ar se incendeia e o chão vira cinzas."
+      },
+      {
+        "nome": "Elemental da Terra",
+        "desafioCR_text": "5",
+        "xp": "1.800",
+        "tamanho": "Grande",
+        "tipo": "Elemental",
+        "alinhamento": "Neutro",
+        "classeArmadura": "17",
+        "pontosVida": "126 (12d10 + 60)",
+        "deslocamento": "9m, escavar 9m",
+        "imagem": "imagens/elemental_terra_card.png",
+        "forca": "20 (+5)",
+        "destreza": "8 (-1)",
+        "constituicao": "20 (+5)",
+        "inteligencia": "5 (-3)",
+        "sabedoria": "10 (+0)",
+        "carisma": "5 (-3)",
+        "imunidadesDano": "veneno; perfurante e cortante de armas não mágicas",
+        "imunidadesCondicoes": "exausto, paralisado, petrificado, envenenado, inconsciente",
+        "sentidos": "visão cega 18m, percepção passiva 10",
+        "idiomas": "Terran",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Movimento Subterrâneo",
+            "descricao": "O elemental pode se mover através de terra e pedra sem perturbar o terreno.",
+            "icone": "fas fa-mountain"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Multiataque",
+            "descricao": "Dois ataques de pancada.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Pancada",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +8 para acertar, alcance 1,5m. <em>Acerto:</em> 14 (2d8 + 5) de dano de concussão.",
+            "icone": "fas fa-hand-rock"
+          }
+        ],
+        "descricaoGeral": "Os Elementais da Terra são servos das profundezas, usados por magos para moldar cavernas e destruir muralhas. Nada resiste à sua força tectônica."
       }
     ]
   },
@@ -1867,10 +2049,13 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "chacal-homem",
-    "titulo_pagina": "Chacal-homem",
-    "imagem_principal": "imagens/chacal_homem_group.png",
-    "descricao_pagina": "Chacais-homens são humanoides amaldiçoados que servem de agentes sorrateiros de divindades malignas. São covardes, mas traiçoeiros, e agem sempre em grupo.",
+    "slug": "chacais-homens",
+    "aliases": [
+      "chacal-homem"
+    ],
+    "titulo_pagina": "Chacais-homens",
+    "imagem_principal": "imagens/chacal_homem.png",
+    "descricao_pagina": "Chacais-homens e suas variações reunidos em uma página, evitando entradas duplicadas no glossário.",
     "monstros": [
       {
         "nome": "Chacal-homem",
@@ -1917,6 +2102,51 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Servos de forças demoníacas, os chacais-homens espalham o caos e adoram seus mestres sombrios. São covardes sozinhos, mas mortais em matilha."
+      },
+      {
+        "nome": "Chacal-homem (Variante 2)",
+        "desafioCR_text": "1/2",
+        "xp": "100",
+        "tamanho": "Médio",
+        "tipo": "Humanoide (Metamorfo)",
+        "alinhamento": "Caótico e Mau",
+        "classeArmadura": "12",
+        "pontosVida": "18 (4d8)",
+        "deslocamento": "9m",
+        "imagem": "imagens/chacal_homem_card.png",
+        "forca": "11 (+0)",
+        "destreza": "13 (+1)",
+        "constituicao": "11 (+0)",
+        "inteligencia": "13 (+1)",
+        "sabedoria": "11 (+0)",
+        "carisma": "14 (+2)",
+        "sentidos": "visão no escuro 18m, percepção passiva 10",
+        "idiomas": "Comum",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Mudança de Forma",
+            "descricao": "Pode se transformar em um humanoide de aparência inofensiva ou em um chacal. Suas estatísticas permanecem as mesmas, exceto pelo deslocamento (12m na forma de chacal).",
+            "icone": "fas fa-sync-alt"
+          },
+          {
+            "nome": "Falsa Aparência",
+            "descricao": "Enquanto estiver disfarçado de humanoide, o chacal-homem parece ser uma pessoa comum e não levanta suspeitas mágicas simples.",
+            "icone": "fas fa-user-secret"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Mordida (Forma de Chacal ou Híbrido)",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +3 para acertar, alcance 1,5m. <em>Acerto:</em> 4 (1d6 + 1) de dano perfurante.",
+            "icone": "fas fa-tooth"
+          },
+          {
+            "nome": "Cimitarra (Forma Humanoide)",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +3 para acertar, alcance 1,5m. <em>Acerto:</em> 4 (1d6 + 1) de dano cortante.",
+            "icone": "fas fa-sword"
+          }
+        ],
+        "descricaoGeral": "Devoradores de almas e servos de entidades sombrias, os chacais-homens preferem atacar viajantes desavisados, conduzindo rituais em honra a seus mestres profanos."
       }
     ]
   },
@@ -2412,10 +2642,28 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "dragao-branco",
-    "titulo_pagina": "Dragão Branco",
-    "imagem_principal": "imagens/dragao_branco_group.png",
-    "descricao_pagina": "O mais selvagem e primitivo dos dragões cromáticos, o Dragão Branco domina regiões gélidas e desoladas. Ele é movido por instintos de caça e um ódio glacial, atacando sem piedade quem invade seu território.",
+    "slug": "dragoes",
+    "aliases": [
+      "dragao-branco",
+      "dragao-azul",
+      "dragao-verde",
+      "dragao-preto",
+      "dragao-vermelho",
+      "dragao-dourado",
+      "dragao-prateado",
+      "dragao-de-bronze",
+      "dragao-de-cobre",
+      "dragao-de-latao",
+      "dracolich",
+      "dragao-sombrio",
+      "dragao-feerico",
+      "tartaruga-dragao",
+      "pseudodragao",
+      "wyvern"
+    ],
+    "titulo_pagina": "Dragões",
+    "imagem_principal": "imagens/dragao_vermelho.png",
+    "descricao_pagina": "Dragões e criaturas dracônicas reunidos em uma só página, incluindo linhagens cromáticas, metálicas, sombrias, dracoliches e parentes menores.",
     "monstros": [
       {
         "nome": "Dragão Branco Jovem",
@@ -2611,15 +2859,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode realizar 3 ações lendárias, escolhendo entre as opções abaixo. Somente uma ação lendária pode ser usada por vez e apenas no final do turno de outra criatura.",
         "descricaoGeral": "Os dragões brancos anciões são o ápice da brutalidade dracônica. Seu poder destrutivo é tão grande quanto o frio que carregam. Governam glaciares e montanhas geladas como tiranos gélidos, destruindo qualquer forma de vida que ouse desafiar sua supremacia."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-azul",
-    "titulo_pagina": "Dragão Azul",
-    "imagem_principal": "imagens/dragao_azul_group.png",
-    "descricao_pagina": "Dragões Azuis são tiranos orgulhosos e meticulosos que habitam desertos e regiões áridas. Suas escamas reluzem como safiras elétricas, e o ar ao redor deles vibra com energia estática. São caçadores pacientes e controladores, que dominam seus territórios com crueldade e inteligência.",
-    "monstros": [
+      },
       {
         "nome": "Dragão Azul Jovem",
         "desafioCR_text": "9",
@@ -2814,15 +3054,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode realizar 3 ações lendárias, escolhendo entre as opções abaixo. Somente uma ação lendária pode ser usada por vez e apenas no final do turno de outra criatura.",
         "descricaoGeral": "Um Dragão Azul Ancião é uma força da natureza envolta em eletricidade pura. Seu rugido faz o ar vibrar, e seu sopro de relâmpago é capaz de fulminar exércitos inteiros. São conquistadores que moldam os desertos ao seu redor, reinando com domínio absoluto sobre vastos territórios áridos."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-verde",
-    "titulo_pagina": "Dragão Verde",
-    "imagem_principal": "imagens/dragao_verde_group.png",
-    "descricao_pagina": "Dragões Verdes são mestres da enganação e da corrupção. Habitam florestas antigas e sombrias, onde manipulam viajantes e criaturas menores para servirem aos seus propósitos. Seus corpos são cobertos por escamas esmeraldas que se misturam à vegetação, e seu hálito venenoso é tão letal quanto suas mentiras.",
-    "monstros": [
+      },
       {
         "nome": "Dragão Verde Jovem",
         "desafioCR_text": "8",
@@ -3020,15 +3252,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode realizar 3 ações lendárias, escolhendo entre as opções abaixo. Somente uma ação lendária pode ser usada por vez e apenas no final do turno de outra criatura.",
         "descricaoGeral": "Um Dragão Verde Ancião é a corrupção personificada. Sua presença envenena a floresta, tornando as árvores e animais seus espiões. É um manipulador magistral que prefere subjugar reinos inteiros pela intriga e medo antes de destruir qualquer coisa com suas próprias garras."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-preto",
-    "titulo_pagina": "Dragão Preto",
-    "imagem_principal": "imagens/dragao_preto_group.png",
-    "descricao_pagina": "Dragões Pretos são os mais cruéis e sádicos entre os cromáticos. Eles habitam pântanos e ruínas antigas, banhando-se em águas ácidas e espalhando desespero por onde passam. Seu hálito corrosivo dissolve carne e metal, e sua presença transforma o solo em lama pútrida.",
-    "monstros": [
+      },
       {
         "nome": "Dragão Preto Jovem",
         "desafioCR_text": "7",
@@ -3243,15 +3467,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode realizar 3 ações lendárias, escolhendo entre as opções abaixo. Somente uma ação lendária pode ser usada por vez e apenas no final do turno de outra criatura.",
         "descricaoGeral": "Dragões Pretos Anciões são a própria encarnação da destruição e da corrupção. Seus covis são ruínas ácidas de civilizações esquecidas, e seus olhos ardem com ódio ancestral. São sádicos e vingativos, lembrando cada insulto sofrido por séculos."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-vermelho",
-    "titulo_pagina": "Dragão Vermelho",
-    "imagem_principal": "imagens/dragao_vermelho_group.png",
-    "descricao_pagina": "Dragões Vermelhos são a encarnação da fúria e da arrogância dracônica. Tiranos das montanhas e vulcões, eles se veem como governantes legítimos de todas as criaturas. Seu hálito flamejante reduz exércitos a cinzas, e sua ambição é ilimitada.",
-    "monstros": [
+      },
       {
         "nome": "Dragão Vermelho Jovem",
         "desafioCR_text": "10",
@@ -3456,15 +3672,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode realizar 3 ações lendárias, escolhendo entre as opções abaixo. Somente uma ação lendária pode ser usada por vez e apenas no final do turno de outra criatura.",
         "descricaoGeral": "O Dragão Vermelho Ancião é a definição de poder absoluto. Ele reina sobre vulcões e montanhas, incinerando tudo que desafia sua soberania. Sua presença faz o ar estremecer de calor, e sua fúria é um cataclismo em forma de asas e fogo."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-dourado",
-    "titulo_pagina": "Dragão Dourado",
-    "imagem_principal": "imagens/dragao_dourado_group.png",
-    "descricao_pagina": "Dragões Dourados são os mais poderosos e nobres dentre os dragões metálicos. Eles são protetores do bem e da ordem, sábios e compassivos, mas também impiedosos quando confrontam o mal. Sua presença é símbolo de esperança e justiça.",
-    "monstros": [
+      },
       {
         "nome": "Dragão Dourado Jovem",
         "desafioCR_text": "10",
@@ -3689,15 +3897,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode usar 3 ações lendárias, uma por vez, apenas no fim do turno de outra criatura.",
         "descricaoGeral": "O Dragão Dourado Ancião é a personificação do bem supremo entre os dragões. Guardião de sabedoria divina e defensor da justiça, ele age apenas quando o destino do mundo está em risco. Sua presença emana poder e serenidade, e seu fogo purifica o mal."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-prateado",
-    "titulo_pagina": "Dragão Prateado",
-    "imagem_principal": "imagens/dragao_prateado_group.png",
-    "descricao_pagina": "Dragões Prateados são os mais gentis e compassivos dos dragões metálicos. Eles veem os mortais como iguais e frequentemente vivem entre eles disfarçados, guiando reinos e heróis com sabedoria e bondade. Seu sopro gélido é tão letal quanto sua alma é nobre.",
-    "monstros": [
+      },
       {
         "nome": "Dragão Prateado Jovem",
         "desafioCR_text": "9",
@@ -3907,15 +4107,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode usar 3 ações lendárias, uma por vez, apenas no fim do turno de outra criatura.",
         "descricaoGeral": "O Dragão Prateado Ancião é o sábio protetor das eras. Venerado por povos inteiros, ele inspira reinos e conduz heróis ao caminho da luz. Seu sopro é o frio da justiça, e sua presença é uma bênção em tempos sombrios."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-de-bronze",
-    "titulo_pagina": "Dragão de Bronze",
-    "imagem_principal": "imagens/dragao_bronze_group.png",
-    "descricao_pagina": "Dragões de Bronze são nobres guerreiros do mar e campeões da justiça. Amam as costas oceânicas e combatem o mal com disciplina e honra. São fascinados por exércitos e batalhas, frequentemente observando conflitos mortais para aprender com eles. Seu sopro elétrico é tão rápido e preciso quanto seu julgamento.",
-    "monstros": [
+      },
       {
         "nome": "Dragão de Bronze Jovem",
         "desafioCR_text": "8",
@@ -4125,15 +4317,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode usar 3 ações lendárias, uma por vez, apenas no fim do turno de outra criatura.",
         "descricaoGeral": "O Dragão de Bronze Ancião é o protetor das marés e das civilizações costeiras. Sua presença pode deter exércitos inteiros. Ele inspira coragem em aliados e é o terror dos tiranos e monstros marinhos."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-de-cobre",
-    "titulo_pagina": "Dragão de Cobre",
-    "imagem_principal": "imagens/dragao_cobre_group.png",
-    "descricao_pagina": "Dragões de Cobre são espirituosos, brincalhões e cheios de carisma. Amam enigmas, histórias engraçadas e provocar os poderosos. Apesar de seu comportamento descontraído, são protetores leais e ferozes quando veem injustiça. Seus sopros de ácido e lentidão são armas devastadoras quando o riso acaba.",
-    "monstros": [
+      },
       {
         "nome": "Dragão de Cobre Jovem",
         "desafioCR_text": "7",
@@ -4343,15 +4527,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode usar 3 ações lendárias, uma por vez, apenas no fim do turno de outra criatura.",
         "descricaoGeral": "O Dragão de Cobre Ancião é um filósofo e contador de histórias, mas também um estrategista poderoso. Por trás de suas piadas, há sabedoria antiga e uma força que rivaliza com a própria montanha onde mora."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-de-latao",
-    "titulo_pagina": "Dragão de Latão",
-    "imagem_principal": "imagens/dragao_latao_group.png",
-    "descricao_pagina": "Dragões de Latão são os mais falantes e amigáveis entre os dragões metálicos. Amam o calor do deserto, as conversas longas e histórias de viajantes. Embora prefiram evitar confrontos, não hesitam em defender inocentes ou seus lares arenosos com poderosos sopros de fogo e sono mágico.",
-    "monstros": [
+      },
       {
         "nome": "Dragão de Latão Jovem",
         "desafioCR_text": "6",
@@ -4561,15 +4737,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode usar 3 ações lendárias, uma por vez, apenas no fim do turno de outra criatura.",
         "descricaoGeral": "Dragões de Latão Anciões são guardiões das areias e sábios que se lembram de eras perdidas. Preferem contar histórias ao invés de lutar, mas quando despertam sua fúria, o deserto inteiro parece pegar fogo."
-      }
-    ]
-  },
-  {
-    "slug": "dracolich",
-    "titulo_pagina": "Dracolich",
-    "imagem_principal": "imagens/dracolich_group.png",
-    "descricao_pagina": "Dracoliches são o ápice da blasfêmia dracônica: dragões que se recusam a morrer, convertendo suas almas em mortos-vivos através de rituais arcanos proibidos. Mesmo na morte, mantêm suas vastas inteligências, poder mágico e arrogância imortal, tornando-se senhores de necrotérios e reinos esquecidos.",
-    "monstros": [
+      },
       {
         "nome": "Dracolich Adulto",
         "desafioCR_text": "17",
@@ -4735,15 +4903,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dracolich pode usar 3 ações lendárias, uma por vez, apenas no fim do turno de outra criatura.",
         "descricaoGeral": "Um Dracolich Ancião é uma força cataclísmica. Sua presença seca a vida ao redor, e sua mente é uma teia de séculos de conhecimento arcano e ódio eterno. Ele é a morte tornada dragão."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-sombrio",
-    "titulo_pagina": "Dragão Sombrio",
-    "imagem_principal": "imagens/dragao_sombrio_group.png",
-    "descricao_pagina": "Um dragão sombrio nasce quando um dragão comum é consumido pela energia sombria do Plano das Sombras. Sua carne e escamas se tornam translúcidas e etéreas, e sua alma passa a ser uma extensão viva da própria escuridão. Mesmo os dragões mais nobres podem sucumbir a essa corrupção.",
-    "monstros": [
+      },
       {
         "nome": "Dragão Sombrio Jovem",
         "desafioCR_text": "13",
@@ -4884,15 +5044,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dragão pode usar 3 ações lendárias, uma por vez, apenas no fim do turno de outra criatura.",
         "descricaoGeral": "Dragões sombrios adultos governam territórios amaldiçoados, onde a luz morre e a esperança desaparece. Eles manipulam as sombras como armas, e sua presença corrompe até os dragões vivos ao redor."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-feerico",
-    "titulo_pagina": "Dragão Feérico",
-    "imagem_principal": "imagens/dragao_feerico_group.png",
-    "descricao_pagina": "Pequenos, coloridos e imprevisíveis, os Dragões Feéricos são espíritos dracônicos do Caos e da Alegria. Nativos das florestas encantadas e dos planos feéricos, eles são conhecidos por pregar peças elaboradas em aventureiros e intrusos, raramente com intenção de ferir. Apesar de seu tamanho diminuto, são dotados de uma astúcia sobrenatural e magia inata poderosa.",
-    "monstros": [
+      },
       {
         "nome": "Dragão Feérico",
         "desafioCR_text": "1",
@@ -4948,17 +5100,9 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Dragões Feéricos são criaturas alegres e imprevisíveis, frequentemente companheiros de fadas, dríades e sátiros. Embora inofensivos na aparência, são conjuradores natos e capazes de manipular mentes e ilusões com facilidade. Suas travessuras variam de inofensivas piadas até elaborados truques de confusão contra invasores hostis."
-      }
-    ]
-  },
-  {
-    "slug": "dracolich",
-    "titulo_pagina": "Dracolich",
-    "imagem_principal": "imagens/dracolich_group.png",
-    "descricao_pagina": "Um dracolich é o destino sombrio de um dragão que se recusou a aceitar a morte. Por meio de rituais arcanos e pactos profanos, ele transfere sua alma para uma filactéria, permitindo que seu corpo morto-vivo se erga novamente. Mesmo a morte não é o fim para essas criaturas: se destruídas, podem renascer em um novo corpo próximo à filactéria, tornando-as praticamente imortais.",
-    "monstros": [
+      },
       {
-        "nome": "Dracolich Adulto",
+        "nome": "Dracolich Adulto (Variante 2)",
         "desafioCR_text": "17",
         "xp": "18.000",
         "tamanho": "Imenso",
@@ -5044,15 +5188,7 @@ window.CHRONOS_MONSTROS_DATA = [
         ],
         "descricaoAcoesLendarias": "O dracolich pode usar 3 ações lendárias, uma por vez, apenas no final do turno de outra criatura. Ele recupera todas as ações lendárias gastas no início de seu turno.",
         "descricaoGeral": "Um dracolich é uma visão de horror: um esqueleto dracônico animado por pura vontade e magia negra. Seu sopro de morte drena a vida e a esperança de tudo ao redor, e sua mente é fria e calculista, guiada apenas pelo desejo de acumular poder e conhecimento. Mesmo dragões temem o toque profano de um dracolich."
-      }
-    ]
-  },
-  {
-    "slug": "tartaruga-dragao",
-    "titulo_pagina": "Tartaruga Dragão",
-    "imagem_principal": "imagens/tartaruga_dragao_group.png",
-    "descricao_pagina": "As Tartarugas Dragão são titãs dos oceanos, colossais seres dracônicos cobertos por conchas espessas como montanhas e olhos que brilham como brasas sob as ondas. São tão inteligentes quanto cruéis, e exigem tributos de navios e cidades costeiras, em troca de deixá-las em paz. Embora não sejam inerentemente malignas, seu orgulho e ganância rivalizam com o dos dragões cromáticos.",
-    "monstros": [
+      },
       {
         "nome": "Tartaruga Dragão",
         "desafioCR_text": "17",
@@ -5116,17 +5252,9 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "As Tartarugas Dragão são lendas vivas do oceano, gigantes tão antigos quanto as próprias marés. Seus corpos lembram ilhas flutuantes, e muitos marinheiros contam histórias de navios que ancoraram sobre suas conchas sem perceber. Orgulhosas, exigem respeito — e tesouros — daqueles que ousam navegar por seus domínios."
-      }
-    ]
-  },
-  {
-    "slug": "dragao-sombrio",
-    "titulo_pagina": "Dragão Sombrio",
-    "imagem_principal": "imagens/dragao_sombrio_group.png",
-    "descricao_pagina": "Dragões Sombrios são versões corrompidas de dragões cromáticos, transformados pelas energias necróticas do Reino das Sombras. Suas escamas absorvem a luz, e seus olhos brilham como braseiros púrpura. São criaturas astutas, pacientes e cruéis, que preferem caçar a partir das sombras e dominar seus inimigos pelo medo e desespero.",
-    "monstros": [
+      },
       {
-        "nome": "Dragão Sombrio Jovem",
+        "nome": "Dragão Sombrio Jovem (Variante 2)",
         "desafioCR_text": "9",
         "xp": "5.000",
         "tamanho": "Grande",
@@ -5186,7 +5314,7 @@ window.CHRONOS_MONSTROS_DATA = [
         "descricaoGeral": "Dragões Sombrios Jovens caçam nas bordas do Reino das Sombras ou em ruínas antigas. Sua fome não é por ouro, mas por energia vital, e eles preferem devorar a alma de uma vítima antes de destruir seu corpo."
       },
       {
-        "nome": "Dragão Sombrio Adulto",
+        "nome": "Dragão Sombrio Adulto (Variante 2)",
         "desafioCR_text": "16",
         "xp": "15.000",
         "tamanho": "Enorme",
@@ -5297,6 +5425,80 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Um Dragão Sombrio Ancião é o ápice da corrupção dracônica. Ele não apenas serve ao Reino das Sombras — ele é uma extensão dele. Seu sopro dissolve carne e alma, e sua mera presença drena cor e vida do mundo ao redor. Até mesmo outros dragões o temem."
+      },
+      {
+        "nome": "Pseudodragão",
+        "desafioCR_text": "1/4",
+        "xp": "50",
+        "tamanho": "Minúsculo",
+        "tipo": "Dragão",
+        "alinhamento": "Neutro e Bom",
+        "classeArmadura": "13 (armadura natural)",
+        "pontosVida": "7 (2d4 + 2)",
+        "deslocamento": "4,5m, voo 18m",
+        "imagem": "imagens/pseudodragao_card.png",
+        "forca": "6 (-2)",
+        "destreza": "15 (+2)",
+        "constituicao": "13 (+1)",
+        "inteligencia": "10 (+0)",
+        "sabedoria": "12 (+1)",
+        "carisma": "10 (+0)",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Sentidos Aguçados",
+            "descricao": "Vantagem em testes de Sabedoria (Percepção) que dependam de visão, olfato ou audição.",
+            "icone": "fas fa-eye"
+          },
+          {
+            "nome": "Resistência à Magia",
+            "descricao": "Vantagem em testes de resistência contra magias e efeitos mágicos.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Picada",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +4 para acertar, alcance 1,5m. <em>Acerto:</em> 4 (1d4 + 2) de dano perfurante + veneno (CD 11) que adormece por 1 hora se falhar.",
+            "icone": "fas fa-sting"
+          }
+        ],
+        "descricaoGeral": "Pseudodragões são inteligentes e empáticos. Preferem amizade e curiosidade a combates, mas defendem seus companheiros ferozmente."
+      },
+      {
+        "nome": "Wyvern",
+        "desafioCR_text": "6",
+        "xp": "2.300",
+        "tamanho": "Grande",
+        "tipo": "Dragão",
+        "alinhamento": "Sem Alinhamento",
+        "classeArmadura": "13 (armadura natural)",
+        "pontosVida": "110 (13d10 + 39)",
+        "deslocamento": "6m, voo 24m",
+        "imagem": "imagens/wyvern_card.png",
+        "forca": "19 (+4)",
+        "destreza": "10 (+0)",
+        "constituicao": "16 (+3)",
+        "inteligencia": "5 (-3)",
+        "sabedoria": "12 (+1)",
+        "carisma": "6 (-2)",
+        "acoes": [
+          {
+            "nome": "Multiataque",
+            "descricao": "O wyvern faz dois ataques: um com a mordida e outro com o ferrão.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Mordida",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 3m. <em>Acerto:</em> 11 (2d6 + 4) de dano perfurante.",
+            "icone": "fas fa-tooth"
+          },
+          {
+            "nome": "Ferrão",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 3m. <em>Acerto:</em> 13 (2d8 + 4) de dano perfurante, e o alvo deve passar em teste de Constituição CD 15 ou sofrer 24 (7d6) de dano venenoso.",
+            "icone": "fas fa-sting"
+          }
+        ],
+        "descricaoGeral": "Wyverns são predadores do céu, usados por senhores da guerra e caçadores ousados como montarias ou armas vivas."
       }
     ]
   },
@@ -5555,10 +5757,14 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "efreeti",
-    "titulo_pagina": "Efreeti",
-    "imagem_principal": "imagens/efreeti.png",
-    "descricao_pagina": "Efreetis são gênios do Fogo Elemental, feitos de chama viva e fumaça. Orgulhosos e cruéis, acreditam ser senhores de todos os outros gênios. Eles vivem em cidades flamejantes nas profundezas do Plano do Fogo e adoram escravizar mortais para construir seus palácios de bronze fundido.",
+    "slug": "genios",
+    "aliases": [
+      "genio",
+      "efreeti"
+    ],
+    "titulo_pagina": "Gênios",
+    "imagem_principal": "imagens/djinni.png",
+    "descricao_pagina": "Gênios e nobres elementais inteligentes, reunindo djinni e efreeti para consulta por família planar.",
     "monstros": [
       {
         "nome": "Efreeti",
@@ -5602,217 +5808,54 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Efreetis são tiranos de fogo, forjados na arrogância e na chama. Mesmo sua generosidade é um perigo, pois cada favor exige um preço em servidão."
-      }
-    ]
-  },
-  {
-    "slug": "elemental-ar",
-    "titulo_pagina": "Elemental do Ar",
-    "imagem_principal": "imagens/elemental_ar.png",
-    "descricao_pagina": "Feitos de vento e relâmpago, os Elementais do Ar são furacões conscientes. Invisíveis em calmaria, tornam-se redemoinhos mortais quando provocados.",
-    "monstros": [
+      },
       {
-        "nome": "Elemental do Ar",
-        "desafioCR_text": "5",
-        "xp": "1.800",
+        "nome": "Djinni",
+        "desafioCR_text": "11",
+        "xp": "7.200",
         "tamanho": "Grande",
         "tipo": "Elemental",
-        "alinhamento": "Neutro",
-        "classeArmadura": "15",
-        "pontosVida": "90 (12d10 + 24)",
-        "deslocamento": "0m, voo 27m",
-        "imagem": "imagens/elemental_ar_card.png",
-        "forca": "14 (+2)",
-        "destreza": "20 (+5)",
-        "constituicao": "14 (+2)",
-        "inteligencia": "6 (-2)",
-        "sabedoria": "10 (+0)",
-        "carisma": "6 (-2)",
-        "imunidadesDano": "veneno, trovejante, perfurante e cortante de armas não mágicas",
-        "imunidadesCondicoes": "exausto, agarrado, paralisado, petrificado, envenenado, caído, contido, inconsciente",
-        "sentidos": "visão cega 18m, percepção passiva 10",
+        "alinhamento": "Caótico e Bom",
+        "classeArmadura": "17 (armadura natural)",
+        "pontosVida": "161 (14d10 + 84)",
+        "deslocamento": "9m, voo 27m",
+        "imagem": "imagens/genio_card.png",
+        "forca": "21 (+5)",
+        "destreza": "15 (+2)",
+        "constituicao": "22 (+6)",
+        "inteligencia": "15 (+2)",
+        "sabedoria": "16 (+3)",
+        "carisma": "20 (+5)",
+        "resistenciasDano": "não mágico; frio, trovejante; perfurante e cortante de armas não mágicas",
+        "imunidadesDano": "veneno",
+        "imunidadesCondicoes": "envenenado",
+        "sentidos": "visão no escuro 36m, percepção passiva 13",
         "idiomas": "Auran",
         "habilidadesEspeciais": [
           {
-            "nome": "Forma de Ar",
-            "descricao": "O elemental pode se mover através de um espaço tão estreito quanto 2,5 cm sem sofrer dano.",
+            "nome": "Conjuração Inata",
+            "descricao": "CD 17. À vontade: <em>detectar magia, invisibilidade</em>; 3/dia: <em>criar comida e água, vento protetor</em>; 1/dia: <em>criar desejo limitado</em>.",
+            "icone": "fas fa-magic"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Multiataque",
+            "descricao": "O djinni faz dois ataques de cimitarra.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Cimitarra",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +9 para acertar, alcance 1,5m. <em>Acerto:</em> 14 (2d6 + 5) de dano cortante mais 7 (2d6) de dano trovejante.",
             "icone": "fas fa-wind"
-          }
-        ],
-        "acoes": [
-          {
-            "nome": "Multiataque",
-            "descricao": "Dois ataques de pancada.",
-            "icone": "fas fa-fist-raised"
           },
           {
-            "nome": "Pancada",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +8 para acertar, alcance 1,5m. <em>Acerto:</em> 14 (2d8 + 5) de dano de concussão.",
+            "nome": "Redemoinho (Recarga 5–6)",
+            "descricao": "O djinni cria uma rajada de vento em um raio de 6m. Criaturas no raio devem fazer um teste de resistência de Força CD 17, sofrendo 21 (6d6) de dano trovejante e sendo empurradas 6m.",
             "icone": "fas fa-cloud"
-          },
-          {
-            "nome": "Redemoinho (Recarga 4–6)",
-            "descricao": "Cada criatura no espaço do elemental deve passar em um teste de Força CD 13 ou sofrer 15 (3d8 + 2) de dano e ser arremessada a 6m.",
-            "icone": "fas fa-sync"
           }
         ],
-        "descricaoGeral": "Os Elementais do Ar são servos dos ventos eternos, criados em tempestades primordiais. Sua presença distorce o ar e o som ao redor."
-      }
-    ]
-  },
-  {
-    "slug": "elemental-agua",
-    "titulo_pagina": "Elemental da Água",
-    "imagem_principal": "imagens/elemental_agua.png",
-    "descricao_pagina": "Os Elementais da Água são massas vivas de correntezas, capazes de esmagar e afogar seus inimigos. Eles se movem com a força do mar e a fúria dos rios.",
-    "monstros": [
-      {
-        "nome": "Elemental da Água",
-        "desafioCR_text": "5",
-        "xp": "1.800",
-        "tamanho": "Grande",
-        "tipo": "Elemental",
-        "alinhamento": "Neutro",
-        "classeArmadura": "14",
-        "pontosVida": "114 (12d10 + 48)",
-        "deslocamento": "9m, natação 27m",
-        "imagem": "imagens/elemental_agua_card.png",
-        "forca": "18 (+4)",
-        "destreza": "14 (+2)",
-        "constituicao": "18 (+4)",
-        "inteligencia": "5 (-3)",
-        "sabedoria": "10 (+0)",
-        "carisma": "8 (-1)",
-        "imunidadesDano": "veneno, perfurante e cortante de armas não mágicas",
-        "imunidadesCondicoes": "exausto, agarrado, paralisado, petrificado, envenenado, caído, contido, inconsciente",
-        "sentidos": "visão cega 18m, percepção passiva 10",
-        "idiomas": "Aquan",
-        "habilidadesEspeciais": [
-          {
-            "nome": "Forma de Água",
-            "descricao": "O elemental pode entrar em um espaço de 2,5 cm de largura sem sofrer dano e pode respirar debaixo d'água.",
-            "icone": "fas fa-water"
-          }
-        ],
-        "acoes": [
-          {
-            "nome": "Multiataque",
-            "descricao": "Dois ataques de pancada.",
-            "icone": "fas fa-fist-raised"
-          },
-          {
-            "nome": "Pancada",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 1,5m. <em>Acerto:</em> 13 (2d8 + 4) de dano de concussão.",
-            "icone": "fas fa-hand-holding-water"
-          },
-          {
-            "nome": "Forma de Onda (Recarga 4–6)",
-            "descricao": "Todas as criaturas em um espaço de 9m devem fazer um teste de Força CD 15. Em falha, sofrem 18 (4d8) de dano e são derrubadas.",
-            "icone": "fas fa-water"
-          }
-        ],
-        "descricaoGeral": "Feitos de mar revolto e rios furiosos, os Elementais da Água são invocados para destruir ou proteger portos e templos marinhos."
-      }
-    ]
-  },
-  {
-    "slug": "elemental-fogo",
-    "titulo_pagina": "Elemental do Fogo",
-    "imagem_principal": "imagens/elemental_fogo.png",
-    "descricao_pagina": "Chamas conscientes que queimam tudo o que tocam. Os Elementais do Fogo vivem apenas para consumir e espalhar destruição.",
-    "monstros": [
-      {
-        "nome": "Elemental do Fogo",
-        "desafioCR_text": "5",
-        "xp": "1.800",
-        "tamanho": "Grande",
-        "tipo": "Elemental",
-        "alinhamento": "Neutro",
-        "classeArmadura": "13",
-        "pontosVida": "102 (12d10 + 36)",
-        "deslocamento": "15m",
-        "imagem": "imagens/elemental_fogo_card.png",
-        "forca": "10 (+0)",
-        "destreza": "17 (+3)",
-        "constituicao": "16 (+3)",
-        "inteligencia": "6 (-2)",
-        "sabedoria": "10 (+0)",
-        "carisma": "7 (-2)",
-        "imunidadesDano": "fogo, veneno; perfurante e cortante de armas não mágicas",
-        "vulnerabilidadesDano": "frio",
-        "imunidadesCondicoes": "pego em fogo, envenenado, inconsciente",
-        "sentidos": "visão cega 18m, percepção passiva 10",
-        "idiomas": "Ignan",
-        "habilidadesEspeciais": [
-          {
-            "nome": "Corpo em Chamas",
-            "descricao": "Uma criatura que toque o elemental ou o atinja corpo a corpo sofre 5 (1d10) de dano de fogo.",
-            "icone": "fas fa-fire"
-          }
-        ],
-        "acoes": [
-          {
-            "nome": "Multiataque",
-            "descricao": "Dois ataques de toque.",
-            "icone": "fas fa-fist-raised"
-          },
-          {
-            "nome": "Toque Flamejante",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +6 para acertar, alcance 1,5m. <em>Acerto:</em> 10 (2d6 + 3) de dano de fogo.",
-            "icone": "fas fa-fire"
-          }
-        ],
-        "descricaoGeral": "Os Elementais do Fogo são labaredas vivas, libertadas do Plano Elemental do Fogo. Onde passam, o ar se incendeia e o chão vira cinzas."
-      }
-    ]
-  },
-  {
-    "slug": "elemental-terra",
-    "titulo_pagina": "Elemental da Terra",
-    "imagem_principal": "imagens/elemental_terra.png",
-    "descricao_pagina": "Formados de pedra viva e poeira antiga, os Elementais da Terra são lentos, mas implacáveis. Cada passo deles faz o chão tremer.",
-    "monstros": [
-      {
-        "nome": "Elemental da Terra",
-        "desafioCR_text": "5",
-        "xp": "1.800",
-        "tamanho": "Grande",
-        "tipo": "Elemental",
-        "alinhamento": "Neutro",
-        "classeArmadura": "17",
-        "pontosVida": "126 (12d10 + 60)",
-        "deslocamento": "9m, escavar 9m",
-        "imagem": "imagens/elemental_terra_card.png",
-        "forca": "20 (+5)",
-        "destreza": "8 (-1)",
-        "constituicao": "20 (+5)",
-        "inteligencia": "5 (-3)",
-        "sabedoria": "10 (+0)",
-        "carisma": "5 (-3)",
-        "imunidadesDano": "veneno; perfurante e cortante de armas não mágicas",
-        "imunidadesCondicoes": "exausto, paralisado, petrificado, envenenado, inconsciente",
-        "sentidos": "visão cega 18m, percepção passiva 10",
-        "idiomas": "Terran",
-        "habilidadesEspeciais": [
-          {
-            "nome": "Movimento Subterrâneo",
-            "descricao": "O elemental pode se mover através de terra e pedra sem perturbar o terreno.",
-            "icone": "fas fa-mountain"
-          }
-        ],
-        "acoes": [
-          {
-            "nome": "Multiataque",
-            "descricao": "Dois ataques de pancada.",
-            "icone": "fas fa-fist-raised"
-          },
-          {
-            "nome": "Pancada",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +8 para acertar, alcance 1,5m. <em>Acerto:</em> 14 (2d8 + 5) de dano de concussão.",
-            "icone": "fas fa-hand-rock"
-          }
-        ],
-        "descricaoGeral": "Os Elementais da Terra são servos das profundezas, usados por magos para moldar cavernas e destruir muralhas. Nada resiste à sua força tectônica."
+        "descricaoGeral": "Djinnis são príncipes das brisas e tempestades. Apesar de benevolentes, odeiam escravidão e punem com fúria quem tenta prendê-los."
       }
     ]
   },
@@ -6169,62 +6212,6 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "genio",
-    "titulo_pagina": "Gênio (Djinni)",
-    "imagem_principal": "imagens/genio.png",
-    "descricao_pagina": "Djinnis são gênios do ar, nobres e altivos, que habitam palácios flutuantes nas nuvens do Plano Elemental do Ar. São generosos e alegres, mas impetuosos como o vento.",
-    "monstros": [
-      {
-        "nome": "Djinni",
-        "desafioCR_text": "11",
-        "xp": "7.200",
-        "tamanho": "Grande",
-        "tipo": "Elemental",
-        "alinhamento": "Caótico e Bom",
-        "classeArmadura": "17 (armadura natural)",
-        "pontosVida": "161 (14d10 + 84)",
-        "deslocamento": "9m, voo 27m",
-        "imagem": "imagens/genio_card.png",
-        "forca": "21 (+5)",
-        "destreza": "15 (+2)",
-        "constituicao": "22 (+6)",
-        "inteligencia": "15 (+2)",
-        "sabedoria": "16 (+3)",
-        "carisma": "20 (+5)",
-        "resistenciasDano": "não mágico; frio, trovejante; perfurante e cortante de armas não mágicas",
-        "imunidadesDano": "veneno",
-        "imunidadesCondicoes": "envenenado",
-        "sentidos": "visão no escuro 36m, percepção passiva 13",
-        "idiomas": "Auran",
-        "habilidadesEspeciais": [
-          {
-            "nome": "Conjuração Inata",
-            "descricao": "CD 17. À vontade: <em>detectar magia, invisibilidade</em>; 3/dia: <em>criar comida e água, vento protetor</em>; 1/dia: <em>criar desejo limitado</em>.",
-            "icone": "fas fa-magic"
-          }
-        ],
-        "acoes": [
-          {
-            "nome": "Multiataque",
-            "descricao": "O djinni faz dois ataques de cimitarra.",
-            "icone": "fas fa-fist-raised"
-          },
-          {
-            "nome": "Cimitarra",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +9 para acertar, alcance 1,5m. <em>Acerto:</em> 14 (2d6 + 5) de dano cortante mais 7 (2d6) de dano trovejante.",
-            "icone": "fas fa-wind"
-          },
-          {
-            "nome": "Redemoinho (Recarga 5–6)",
-            "descricao": "O djinni cria uma rajada de vento em um raio de 6m. Criaturas no raio devem fazer um teste de resistência de Força CD 17, sofrendo 21 (6d6) de dano trovejante e sendo empurradas 6m.",
-            "icone": "fas fa-cloud"
-          }
-        ],
-        "descricaoGeral": "Djinnis são príncipes das brisas e tempestades. Apesar de benevolentes, odeiam escravidão e punem com fúria quem tenta prendê-los."
-      }
-    ]
-  },
-  {
     "slug": "ghast",
     "titulo_pagina": "Ghast",
     "imagem_principal": "imagens/ghast.png",
@@ -6323,10 +6310,18 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "gigante-da-colina",
-    "titulo_pagina": "Gigante da Colina",
-    "imagem_principal": "imagens/gigante_colina.png",
-    "descricao_pagina": "Os Gigantes da Colina são os mais baixos e tolos de sua espécie, mas também os mais brutais. Movidos pela fome, esmagam tudo em seu caminho e devoram qualquer coisa que possam encontrar.",
+    "slug": "gigantes",
+    "aliases": [
+      "gigante-da-colina",
+      "gigante-de-fogo",
+      "gigante-de-pedra",
+      "gigante-das-nuvens",
+      "gigante-da-tempestade",
+      "gigante-de-gelo"
+    ],
+    "titulo_pagina": "Gigantes",
+    "imagem_principal": "imagens/gigante_tempestade.png",
+    "descricao_pagina": "Gigantes de diferentes linhagens, das colinas às tempestades, organizados em uma única página para facilitar comparação de ND, função e estilo de combate.",
     "monstros": [
       {
         "nome": "Gigante da Colina",
@@ -6360,15 +6355,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Estúpidos e famintos, os Gigantes da Colina vivem para comer. O maior entre eles é sempre o líder, e sua 'sabedoria' se resume a quem consegue engolir mais."
-      }
-    ]
-  },
-  {
-    "slug": "gigante-de-fogo",
-    "titulo_pagina": "Gigante de Fogo",
-    "imagem_principal": "imagens/gigante_fogo.png",
-    "descricao_pagina": "Os Gigantes de Fogo são guerreiros orgulhosos e forjadores supremos. Vivem em fortalezas vulcânicas, onde o metal incandescente é moldado em armas de guerra e ornamentos magníficos.",
-    "monstros": [
+      },
       {
         "nome": "Gigante de Fogo",
         "desafioCR_text": "9",
@@ -6409,15 +6396,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Orgulhosos e poderosos, os Gigantes de Fogo acreditam ser os legítimos herdeiros da civilização gigante. São obcecados por guerra, metal e glória nas chamas."
-      }
-    ]
-  },
-  {
-    "slug": "gigante-de-pedra",
-    "titulo_pagina": "Gigante de Pedra",
-    "imagem_principal": "imagens/gigante_pedra.png",
-    "descricao_pagina": "Gigantes de Pedra são seres contemplativos e reservados, moldados pelas cavernas e montanhas que chamam de lar. São escultores talentosos e guerreiros pacientes.",
-    "monstros": [
+      },
       {
         "nome": "Gigante de Pedra",
         "desafioCR_text": "7",
@@ -6457,15 +6436,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Os Gigantes de Pedra preferem viver em silêncio, contemplando a eternidade das montanhas. Quando provocados, atacam com a força e a precisão da própria terra."
-      }
-    ]
-  },
-  {
-    "slug": "gigante-das-nuvens",
-    "titulo_pagina": "Gigante das Nuvens",
-    "imagem_principal": "imagens/gigante_nuvens.png",
-    "descricao_pagina": "Gigantes das Nuvens são majestosos e enigmáticos. Vivem em castelos flutuantes e se consideram acima de todas as raças menores. Alguns são benevolentes, outros tiranos arrogantes.",
-    "monstros": [
+      },
       {
         "nome": "Gigante das Nuvens",
         "desafioCR_text": "9",
@@ -6505,15 +6476,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Esses gigantes controlam as tempestades e vivem entre as nuvens, em palácios sustentados por magia. Sua nobreza é tão instável quanto o próprio clima."
-      }
-    ]
-  },
-  {
-    "slug": "gigante-da-tempestade",
-    "titulo_pagina": "Gigante da Tempestade",
-    "imagem_principal": "imagens/gigante_tempestade.png",
-    "descricao_pagina": "Gigantes da Tempestade são os mais poderosos e sábios entre os gigantes. Vivem em fortalezas submarinas ou montanhas isoladas, em harmonia com os elementos.",
-    "monstros": [
+      },
       {
         "nome": "Gigante da Tempestade",
         "desafioCR_text": "13",
@@ -6560,15 +6523,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Gigantes da Tempestade são quase divinos, conectados aos céus e mares. São vistos como profetas entre os gigantes e raramente interferem nos assuntos mortais."
-      }
-    ]
-  },
-  {
-    "slug": "gigante-de-gelo",
-    "titulo_pagina": "Gigante de Gelo",
-    "imagem_principal": "imagens/gigante_gelo.png",
-    "descricao_pagina": "Gigantes de Gelo vivem em fortalezas congeladas, caçando monstros e viajantes nas tundras gélidas. São guerreiros brutais que valorizam força e coragem acima de tudo.",
-    "monstros": [
+      },
       {
         "nome": "Gigante de Gelo",
         "desafioCR_text": "8",
@@ -6891,10 +6846,16 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "golem-de-argila",
-    "titulo_pagina": "Golem de Argila",
-    "imagem_principal": "imagens/golem_argila.png",
-    "descricao_pagina": "Criado por magia divina ou profana, um Golem de Argila é uma estátua moldada e animada por forças arcanas. Obedece fielmente seu criador até ser destruído.",
+    "slug": "golems",
+    "aliases": [
+      "golem-de-argila",
+      "golem-de-carne",
+      "golem-de-ferro",
+      "golem-de-pedra"
+    ],
+    "titulo_pagina": "Golems",
+    "imagem_principal": "imagens/golem_ferro.png",
+    "descricao_pagina": "Constructos animados por magia poderosa, reunindo golems de argila, carne, ferro e pedra em uma mesma referência.",
     "monstros": [
       {
         "nome": "Golem de Argila",
@@ -6941,15 +6902,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Criaturas mudas e obedientes, os Golems de Argila são usados como guardiões e instrumentos de vingança por magos poderosos."
-      }
-    ]
-  },
-  {
-    "slug": "golem-de-carne",
-    "titulo_pagina": "Golem de Carne",
-    "imagem_principal": "imagens/golem_carne.png",
-    "descricao_pagina": "Um Golem de Carne é uma abominação costurada a partir de partes de cadáveres. Criado por alquimistas e necromantes, ele carrega a centelha da vida e da loucura.",
-    "monstros": [
+      },
       {
         "nome": "Golem de Carne",
         "desafioCR_text": "5",
@@ -6990,15 +6943,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Feito de carne e relâmpago, o Golem de Carne é instável e imprevisível — uma paródia trágica da vida, obedecendo cegamente à vontade de seu criador."
-      }
-    ]
-  },
-  {
-    "slug": "golem-de-ferro",
-    "titulo_pagina": "Golem de Ferro",
-    "imagem_principal": "imagens/golem_ferro.png",
-    "descricao_pagina": "Golems de Ferro são as armas definitivas dos magos e reis. Suas armaduras animadas esmagam exércitos inteiros e são quase indestrutíveis.",
-    "monstros": [
+      },
       {
         "nome": "Golem de Ferro",
         "desafioCR_text": "16",
@@ -7039,15 +6984,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Esses colossos de ferro são feitos para destruir. Suas lâminas e gás tóxico reduzem até heróis lendários a cinzas."
-      }
-    ]
-  },
-  {
-    "slug": "golem-de-pedra",
-    "titulo_pagina": "Golem de Pedra",
-    "imagem_principal": "imagens/golem_pedra.png",
-    "descricao_pagina": "Golems de Pedra são guardiões colossais talhados em granito ou mármore, animados por magia antiga. Eles protegem templos, tumbas e fortalezas há milênios.",
-    "monstros": [
+      },
       {
         "nome": "Golem de Pedra",
         "desafioCR_text": "10",
@@ -7584,10 +7521,14 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "sucubo",
-    "titulo_pagina": "Íncubo / Súcubo",
-    "imagem_principal": "imagens/sucubo_incubo.png",
-    "descricao_pagina": "Os Íncubos e Súcubos são demônios sedutores que se alimentam de desejo e corrupção. Mestres da manipulação, invadem sonhos e corações com igual facilidade.",
+    "slug": "sucubos-e-incubos",
+    "aliases": [
+      "sucubo",
+      "sucubo-incubo"
+    ],
+    "titulo_pagina": "Súcubos e Íncubos",
+    "imagem_principal": "imagens/sucubo.png",
+    "descricao_pagina": "Tentadores infernais reunidos em uma só referência, com as versões de súcubo e íncubo do catálogo.",
     "monstros": [
       {
         "nome": "Íncubo / Súcubo",
@@ -7638,59 +7579,49 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Criaturas da luxúria e corrupção, íncubos e súcubos caçam corações vulneráveis. Seus beijos drenam vitalidade e suas palavras, a vontade de resistir."
-      }
-    ]
-  },
-  {
-    "slug": "chacal-homem",
-    "titulo_pagina": "Chacal-homem",
-    "imagem_principal": "imagens/chacal_homem.png",
-    "descricao_pagina": "O Chacal-homem é um metamorfo maligno que serve a deuses da enganação e da morte. Na forma de chacal ou humano, ele seduz e manipula para preparar sacrifícios sombrios.",
-    "monstros": [
+      },
       {
-        "nome": "Chacal-homem",
-        "desafioCR_text": "1/2",
-        "xp": "100",
+        "nome": "Súcubo / Íncubo",
+        "desafioCR_text": "4",
+        "xp": "1.100",
         "tamanho": "Médio",
-        "tipo": "Humanoide (Metamorfo)",
-        "alinhamento": "Caótico e Mau",
-        "classeArmadura": "12",
-        "pontosVida": "18 (4d8)",
-        "deslocamento": "9m",
-        "imagem": "imagens/chacal_homem_card.png",
-        "forca": "11 (+0)",
-        "destreza": "13 (+1)",
-        "constituicao": "11 (+0)",
-        "inteligencia": "13 (+1)",
-        "sabedoria": "11 (+0)",
-        "carisma": "14 (+2)",
-        "sentidos": "visão no escuro 18m, percepção passiva 10",
-        "idiomas": "Comum",
+        "tipo": "Infernal",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "15 (armadura natural)",
+        "pontosVida": "66 (12d8 + 12)",
+        "deslocamento": "9m, voo 18m",
+        "imagem": "imagens/sucubo_card.png",
+        "forca": "8 (-1)",
+        "destreza": "17 (+3)",
+        "constituicao": "13 (+1)",
+        "inteligencia": "15 (+2)",
+        "sabedoria": "12 (+1)",
+        "carisma": "20 (+5)",
         "habilidadesEspeciais": [
           {
             "nome": "Mudança de Forma",
-            "descricao": "Pode se transformar em um humanoide de aparência inofensiva ou em um chacal. Suas estatísticas permanecem as mesmas, exceto pelo deslocamento (12m na forma de chacal).",
-            "icone": "fas fa-sync-alt"
+            "descricao": "Pode assumir aparência humanoide ou voltar à forma verdadeira. A transformação não revela sua natureza.",
+            "icone": "fas fa-user-secret"
           },
           {
-            "nome": "Falsa Aparência",
-            "descricao": "Enquanto estiver disfarçado de humanoide, o chacal-homem parece ser uma pessoa comum e não levanta suspeitas mágicas simples.",
-            "icone": "fas fa-user-secret"
+            "nome": "Beijo Drenante",
+            "descricao": "Beijar uma criatura voluntária causa 32 (5d10 + 5) de dano psíquico e drena energia vital.",
+            "icone": "fas fa-kiss-wink-heart"
           }
         ],
         "acoes": [
           {
-            "nome": "Mordida (Forma de Chacal ou Híbrido)",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +3 para acertar, alcance 1,5m. <em>Acerto:</em> 4 (1d6 + 1) de dano perfurante.",
-            "icone": "fas fa-tooth"
+            "nome": "Encantar",
+            "descricao": "O súcubo escolhe uma criatura visível a até 9m. CD 15 de Sabedoria ou fica enfeitiçada até sofrer dano ou ver seu mestre agir contra ela.",
+            "icone": "fas fa-heart"
           },
           {
-            "nome": "Cimitarra (Forma Humanoide)",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +3 para acertar, alcance 1,5m. <em>Acerto:</em> 4 (1d6 + 1) de dano cortante.",
-            "icone": "fas fa-sword"
+            "nome": "Drenar Energia",
+            "descricao": "Uma criatura encantada sofre 5 (1d10) de dano psíquico adicional por turno enquanto o encanto persistir.",
+            "icone": "fas fa-bolt"
           }
         ],
-        "descricaoGeral": "Devoradores de almas e servos de entidades sombrias, os chacais-homens preferem atacar viajantes desavisados, conduzindo rituais em honra a seus mestres profanos."
+        "descricaoGeral": "Súcubos e íncubos são demônios tentadores que usam luxúria e influência para controlar mortais e até anjos. Seu poder está no desejo."
       }
     ]
   },
@@ -8147,10 +8078,15 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "lobo",
-    "titulo_pagina": "Lobo",
-    "imagem_principal": "imagens/lobo.png",
-    "descricao_pagina": "Lobos são caçadores ferozes e leais, conhecidos por sua inteligência e habilidades de caça em matilha.",
+    "slug": "lobos-e-worgs",
+    "aliases": [
+      "lobo",
+      "lobo-terrivel",
+      "worg"
+    ],
+    "titulo_pagina": "Lobos e Worgs",
+    "imagem_principal": "imagens/worg.png",
+    "descricao_pagina": "Predadores lupinos mundanos e sobrenaturais, reunindo lobos, lobos terríveis e worgs para encontros de matilha.",
     "monstros": [
       {
         "nome": "Lobo",
@@ -8184,15 +8120,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Caçadores implacáveis e cooperativos, lobos atacam em grupos, derrubando presas maiores com estratégias instintivas."
-      }
-    ]
-  },
-  {
-    "slug": "lobo-terrivel",
-    "titulo_pagina": "Lobo Terrível",
-    "imagem_principal": "imagens/lobo_terrivel.png",
-    "descricao_pagina": "Versões enormes e mais agressivas dos lobos comuns, os lobos terríveis são caçadores alfa que dominam regiões selvagens inteiras.",
-    "monstros": [
+      },
       {
         "nome": "Lobo Terrível",
         "desafioCR_text": "1",
@@ -8225,6 +8153,39 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Lobos terríveis são predadores colossais, ancestrais dos lobos modernos. Sua força e instinto fazem deles senhores das florestas antigas."
+      },
+      {
+        "nome": "Worg",
+        "desafioCR_text": "1/2",
+        "xp": "100",
+        "tamanho": "Grande",
+        "tipo": "Monstruosidade",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "13 (armadura natural)",
+        "pontosVida": "26 (4d10 + 4)",
+        "deslocamento": "15m",
+        "imagem": "imagens/worg_card.png",
+        "forca": "16 (+3)",
+        "destreza": "13 (+1)",
+        "constituicao": "13 (+1)",
+        "inteligencia": "7 (-2)",
+        "sabedoria": "11 (+0)",
+        "carisma": "8 (-1)",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Audição e Faro Aguçados",
+            "descricao": "Tem vantagem em testes de Percepção baseados em audição ou olfato.",
+            "icone": "fas fa-ear-listen"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Mordida",
+            "descricao": "<em>Ataque Corpo a Corpo:</em> +5 para acertar, alcance 1,5m. <em>Acerto:</em> 10 (2d6 + 3) de dano perfurante. O alvo deve passar em teste de Força CD 13 ou cair no chão.",
+            "icone": "fas fa-tooth"
+          }
+        ],
+        "descricaoGeral": "Worgs são cruéis e ardilosos. Falam sua própria língua e muitas vezes fazem alianças com raças malignas para caçar presas maiores."
       }
     ]
   },
@@ -8270,10 +8231,14 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "aranha-gigante",
-    "titulo_pagina": "Aranha Gigante",
+    "slug": "aranhas",
+    "aliases": [
+      "aranha-gigante",
+      "aranha-monstruosa"
+    ],
+    "titulo_pagina": "Aranhas",
     "imagem_principal": "imagens/aranha_gigante.png",
-    "descricao_pagina": "Aranhas Gigantes são predadores furtivos que caçam no silêncio. Suas presas são imobilizadas em teias pegajosas antes de serem devoradas.",
+    "descricao_pagina": "Aranhas monstruosas e gigantes reunidas para encontros de emboscada, veneno e terreno difícil.",
     "monstros": [
       {
         "nome": "Aranha Gigante",
@@ -8322,15 +8287,7 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Aranhas gigantes caçam com inteligência instintiva, emboscando suas presas e cobrindo áreas inteiras com teias pegajosas."
-      }
-    ]
-  },
-  {
-    "slug": "aranha-monstruosa",
-    "titulo_pagina": "Aranha Monstruosa",
-    "imagem_principal": "imagens/aranha_monstruosa.png",
-    "descricao_pagina": "Essas aranhas são predadores sobrenaturais, com veneno mais potente e tamanho aterrorizante. Costumam habitar ruínas e florestas antigas.",
-    "monstros": [
+      },
       {
         "nome": "Aranha Monstruosa",
         "desafioCR_text": "4",
@@ -9050,52 +9007,6 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "pseudodragao",
-    "titulo_pagina": "Pseudodragão",
-    "imagem_principal": "imagens/pseudodragao.png",
-    "descricao_pagina": "Um pequeno dragão com cauda de ferrão, o pseudodragão é inteligente e fiel, muitas vezes servindo como familiar de magos e feiticeiros.",
-    "monstros": [
-      {
-        "nome": "Pseudodragão",
-        "desafioCR_text": "1/4",
-        "xp": "50",
-        "tamanho": "Minúsculo",
-        "tipo": "Dragão",
-        "alinhamento": "Neutro e Bom",
-        "classeArmadura": "13 (armadura natural)",
-        "pontosVida": "7 (2d4 + 2)",
-        "deslocamento": "4,5m, voo 18m",
-        "imagem": "imagens/pseudodragao_card.png",
-        "forca": "6 (-2)",
-        "destreza": "15 (+2)",
-        "constituicao": "13 (+1)",
-        "inteligencia": "10 (+0)",
-        "sabedoria": "12 (+1)",
-        "carisma": "10 (+0)",
-        "habilidadesEspeciais": [
-          {
-            "nome": "Sentidos Aguçados",
-            "descricao": "Vantagem em testes de Sabedoria (Percepção) que dependam de visão, olfato ou audição.",
-            "icone": "fas fa-eye"
-          },
-          {
-            "nome": "Resistência à Magia",
-            "descricao": "Vantagem em testes de resistência contra magias e efeitos mágicos.",
-            "icone": "fas fa-shield-alt"
-          }
-        ],
-        "acoes": [
-          {
-            "nome": "Picada",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +4 para acertar, alcance 1,5m. <em>Acerto:</em> 4 (1d4 + 2) de dano perfurante + veneno (CD 11) que adormece por 1 hora se falhar.",
-            "icone": "fas fa-sting"
-          }
-        ],
-        "descricaoGeral": "Pseudodragões são inteligentes e empáticos. Preferem amizade e curiosidade a combates, mas defendem seus companheiros ferozmente."
-      }
-    ]
-  },
-  {
     "slug": "quaggoth",
     "titulo_pagina": "Quaggoth",
     "imagem_principal": "imagens/quaggoth.png",
@@ -9695,57 +9606,6 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "sucubo-incubo",
-    "titulo_pagina": "Súcubo e Íncubo",
-    "imagem_principal": "imagens/sucubo_incubo.png",
-    "descricao_pagina": "Sedutores infernais que se alimentam do desejo e da força vital das vítimas. São mestres da manipulação e da corrupção.",
-    "monstros": [
-      {
-        "nome": "Súcubo / Íncubo",
-        "desafioCR_text": "4",
-        "xp": "1.100",
-        "tamanho": "Médio",
-        "tipo": "Infernal",
-        "alinhamento": "Neutro e Mau",
-        "classeArmadura": "15 (armadura natural)",
-        "pontosVida": "66 (12d8 + 12)",
-        "deslocamento": "9m, voo 18m",
-        "imagem": "imagens/sucubo_card.png",
-        "forca": "8 (-1)",
-        "destreza": "17 (+3)",
-        "constituicao": "13 (+1)",
-        "inteligencia": "15 (+2)",
-        "sabedoria": "12 (+1)",
-        "carisma": "20 (+5)",
-        "habilidadesEspeciais": [
-          {
-            "nome": "Mudança de Forma",
-            "descricao": "Pode assumir aparência humanoide ou voltar à forma verdadeira. A transformação não revela sua natureza.",
-            "icone": "fas fa-user-secret"
-          },
-          {
-            "nome": "Beijo Drenante",
-            "descricao": "Beijar uma criatura voluntária causa 32 (5d10 + 5) de dano psíquico e drena energia vital.",
-            "icone": "fas fa-kiss-wink-heart"
-          }
-        ],
-        "acoes": [
-          {
-            "nome": "Encantar",
-            "descricao": "O súcubo escolhe uma criatura visível a até 9m. CD 15 de Sabedoria ou fica enfeitiçada até sofrer dano ou ver seu mestre agir contra ela.",
-            "icone": "fas fa-heart"
-          },
-          {
-            "nome": "Drenar Energia",
-            "descricao": "Uma criatura encantada sofre 5 (1d10) de dano psíquico adicional por turno enquanto o encanto persistir.",
-            "icone": "fas fa-bolt"
-          }
-        ],
-        "descricaoGeral": "Súcubos e íncubos são demônios tentadores que usam luxúria e influência para controlar mortais e até anjos. Seu poder está no desejo."
-      }
-    ]
-  },
-  {
     "slug": "troll",
     "titulo_pagina": "Troll",
     "imagem_principal": "imagens/troll.png",
@@ -10102,91 +9962,6 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "Wights são servos da morte, atormentados pela memória da vida. Caçam os vivos para roubar seu calor vital."
-      }
-    ]
-  },
-  {
-    "slug": "worg",
-    "titulo_pagina": "Worg",
-    "imagem_principal": "imagens/worg.png",
-    "descricao_pagina": "Worgs são lobos malignos e inteligentes, aliados de goblins e orcs, usados como montarias e caçadores implacáveis.",
-    "monstros": [
-      {
-        "nome": "Worg",
-        "desafioCR_text": "1/2",
-        "xp": "100",
-        "tamanho": "Grande",
-        "tipo": "Monstruosidade",
-        "alinhamento": "Neutro e Mau",
-        "classeArmadura": "13 (armadura natural)",
-        "pontosVida": "26 (4d10 + 4)",
-        "deslocamento": "15m",
-        "imagem": "imagens/worg_card.png",
-        "forca": "16 (+3)",
-        "destreza": "13 (+1)",
-        "constituicao": "13 (+1)",
-        "inteligencia": "7 (-2)",
-        "sabedoria": "11 (+0)",
-        "carisma": "8 (-1)",
-        "habilidadesEspeciais": [
-          {
-            "nome": "Audição e Faro Aguçados",
-            "descricao": "Tem vantagem em testes de Percepção baseados em audição ou olfato.",
-            "icone": "fas fa-ear-listen"
-          }
-        ],
-        "acoes": [
-          {
-            "nome": "Mordida",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +5 para acertar, alcance 1,5m. <em>Acerto:</em> 10 (2d6 + 3) de dano perfurante. O alvo deve passar em teste de Força CD 13 ou cair no chão.",
-            "icone": "fas fa-tooth"
-          }
-        ],
-        "descricaoGeral": "Worgs são cruéis e ardilosos. Falam sua própria língua e muitas vezes fazem alianças com raças malignas para caçar presas maiores."
-      }
-    ]
-  },
-  {
-    "slug": "wyvern",
-    "titulo_pagina": "Wyvern",
-    "imagem_principal": "imagens/wyvern.png",
-    "descricao_pagina": "Parentes menores dos dragões, wyverns são bestas ferozes de duas patas e cauda com ferrão venenoso mortal.",
-    "monstros": [
-      {
-        "nome": "Wyvern",
-        "desafioCR_text": "6",
-        "xp": "2.300",
-        "tamanho": "Grande",
-        "tipo": "Dragão",
-        "alinhamento": "Sem Alinhamento",
-        "classeArmadura": "13 (armadura natural)",
-        "pontosVida": "110 (13d10 + 39)",
-        "deslocamento": "6m, voo 24m",
-        "imagem": "imagens/wyvern_card.png",
-        "forca": "19 (+4)",
-        "destreza": "10 (+0)",
-        "constituicao": "16 (+3)",
-        "inteligencia": "5 (-3)",
-        "sabedoria": "12 (+1)",
-        "carisma": "6 (-2)",
-        "acoes": [
-          {
-            "nome": "Multiataque",
-            "descricao": "O wyvern faz dois ataques: um com a mordida e outro com o ferrão.",
-            "icone": "fas fa-fist-raised"
-          },
-          {
-            "nome": "Mordida",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 3m. <em>Acerto:</em> 11 (2d6 + 4) de dano perfurante.",
-            "icone": "fas fa-tooth"
-          },
-          {
-            "nome": "Ferrão",
-            "descricao": "<em>Ataque Corpo a Corpo:</em> +7 para acertar, alcance 3m. <em>Acerto:</em> 13 (2d8 + 4) de dano perfurante, e o alvo deve passar em teste de Constituição CD 15 ou sofrer 24 (7d6) de dano venenoso.",
-            "icone": "fas fa-sting"
-          }
-        ],
-        "descricaoGeral": "Wyverns são predadores do céu, usados por senhores da guerra e caçadores ousados como montarias ou armas vivas."
       }
     ]
   },

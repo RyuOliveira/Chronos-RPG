@@ -241,8 +241,10 @@ class MonsterManual {
 
     getMonsterBySlug(slug) {
         if (!this.data) return null;
+        const requestedSlug = String(slug ?? '').trim();
         for (const group of this.data) {
-            if (group.slug === slug) return group;
+            if (group.slug === requestedSlug) return group;
+            if (Array.isArray(group.aliases) && group.aliases.includes(requestedSlug)) return group;
         }
         return null;
     }
@@ -308,7 +310,7 @@ class MonsterManual {
         `;
 
         group.monstros.forEach((monster, index) => {
-            html += this.generateMonsterCard(monster, slug, group, index);
+            html += this.generateMonsterCard(monster, group.slug, group, index);
         });
 
         container.innerHTML = html;
