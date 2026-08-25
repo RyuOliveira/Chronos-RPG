@@ -9201,6 +9201,67 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
+    "slug": "rato-demoniaco",
+    "titulo_pagina": "Rato Demoníaco",
+    "imagem_principal": "",
+    "descricao_pagina": "Pequenas bestas corrompidas por energia infernal, ratos demoníacos atacam em bando, espalhando veneno e necrose com mordidas frenéticas.",
+    "monstros": [
+      {
+        "nome": "Rato Demoníaco",
+        "desafioCR_text": "1",
+        "xp": "200",
+        "tamanho": "Pequeno",
+        "tipo": "Besta/Corrupção",
+        "alinhamento": "Neutro",
+        "classeArmadura": "13",
+        "pontosVida": "27 (6d6 + 6)",
+        "deslocamento": "12m (40 ft), natação 6m (20 ft)",
+        "imagem": "",
+        "forca": "10 (+0)",
+        "destreza": "16 (+3)",
+        "constituicao": "12 (+1)",
+        "inteligencia": "3 (-4)",
+        "sabedoria": "11 (+0)",
+        "carisma": "4 (-3)",
+        "pericias": "Furtividade +5, Percepção +2",
+        "resistenciasDano": "necrótico, veneno",
+        "imunidadesCondicoes": "envenenado",
+        "sentidos": "visão no escuro 18m, percepção passiva 12",
+        "idiomas": "—",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Faro e Audição Aguçados",
+            "descricao": "O rato tem vantagem em testes de Sabedoria (Percepção) que dependam da audição ou do olfato.",
+            "icone": "fas fa-ear-listen"
+          },
+          {
+            "nome": "Tática de Bando (Pack Tactics)",
+            "descricao": "O Rato Demoníaco tem vantagem nas jogadas de ataque contra uma criatura se pelo menos um aliado do rato estiver a até 1,5m da criatura e não estiver incapacitado.",
+            "icone": "fas fa-users"
+          },
+          {
+            "nome": "Instinto Voraz de Bando",
+            "descricao": "Quando a vida do bando é reduzida pela metade, os ratos remanescentes entram em frenesi em vez de recuar: a margem de acerto crítico da mordida passa a ser 19–20.",
+            "icone": "fas fa-bolt"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataque Múltiplo",
+            "descricao": "O Rato Demoníaco faz dois ataques de Mordida.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Mordida",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +5 para acertar, alcance 1,5m, um alvo. <em>Dano:</em> 6 (1d6 + 3) de dano perfurante + 3 (1d6) de dano necrótico. O alvo deve passar em uma salvaguarda de Constituição CD 11 ou fica envenenado até o início do próximo turno do rato.",
+            "icone": "fas fa-tooth"
+          }
+        ],
+        "descricaoGeral": "O Rato Demoníaco é uma peste pequena e corrompida que caça em enxames nervosos, mordendo com ferocidade sobrenatural quando o bando é encurralado."
+      }
+    ]
+  },
+  {
     "slug": "remorhaz",
     "titulo_pagina": "Remorhaz",
     "imagem_principal": "imagens/remorhaz.png",
