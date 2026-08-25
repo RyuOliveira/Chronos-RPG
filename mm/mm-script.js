@@ -300,7 +300,7 @@ class MonsterManual {
 
         let html = `
             <div class="group-header">
-                ${group.imagem_principal ? `<img src="${group.imagem_principal}" alt="${group.titulo_pagina}" class="img-fluid mb-3">` : ''}
+                ${group.imagem_principal ? `<img src="${group.imagem_principal}" alt="${group.titulo_pagina}" class="img-fluid mb-3" onerror="this.remove()">` : ''}
                 <h1>${group.titulo_pagina}</h1>
                 ${group.descricao_pagina ? `<p>${group.descricao_pagina}</p>` : ''}
                 <p class="mt-4"><a href="index.html" class="btn btn-outline-danger"><i class="fas fa-arrow-left me-2"></i>Voltar ao Glossário</a></p>
@@ -331,7 +331,7 @@ class MonsterManual {
                 </div>
             </div>
             <div class="card-body">
-                ${m.imagem ? `<div class="text-center mb-3"><img src="${m.imagem}" class="img-fluid rounded" style="max-width: 250px;"></div>` : ''}
+                ${m.imagem ? `<div class="text-center mb-3"><img src="${m.imagem}" class="img-fluid rounded" style="max-width: 250px;" onerror="this.parentElement.remove()"></div>` : ''}
                 <div class="monster-basics mb-3">
                     <p class="mb-1"><strong>${m.tamanho} ${m.tipo}</strong>, ${m.alinhamento}</p>
                     <p class="mb-1"><strong>Classe de Armadura</strong> ${m.classeArmadura}</p>

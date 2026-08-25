@@ -10581,5 +10581,200 @@ window.CHRONOS_MONSTROS_DATA = [
         "descricaoGeral": "Uma aberração colossal e brutal, o Otyugh Mutante é uma mistura de carapaça quitinosa e tentáculos, projetada para esmagar, envenenar e dominar o campo de batalha."
       }
     ]
+  },
+  {
+    "slug": "servos-dos-reinos-de-ferros",
+    "titulo_pagina": "Servos dos Reinos de Ferros",
+    "imagem_principal": "images/servos.webp",
+    "descricao_pagina": "Mortos-vivos de guerra forjados nos Reinos de Ferros. De carcaças escravizadas a comandantes disciplinados, esses servos avançam em formação, sem hesitar e sem piedade.",
+    "monstros": [
+      {
+        "nome": "Servo Escravo",
+        "desafioCR_text": "1/2",
+        "xp": "100",
+        "tamanho": "Médio",
+        "tipo": "Morto-vivo",
+        "alinhamento": "Sem Alinhamento",
+        "classeArmadura": "12",
+        "pontosVida": "22 (4d8 + 4)",
+        "deslocamento": "6m (20 ft)",
+        "imagem": "",
+        "forca": "14 (+2)",
+        "destreza": "8 (-1)",
+        "constituicao": "12 (+1)",
+        "inteligencia": "2 (-4)",
+        "sabedoria": "10 (+0)",
+        "carisma": "1 (-5)",
+        "imunidadesDano": "veneno",
+        "imunidadesCondicoes": "envenenado, exaustão",
+        "sentidos": "visão no escuro 18m, percepção passiva 10",
+        "idiomas": "compreende as ordens do criador, mas não fala",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Imparável pela Massa",
+            "descricao": "O Servo Escravo tem vantagem em testes de resistência de Força para evitar ser derrubado ou empurrado enquanto estiver a até 1,5m de outro Servo.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Pancada Desesperada",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +4 para acertar, alcance 1,5m, um alvo. <em>Dano:</em> 5 (1d6 + 2) de dano contundente.",
+            "icone": "fas fa-fist-raised"
+          }
+        ],
+        "descricaoGeral": "Carcaças reanimadas para trabalhos pesados e obediência cega, os servos escravos avançam sem medo e sem descanso."
+      },
+      {
+        "nome": "Servo Erguido (Básico)",
+        "desafioCR_text": "1",
+        "xp": "200",
+        "tamanho": "Médio",
+        "tipo": "Morto-vivo",
+        "alinhamento": "Neutro e Mau",
+        "classeArmadura": "14 (armadura natural)",
+        "pontosVida": "39 (6d8 + 12)",
+        "deslocamento": "9m (30 ft)",
+        "imagem": "",
+        "forca": "16 (+3)",
+        "destreza": "12 (+1)",
+        "constituicao": "14 (+2)",
+        "inteligencia": "3 (-4)",
+        "sabedoria": "10 (+0)",
+        "carisma": "4 (-3)",
+        "imunidadesDano": "veneno",
+        "imunidadesCondicoes": "envenenado, exaustão",
+        "sentidos": "visão no escuro 18m, percepção passiva 10",
+        "idiomas": "—",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Tática de Bando (Pack Tactics)",
+            "descricao": "O Servo Erguido tem vantagem nas jogadas de ataque contra uma criatura se pelo menos um dos aliados do servo estiver a até 1,5m da criatura e não estiver incapacitado.",
+            "icone": "fas fa-users"
+          },
+          {
+            "nome": "Fortitude Inabalável (Undead Fortitude)",
+            "descricao": "Se o dano reduzir o servo a 0 pontos de vida, ele deve fazer uma salvaguarda de Constituição com CD igual a 5 + o dano sofrido, a menos que o dano seja radiante ou de um acerto crítico. Em caso de sucesso, o servo cai para 1 ponto de vida em vez disso.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataque Múltiplo",
+            "descricao": "O Servo Erguido faz dois ataques com Garras.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Garras",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +5 para acertar, alcance 1,5m, um alvo. <em>Dano:</em> 6 (1d6 + 3) de dano cortante + 2 (1d4) de dano necrótico.",
+            "icone": "fas fa-paw"
+          }
+        ],
+        "descricaoGeral": "O servo erguido é um cadáver armado e estabilizado para combater em linha de frente, movendo-se com disciplina sombria."
+      },
+      {
+        "nome": "Servo Guerreiro",
+        "desafioCR_text": "2",
+        "xp": "450",
+        "tamanho": "Médio",
+        "tipo": "Morto-vivo",
+        "alinhamento": "Leal e Mau",
+        "classeArmadura": "16 (armadura de couro batido, escudo)",
+        "pontosVida": "58 (9d8 + 18)",
+        "deslocamento": "9m (30 ft)",
+        "imagem": "",
+        "forca": "16 (+3)",
+        "destreza": "14 (+2)",
+        "constituicao": "14 (+2)",
+        "inteligencia": "8 (-1)",
+        "sabedoria": "10 (+0)",
+        "carisma": "6 (-2)",
+        "testesResistencia": "Sabedoria +2",
+        "pericias": "Atletismo +5, Percepção +2",
+        "imunidadesDano": "veneno",
+        "imunidadesCondicoes": "envenenado, exaustão",
+        "sentidos": "visão no escuro 18m, percepção passiva 12",
+        "idiomas": "compreende os idiomas que falava em vida",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Resistência à Expulsão (Turn Resistance)",
+            "descricao": "O Servo Guerreiro tem vantagem nas salvaguardas contra efeitos que expulsam mortos-vivos.",
+            "icone": "fas fa-shield-alt"
+          },
+          {
+            "nome": "Estocada Cruel (1/Turno)",
+            "descricao": "Quando o Servo Guerreiro acerta um ataque corpo a corpo enquanto tem vantagem na jogada de ataque, ele causa 7 (2d6) de dano extra.",
+            "icone": "fas fa-sword"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataque Múltiplo",
+            "descricao": "O Servo Guerreiro realiza dois ataques com a Espada Longa.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Espada Longa",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +5 para acertar, alcance 1,5m, um alvo. <em>Dano:</em> 7 (1d8 + 3) de dano cortante (ou 8 (1d10 + 3) se usada com duas mãos).",
+            "icone": "fas fa-sword"
+          }
+        ],
+        "descricaoGeral": "Mais bem equipado e disciplinado, o servo guerreiro serve como tropa de choque dos Reinos de Ferros."
+      },
+      {
+        "nome": "Servo Comandante",
+        "desafioCR_text": "3",
+        "xp": "700",
+        "tamanho": "Médio",
+        "tipo": "Morto-vivo",
+        "alinhamento": "Leal e Mau",
+        "classeArmadura": "18 (cota de malha, escudo)",
+        "pontosVida": "85 (11d8 + 33)",
+        "deslocamento": "9m (30 ft)",
+        "imagem": "",
+        "forca": "18 (+4)",
+        "destreza": "12 (+1)",
+        "constituicao": "16 (+3)",
+        "inteligencia": "12 (+1)",
+        "sabedoria": "12 (+1)",
+        "carisma": "12 (+1)",
+        "testesResistencia": "Constituição +5, Sabedoria +3",
+        "pericias": "Percepção +3, Intimidação +3",
+        "imunidadesDano": "veneno",
+        "imunidadesCondicoes": "envenenado, exaustão, amedrontado",
+        "sentidos": "visão no escuro 18m, percepção passiva 13",
+        "idiomas": "idiomas que falava em vida",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Resistência à Expulsão (Turn Resistance)",
+            "descricao": "O Servo Comandante tem vantagem nas salvaguardas contra efeitos que expulsam mortos-vivos.",
+            "icone": "fas fa-shield-alt"
+          },
+          {
+            "nome": "Aura de Comando",
+            "descricao": "Aliados mortos-vivos a até 9m do Comandante adicionam +1 às suas jogadas de ataque e dano corpo a corpo.",
+            "icone": "fas fa-bullhorn"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataque Múltiplo",
+            "descricao": "O Comandante realiza dois ataques de Espada Grande ou comanda a horda.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Espada Grande Mágica",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +6 para acertar, alcance 1,5m, um alvo. <em>Dano:</em> 11 (2d6 + 4) de dano cortante + 3 (1d6) de dano necrótico.",
+            "icone": "fas fa-sword"
+          },
+          {
+            "nome": "Comandar a Horda (Recompensa de Ação)",
+            "descricao": "O Comandante escolhe até dois mortos-vivos aliados a até 9m que possam ouvi-lo. Cada alvo pode usar sua Reação para realizar um ataque corpo a corpo imediatamente.",
+            "icone": "fas fa-users"
+          }
+        ],
+        "descricaoGeral": "O servo comandante coordena a horda com disciplina brutal, transformando a linha de mortos-vivos em uma máquina de guerra."
+      }
+    ]
   }
 ];
