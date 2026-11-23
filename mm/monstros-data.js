@@ -10419,10 +10419,10 @@ window.CHRONOS_MONSTROS_DATA = [
     ]
   },
   {
-    "slug": "servos-dos-reinos-de-ferros",
-    "titulo_pagina": "Servos dos Reinos de Ferros",
+    "slug": "reinos-de-ferro",
+    "titulo_pagina": "Criaturas dos Reinos de Ferro",
     "imagem_principal": "images/servos.webp",
-    "descricao_pagina": "Mortos-vivos de guerra forjados nos Reinos de Ferros. De carcaças escravizadas a comandantes disciplinados, esses servos avançam em formação, sem hesitar e sem piedade.",
+    "descricao_pagina": "Habitantes, soldados e horrores encontrados nos Reinos de Ferro. Esta coleção reúne os servos mortos-vivos, as forças de Corvis, os guerreiros Skorne e as aberrações que espreitam sob suas cidades.",
     "monstros": [
       {
         "nome": "Servo Escravo",
@@ -10610,7 +10610,252 @@ window.CHRONOS_MONSTROS_DATA = [
           }
         ],
         "descricaoGeral": "O servo comandante coordena a horda com disciplina brutal, transformando a linha de mortos-vivos em uma máquina de guerra."
+      },
+      {
+        "nome": "Terror dos Túneis",
+        "desafioCR_text": "5",
+        "xp": "1.800",
+        "tamanho": "Grande",
+        "tipo": "Aberração",
+        "alinhamento": "Sem Alinhamento",
+        "classeArmadura": "15 (couro espesso)",
+        "pontosVida": "126 (12d10 + 60)",
+        "deslocamento": "6m, natação 9m",
+        "imagem": "",
+        "forca": "20 (+5)",
+        "destreza": "10 (+0)",
+        "constituicao": "20 (+5)",
+        "inteligencia": "5 (-3)",
+        "sabedoria": "14 (+2)",
+        "carisma": "6 (-2)",
+        "testesResistencia": "Força +8, Constituição +8",
+        "pericias": "Percepção +5, Furtividade +3",
+        "resistenciasDano": "ácido",
+        "sentidos": "visão no escuro 18m, percepção às cegas 3m, Percepção passiva 15",
+        "idiomas": "—",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Anfíbio",
+            "descricao": "O Terror respira ar e água.",
+            "icone": "fas fa-water"
+          },
+          {
+            "nome": "Corpo Compressível",
+            "descricao": "O Terror pode atravessar espaços adequados a uma criatura Média sem gastar deslocamento adicional.",
+            "icone": "fas fa-compress-arrows-alt"
+          },
+          {
+            "nome": "Mestre do Lodo",
+            "descricao": "O Terror ignora terreno difícil causado por água, lama e esgoto.",
+            "icone": "fas fa-shoe-prints"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataques Múltiplos",
+            "descricao": "O Terror realiza três ataques de Tentáculo. Ele pode substituir um deles por Mordida contra uma criatura que esteja agarrada por ele.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Tentáculo",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +8 para atingir, alcance 3m, um alvo. <em>Acerto:</em> 11 (1d12 + 5) de dano contundente, e o alvo fica agarrado (escape CD 15) se for Grande ou menor. O Terror pode agarrar até duas criaturas.",
+            "icone": "fas fa-splotch"
+          },
+          {
+            "nome": "Mordida",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +8 para atingir, alcance 1,5m, uma criatura agarrada pelo Terror. <em>Acerto:</em> 18 (2d12 + 5) de dano perfurante.",
+            "icone": "fas fa-tooth"
+          },
+          {
+            "nome": "Jato de Esgoto (Recarga 5–6)",
+            "descricao": "O Terror expele água, lodo e detritos num cone de 4,5m. Cada criatura na área faz um teste de resistência de Destreza CD 15, sofrendo 22 (5d8) de dano contundente e ficando caída em uma falha. No sucesso, sofre metade do dano e não fica caída.",
+            "icone": "fas fa-water"
+          }
+        ],
+        "reacoes": [
+          {
+            "nome": "Arrastar para a Água",
+            "descricao": "Quando uma criatura agarrada pelo Terror começa o turno, o Terror pode mover-se até metade do próprio deslocamento sem provocar ataques de oportunidade. A criatura agarrada move-se junto com ele.",
+            "icone": "fas fa-water"
+          },
+          {
+            "nome": "Tentáculo Oportunista",
+            "descricao": "Quando uma criatura que o Terror possa ver se desloca enquanto está a até 3m dele, o Terror realiza um ataque de Tentáculo contra ela.",
+            "icone": "fas fa-splotch"
+          }
+        ],
+        "descricaoGeral": "O Terror dos Túneis não luta por crueldade: está faminto, agarra os dois primeiros alvos e tenta arrastá-los para a boca. Ao cair a 20 pontos de vida, foge para o covil se houver passagem."
+      },
+      {
+        "nome": "Guarda de Corvis",
+        "desafioCR_text": "1/2",
+        "xp": "100",
+        "tamanho": "Médio",
+        "tipo": "Humanoide",
+        "alinhamento": "Qualquer Alinhamento",
+        "classeArmadura": "16 (cota de malha, escudo)",
+        "pontosVida": "22 (4d8 + 4)",
+        "deslocamento": "9m",
+        "imagem": "",
+        "forca": "14 (+2)",
+        "destreza": "12 (+1)",
+        "constituicao": "12 (+1)",
+        "inteligencia": "10 (+0)",
+        "sabedoria": "12 (+1)",
+        "carisma": "10 (+0)",
+        "pericias": "Atletismo +4, Percepção +3",
+        "sentidos": "Percepção passiva 13",
+        "idiomas": "Comum",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Formação Defensiva",
+            "descricao": "Enquanto estiver a até 1,5m de outro guarda consciente, o guarda recebe +1 na Classe de Armadura.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Lança",
+            "descricao": "<em>Ataque Corpo a Corpo ou à Distância com Arma:</em> +4 para atingir, alcance 1,5m ou 6/18m, um alvo. <em>Acerto:</em> 6 (1d8 + 2) de dano perfurante quando usada com as duas mãos, ou 5 (1d6 + 2) com uma mão.",
+            "icone": "fas fa-spear"
+          },
+          {
+            "nome": "Besta Leve",
+            "descricao": "<em>Ataque à Distância com Arma:</em> +3 para atingir, alcance 24/96m, um alvo. <em>Acerto:</em> 6 (1d8 + 2) de dano perfurante.",
+            "icone": "fas fa-crosshairs"
+          }
+        ],
+        "reacoes": [
+          {
+            "nome": "Proteger o Companheiro",
+            "descricao": "Quando uma criatura a até 1,5m for alvo de um ataque, o guarda impõe desvantagem à jogada. Ele precisa estar usando um escudo e ver o atacante.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "descricaoGeral": "Nem todo Guarda de Corvis é maligno. Um guarda que perceba claramente que os personagens estão resgatando inocentes pode render-se, afastar-se ou responder ao apito de Helstrom."
+      },
+      {
+        "nome": "Inquisidor Interrogador",
+        "desafioCR_text": "3",
+        "xp": "700",
+        "tamanho": "Médio",
+        "tipo": "Humanoide",
+        "alinhamento": "Leal e Maligno",
+        "classeArmadura": "16 (couro batido reforçado)",
+        "pontosVida": "75 (10d8 + 30)",
+        "deslocamento": "9m",
+        "imagem": "",
+        "forca": "11 (+0)",
+        "destreza": "16 (+3)",
+        "constituicao": "16 (+3)",
+        "inteligencia": "14 (+2)",
+        "sabedoria": "13 (+1)",
+        "carisma": "15 (+2)",
+        "testesResistencia": "Destreza +5, Sabedoria +3",
+        "pericias": "Enganação +4, Intimidação +4, Investigação +4",
+        "sentidos": "Percepção passiva 11",
+        "idiomas": "Comum, Ordico",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Olhar do Interrogador",
+            "descricao": "O Inquisidor tem vantagem em testes de Intuição para perceber mentiras e em testes de Intimidação contra criaturas amedrontadas ou contidas.",
+            "icone": "fas fa-eye"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataques Múltiplos",
+            "descricao": "O Inquisidor realiza dois ataques de Espada Curta ou dois ataques de Pistola.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Espada Curta",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +5 para atingir, alcance 1,5m, um alvo. <em>Acerto:</em> 10 (2d6 + 3) de dano perfurante.",
+            "icone": "fas fa-sword"
+          },
+          {
+            "nome": "Pistola",
+            "descricao": "<em>Ataque à Distância com Arma:</em> +5 para atingir, alcance 12/36m, um alvo. <em>Acerto:</em> 9 (1d12 + 3) de dano perfurante. Depois de quatro disparos, a arma precisa ser recarregada com uma ação.",
+            "icone": "fas fa-gun"
+          },
+          {
+            "nome": "Expor Fraqueza (Recarga 5–6)",
+            "descricao": "Uma criatura que o Inquisidor possa ver a até 9m faz um teste de resistência de Sabedoria CD 13. Em uma falha, fica amedrontada pelo Inquisidor até o final do próximo turno dela. O próximo ataque que acertá-la antes disso causa 7 (2d6) de dano adicional.",
+            "icone": "fas fa-eye"
+          }
+        ],
+        "reacoes": [
+          {
+            "nome": "Aparar",
+            "descricao": "O Inquisidor recebe +2 na Classe de Armadura contra um ataque corpo a corpo que possa ver e que o atingiria.",
+            "icone": "fas fa-shield-alt"
+          }
+        ],
+        "descricaoGeral": "Um interrogador treinado para descobrir fraquezas, aterrorizar suspeitos e explorar qualquer hesitação em combate."
+      },
+      {
+        "nome": "Doador de Agonia Skorne",
+        "desafioCR_text": "5",
+        "xp": "1.800",
+        "tamanho": "Médio",
+        "tipo": "Humanoide",
+        "alinhamento": "Leal e Maligno",
+        "classeArmadura": "17 (armadura segmentada)",
+        "pontosVida": "110 (13d8 + 52)",
+        "deslocamento": "9m",
+        "imagem": "",
+        "forca": "20 (+5)",
+        "destreza": "12 (+1)",
+        "constituicao": "18 (+4)",
+        "inteligencia": "12 (+1)",
+        "sabedoria": "14 (+2)",
+        "carisma": "11 (+0)",
+        "testesResistencia": "Força +8, Constituição +7",
+        "pericias": "Atletismo +8, Intimidação +3, Medicina +5",
+        "resistenciasDano": "fogo",
+        "sentidos": "visão no escuro 18m, Percepção passiva 12",
+        "idiomas": "Skorne, Comum rudimentar",
+        "habilidadesEspeciais": [
+          {
+            "nome": "Disciplina da Dor",
+            "descricao": "O Doador tem vantagem em testes e testes de resistência para evitar ficar agarrado, amedrontado ou atordoado.",
+            "icone": "fas fa-shield-alt"
+          },
+          {
+            "nome": "Dor como Combustível",
+            "descricao": "Na primeira vez em cada turno que o Doador sofre dano, o próximo ataque de Corrente Cravada que acertar antes do fim do próximo turno causa 4 (1d8) de dano adicional.",
+            "icone": "fas fa-fire"
+          }
+        ],
+        "acoes": [
+          {
+            "nome": "Ataques Múltiplos",
+            "descricao": "O Doador realiza dois ataques de Corrente Cravada.",
+            "icone": "fas fa-fist-raised"
+          },
+          {
+            "nome": "Corrente Cravada",
+            "descricao": "<em>Ataque Corpo a Corpo com Arma:</em> +8 para atingir, alcance 3m, um alvo. <em>Acerto:</em> 11 (1d12 + 5) de dano cortante. Em vez de causar dano, o Doador pode deixar um alvo Grande ou menor agarrado (escape CD 15). Enquanto agarrado dessa forma, o alvo fica a até 3m do Doador.",
+            "icone": "fas fa-link"
+          },
+          {
+            "nome": "Corrente Incandescente (Recarga 5–6)",
+            "descricao": "O Doador aquece a corrente no braseiro e a varre numa linha de 6m por 1,5m. Criaturas na linha fazem um teste de resistência de Destreza CD 15, sofrendo 27 (6d8) de dano, metade fogo e metade cortante, em uma falha; metade do dano no sucesso.",
+            "icone": "fas fa-fire"
+          }
+        ],
+        "bonusAcoes": [
+          {
+            "nome": "Puxão Cruel",
+            "descricao": "Uma criatura agarrada pela corrente faz um teste de resistência de Força CD 15. Em uma falha, é puxada até 3m, fica caída e sofre 7 (2d6) de dano contundente.",
+            "icone": "fas fa-link"
+          }
+        ],
+        "descricaoGeral": "Um guerreiro Skorne que transforma sofrimento em força e usa correntes cravadas para dominar o campo de batalha."
       }
+    ],
+    "aliases": [
+      "servos-dos-reinos-de-ferros"
     ]
   }
 ];
