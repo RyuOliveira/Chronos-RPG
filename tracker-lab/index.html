@@ -10,30 +10,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20261123-lab1">
+    <link rel="stylesheet" href="style.css?v=20261123-lab2">
 </head>
 
 <body class="tracker-page">
     <div class="page-shell">
-        <header class="tracker-topbar">
-            <div class="title-block">
-                <p class="eyebrow">Chronos RPG</p>
-                <h1>Iniciativa D&D <span class="lab-title-tag">Teste</span></h1>
-                <p class="subtitle">
-                    A ordem fica na lateral e uma única ficha ocupa o centro da mesa.
-                </p>
-            </div>
-
-            <div class="toolbar-actions">
-                <button type="button" id="toggle-combat-panel" class="btn btn-secondary btn-inline">
-                    Adicionar
-                </button>
-                <button type="button" id="clear-all" class="btn btn-secondary btn-inline btn-danger">
-                    Limpar combate
-                </button>
-            </div>
-        </header>
-
         <main class="workspace">
             <div id="combat-panel" class="modal hidden" aria-hidden="true">
                 <div class="modal-backdrop" data-close-panel="combat"></div>
@@ -131,12 +112,28 @@
 
             <section class="lab-combat-shell">
                 <aside class="turn-rail" aria-label="Ordem de iniciativa">
+                    <div class="rail-brand">
+                        <div>
+                            <p class="eyebrow">Chronos RPG</p>
+                            <h1>Iniciativa</h1>
+                        </div>
+                        <span class="lab-badge">Teste</span>
+                    </div>
+
+                    <div class="rail-main-actions">
+                        <button type="button" id="toggle-combat-panel" class="btn btn-secondary btn-inline btn-small">
+                            Adicionar
+                        </button>
+                        <button type="button" id="clear-all" class="btn btn-secondary btn-inline btn-small btn-danger">
+                            Limpar
+                        </button>
+                    </div>
+
                     <div class="turn-rail-head">
                         <div>
                             <p class="panel-kicker">Ordem de turno</p>
                             <h2>Combate</h2>
                         </div>
-                        <span class="lab-badge">Experimental</span>
                     </div>
 
                     <div class="rail-turn-controls">
@@ -393,7 +390,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=20261123-lab1"></script>
+    <script src="script.js?v=20261123-lab2"></script>
 </body>
 
 </html>

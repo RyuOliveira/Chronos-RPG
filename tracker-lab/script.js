@@ -932,6 +932,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getInitiativeLabel = (combatant) => String(combatant.init ?? 0);
 
+    const getCombatantDisplayName = (combatant) => {
+        const name = String(combatant?.name ?? 'Sem nome').trim() || 'Sem nome';
+        if (normalizeType(combatant?.type) !== 'enemy') return name;
+
+        const numberedCopy = name.match(/^(.*\S)\s+(\d+)$/);
+        if (!numberedCopy) return name;
+
+        return `${numberedCopy[2]} · ${numberedCopy[1]}`;
+    };
+
     const canTakeTurn = (combatant) => normalizeState(combatant?.state) !== 'dead';
 
     const sortCombatantsByInitiative = () => {
@@ -1561,9 +1571,9 @@ ${escapeHtml(attack.notes || '')}
         };
 
         els.attackModalTitle.textContent = attack.name || 'Resolver ataque';
-        els.attackModalSubtitle.textContent = `${source.name} contra ${target.name}`;
-        els.attackSourceName.textContent = source.name;
-        els.attackTargetName.textContent = target.name;
+        els.attackModalSubtitle.textContent = `${getCombatantDisplayName(source)} contra ${getCombatantDisplayName(target)}`;
+        els.attackSourceName.textContent = getCombatantDisplayName(source);
+        els.attackTargetName.textContent = getCombatantDisplayName(target);
         els.attackRollMode.value = 'normal';
         els.attackRollBonus.value = '0';
         els.attackRollNote.value = attack.notes || '';
@@ -1861,7 +1871,7 @@ ${escapeHtml(attack.notes || '')}
 
         if (!preview.hit) {
             closeAttackModal();
-            els.combatNotice.textContent = `${context.source.name} errou ${context.target.name}.`;
+            els.combatNotice.textContent = `${getCombatantDisplayName(context.source)} errou ${getCombatantDisplayName(context.target)}.`;
             return;
         }
 
@@ -1912,7 +1922,7 @@ ${escapeHtml(attack.notes || '')}
             : '';
 
         closeAttackModal();
-        els.combatNotice.textContent = `${source.name} acertou ${target.name} com ${attackName}: ${damageText}${suffix}.`;
+        els.combatNotice.textContent = `${getCombatantDisplayName(source)} acertou ${getCombatantDisplayName(target)} com ${attackName}: ${damageText}${suffix}.`;
     };
 
     const renderCombatantAttackButtons = (combatant) => {
@@ -2021,7 +2031,7 @@ ${escapeHtml(attack.notes || '')}
                     <div class="init-badge">${escapeHtml(getInitiativeLabel(combatant))}</div>
                     <div class="card-core">
                         <div class="name-row">
-                            <div class="char-name" title="${escapeHtml(combatant.name)}">${escapeHtml(combatant.name)}</div>
+                            <div class="char-name" title="${escapeHtml(getCombatantDisplayName(combatant))}">${escapeHtml(getCombatantDisplayName(combatant))}</div>
                             ${isCurrent ? '<span class="current-turn-label">Turno atual</span>' : ''}
                         </div>
                         <div class="card-detail-row">
@@ -2063,10 +2073,10 @@ ${escapeHtml(attack.notes || '')}
         return `
             <button type="button" class="${classes.join(' ')}" data-id="${combatant.id}"
                 aria-pressed="${isSelected ? 'true' : 'false'}"
-                title="${attackContext?.waitingForTarget ? `Atacar ${escapeHtml(combatant.name)}` : `Abrir ${escapeHtml(combatant.name)}`}">
+                title="${attackContext?.waitingForTarget ? `Atacar ${escapeHtml(getCombatantDisplayName(combatant))}` : `Abrir ${escapeHtml(getCombatantDisplayName(combatant))}`}">
                 <span class="rail-init">${escapeHtml(getInitiativeLabel(combatant))}</span>
                 <span class="rail-person">
-                    <span class="rail-name">${escapeHtml(combatant.name)}</span>
+                    <span class="rail-name">${escapeHtml(getCombatantDisplayName(combatant))}</span>
                     <span class="rail-meta">
                         ${isCurrent ? '<strong>Turno atual</strong>' : ''}
                         ${combatant.ac !== undefined && combatant.ac !== null ? `<span>CA ${escapeHtml(combatant.ac)}</span>` : ''}
@@ -2310,7 +2320,7 @@ ${escapeHtml(attack.notes || '')}
         if (total === 0) {
             els.combatSummary.textContent = 'Nenhum combatente adicionado ainda. Abra a biblioteca para montar a cena.';
         } else {
-            els.combatSummary.textContent = `Ordem pronta: ${total} combatentes. Turno atual: ${current?.name || 'sem nome'}${currentIndex >= 0 ? ` (${currentIndex + 1}/${total})` : ''}.`;
+            els.combatSummary.textContent = `Ordem pronta: ${total} combatentes. Turno atual: ${current ? getCombatantDisplayName(current) : 'sem nome'}${currentIndex >= 0 ? ` (${currentIndex + 1}/${total})` : ''}.`;
         }
 
         if (els.statTotal) els.statTotal.textContent = String(total);
