@@ -30,11 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
         statPlayers: document.getElementById('stat-players'),
         statMonsters: document.getElementById('stat-monsters'),
         statCurrentTurn: document.getElementById('stat-current-turn'),
+        combatPanel: document.getElementById('combat-panel'),
         toggleCombatPanelBtn: document.getElementById('toggle-combat-panel'),
-        toggleQuickPanelBtn: document.getElementById('toggle-quick-panel'),
         panelCloseBtns: document.querySelectorAll('[data-close-panel]'),
         openCombatPanelEmptyBtn: document.getElementById('open-combat-panel-empty'),
-        openQuickPanelEmptyBtn: document.getElementById('open-quick-panel-empty'),
         importBtn: document.getElementById('import-lib'),
         exportBtn: document.getElementById('export-lib'),
         sheetModal: document.getElementById('sheet-modal'),
@@ -690,31 +689,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updatePanelButtons = () => {
         const combatOpen = isPanelOpen('combat');
-        const quickOpen = isPanelOpen('quick');
 
-        els.toggleCombatPanelBtn.textContent = combatOpen ? 'Ocultar combatentes' : 'Adicionar combatentes';
+        els.toggleCombatPanelBtn.textContent = combatOpen ? 'Fechar biblioteca' : 'Adicionar';
         els.toggleCombatPanelBtn.setAttribute('aria-expanded', combatOpen ? 'true' : 'false');
-        els.toggleQuickPanelBtn.textContent = quickOpen ? 'Ocultar busca' : 'Busca rápida';
-        els.toggleQuickPanelBtn.setAttribute('aria-expanded', quickOpen ? 'true' : 'false');
     };
 
     const setPanelState = (panelName, open) => {
-        const className = panelName === 'combat' ? 'combat-panel-open' : 'quick-panel-open';
-        document.body.classList.toggle(className, open);
+        if (panelName !== 'combat' || !els.combatPanel) return;
+
+        document.body.classList.toggle('combat-panel-open', open);
+        document.body.classList.toggle('modal-open', open);
+        els.combatPanel.classList.toggle('hidden', !open);
+        els.combatPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
         updatePanelButtons();
 
         if (!open) return;
 
         window.setTimeout(() => {
-            if (panelName === 'combat') {
-                const activeTab = document.querySelector('#combat-panel .tab-btn.active')?.dataset.tab || 'add';
-                if (activeTab === 'library') {
-                    els.librarySearchInput?.focus();
-                } else {
-                    document.getElementById('name')?.focus();
-                }
+            const activeTab = document.querySelector('#combat-panel .tab-btn.active')?.dataset.tab || 'library';
+            if (activeTab === 'library') {
+                els.librarySearchInput?.focus();
             } else {
-                els.quickSearchInput?.focus();
+                document.getElementById('name')?.focus();
             }
         }, 30);
     };
@@ -880,6 +876,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return String(combatant.hp ?? 0);
     };
 
+    const getHealthStatus = (combatant) => {
+        const hp = parseInteger(combatant?.hp);
+        const maxHp = parseInteger(combatant?.maxHp);
+
+        if (!Number.isFinite(hp) || !Number.isFinite(maxHp) || maxHp <= 0) {
+            return { key: 'healthy', label: '', shortLabel: '' };
+        }
+
+        if (hp <= 0) {
+            return { key: 'defeated', label: 'Derrotado', shortLabel: 'Derrotado' };
+        }
+
+        const ratio = hp / maxHp;
+        if (ratio <= 0.25) {
+            return { key: 'wounded', label: 'Ferido', shortLabel: 'Ferido' };
+        }
+
+        if (ratio <= 0.5) {
+            return { key: 'hurt', label: 'Machucado', shortLabel: 'Mach.' };
+        }
+
+        return { key: 'healthy', label: '', shortLabel: '' };
+    };
+
     const formatSheetMeta = (entity) => {
         const pieces = [];
         if (entity.ac !== undefined && entity.ac !== null) pieces.push(`CA ${entity.ac}`);
@@ -941,6 +961,13 @@ document.addEventListener('DOMContentLoaded', () => {
             clearPendingAttack();
         }
         refreshAll();
+        window.requestAnimationFrame(() => {
+            document.querySelector('.combatant-card.is-current')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'nearest'
+            });
+        });
     };
 
     const applyHpDelta = (id, delta) => {
@@ -1897,64 +1924,48 @@ ${escapeHtml(attack.notes || '')}
     const renderHpControls = (combatant) => {
         const status = combatant.state || 'alive';
         const hpValue = formatHpDisplay(combatant);
+        const health = getHealthStatus(combatant);
 
         if (status === 'alive') {
             return `
-                <div class="hp-row hp-row--alive">
-                    <div class="hp-controls">
-                        <button class="hp-btn hp-minus" data-id="${combatant.id}" data-step="-5" type="button" title="-5 PV">-5</button>
-                    </div>
-                    <div class="hp-pill hp-pill--split" role="group" aria-label="Ajustar pontos de vida">
-                        <button class="hp-pill-edge hp-minus" data-id="${combatant.id}" data-step="-1" type="button" title="-1 PV">-</button>
-                        <span class="hp-pill-value">${escapeHtml(hpValue)}</span>
-                        <button class="hp-pill-edge hp-plus" data-id="${combatant.id}" data-step="1" type="button" title="+1 PV">+</button>
-                    </div>
-                    <div class="hp-controls">
-                        <button class="hp-btn hp-quick" data-id="${combatant.id}" data-step="5" type="button" title="+5 PV">+5</button>
-                    </div>
+                <div class="hp-block health-${health.key}" role="group" aria-label="Ajustar pontos de vida${health.label ? ` — ${health.label}` : ''}">
+                    <button class="hp-block-button hp-minus hp-block-quick" data-id="${combatant.id}" data-step="-5" type="button" title="-5 PV">-5</button>
+                    <button class="hp-block-button hp-minus" data-id="${combatant.id}" data-step="-1" type="button" title="-1 PV">−</button>
+                    <span class="hp-block-value">${escapeHtml(hpValue)}</span>
+                    ${health.label ? `<span class="hp-condition-label" title="${health.label}">${health.shortLabel}</span>` : ''}
+                    <button class="hp-block-button hp-plus" data-id="${combatant.id}" data-step="1" type="button" title="+1 PV">+</button>
+                    <button class="hp-block-button hp-quick hp-block-quick" data-id="${combatant.id}" data-step="5" type="button" title="+5 PV">+5</button>
                 </div>
             `;
         }
 
         if (status === 'saving') {
             return `
-                <div class="hp-row">
-                    <div class="hp-controls">
-                        <button class="hp-btn hp-minus" data-id="${combatant.id}" data-save="failure" type="button" title="Fracasso">-</button>
-                    </div>
-                    <div class="hp-pill state-saving">${escapeHtml(hpValue)}</div>
-                    <div class="hp-controls">
-                        <button class="hp-btn hp-plus" data-id="${combatant.id}" data-save="success" type="button" title="Sucesso">+</button>
-                        <button class="hp-btn hp-quick" data-id="${combatant.id}" data-step="5" type="button" title="Curar 5 PV">+5</button>
-                    </div>
+                <div class="hp-block state-saving" role="group" aria-label="Salvaguardas e pontos de vida">
+                    <button class="hp-block-button hp-minus" data-id="${combatant.id}" data-save="failure" type="button" title="Fracasso">−</button>
+                    <span class="hp-block-value">${escapeHtml(hpValue)}</span>
+                    <button class="hp-block-button hp-plus" data-id="${combatant.id}" data-save="success" type="button" title="Sucesso">+</button>
+                    <button class="hp-block-button hp-quick hp-block-quick" data-id="${combatant.id}" data-step="5" type="button" title="Curar 5 PV">+5</button>
                 </div>
             `;
         }
 
         if (status === 'stable') {
             return `
-                <div class="hp-row">
-                    <div class="hp-controls">
-                        <button class="hp-btn hp-plus" data-id="${combatant.id}" type="button" title="Curar 1 PV">+</button>
-                    </div>
-                    <div class="hp-pill state-stable">${escapeHtml(hpValue)}</div>
-                    <div class="hp-controls">
-                        <button class="hp-btn hp-quick" data-id="${combatant.id}" data-step="5" type="button" title="Curar 5 PV">+5</button>
-                    </div>
+                <div class="hp-block state-stable" role="group" aria-label="Ajustar pontos de vida">
+                    <span class="hp-block-value">${escapeHtml(hpValue)}</span>
+                    <button class="hp-block-button hp-plus" data-id="${combatant.id}" type="button" title="Curar 1 PV">+</button>
+                    <button class="hp-block-button hp-quick hp-block-quick" data-id="${combatant.id}" data-step="5" type="button" title="Curar 5 PV">+5</button>
                 </div>
             `;
         }
 
         return `
-            <div class="hp-row">
-                <div class="hp-controls">
-                    <button class="hp-btn hp-plus" data-id="${combatant.id}" type="button" title="Reviver 1 PV">+</button>
-                    <button class="hp-btn hp-quick" data-id="${combatant.id}" data-step="5" type="button" title="Reviver 5 PV">+5</button>
-                </div>
-                <div class="hp-pill state-dead">${escapeHtml(hpValue)}</div>
-                <div class="hp-controls">
-                    <button class="hp-btn hp-remove" data-id="${combatant.id}" type="button" title="Excluir da iniciativa">Excluir</button>
-                </div>
+            <div class="hp-block state-dead" role="group" aria-label="Ajustar pontos de vida">
+                <span class="hp-block-value">${escapeHtml(hpValue)}</span>
+                <button class="hp-block-button hp-plus" data-id="${combatant.id}" type="button" title="Reviver 1 PV">+</button>
+                <button class="hp-block-button hp-quick hp-block-quick" data-id="${combatant.id}" data-step="5" type="button" title="Reviver 5 PV">+5</button>
+                <button class="hp-block-button hp-remove" data-id="${combatant.id}" type="button" title="Excluir da iniciativa">Excluir</button>
             </div>
         `;
     };
@@ -1962,10 +1973,12 @@ ${escapeHtml(attack.notes || '')}
     const renderCombatantCard = (combatant) => {
         const isCurrent = combatant.id === currentTurnId;
         const isTargetSource = attackContext?.sourceId === combatant.id;
+        const health = getHealthStatus(combatant);
         const cardClasses = [
             'combatant-card',
             `type-${combatant.type}`,
-            `state-${combatant.state || 'alive'}`
+            `state-${combatant.state || 'alive'}`,
+            `health-${health.key}`
         ];
 
         if (isCurrent) cardClasses.push('is-current');
@@ -1988,11 +2001,13 @@ ${escapeHtml(attack.notes || '')}
                     <div class="card-core">
                         <div class="name-row">
                             <div class="char-name" title="${escapeHtml(combatant.name)}">${escapeHtml(combatant.name)}</div>
+                            ${isCurrent ? '<span class="current-turn-label">Turno atual</span>' : ''}
                         </div>
                         <div class="card-detail-row">
                             <div class="card-meta">
                                 ${meta.map((item) => `<span class="meta-pill">${escapeHtml(item)}</span>`).join('')}
                             </div>
+                            ${renderHpControls(combatant)}
                             <div class="card-link-row">
                                 ${sheetUrl ? `<a href="${escapeHtml(sheetUrl)}" target="_blank" rel="noopener" class="card-link-button btn-inline btn-mini">Ficha</a>` : ''}
                                 <button type="button" class="card-edit-button btn-inline btn-mini edit-combatant" data-id="${combatant.id}">
@@ -2003,7 +2018,6 @@ ${escapeHtml(attack.notes || '')}
                     </div>
                 </div>
                 ${renderCombatantAttackButtons(combatant)}
-                ${renderHpControls(combatant)}
             </article>
         `;
     };
@@ -2016,29 +2030,19 @@ ${escapeHtml(attack.notes || '')}
                 <div class="empty-state">
                     <h3>Sem combatentes na mesa</h3>
                     <p>
-                        Abra o painel de combatentes para montar a ordem de turno ou use a busca rápida para
-                        trazer alguém salvo.
+                        Abra a biblioteca para selecionar quem participará do combate.
                     </p>
                     <div class="empty-actions">
                         <button type="button" id="open-combat-panel-empty" class="btn btn-primary btn-inline">
-                            Abrir painel
-                        </button>
-                        <button type="button" id="open-quick-panel-empty" class="btn btn-secondary btn-inline">
-                            Busca rápida
+                            Abrir biblioteca
                         </button>
                     </div>
                 </div>
             `;
 
             const emptyCombatButton = document.getElementById('open-combat-panel-empty');
-            const emptyQuickButton = document.getElementById('open-quick-panel-empty');
-
             if (emptyCombatButton) {
                 emptyCombatButton.onclick = () => setPanelState('combat', true);
-            }
-
-            if (emptyQuickButton) {
-                emptyQuickButton.onclick = () => setPanelState('quick', true);
             }
 
             return;
@@ -2218,21 +2222,23 @@ ${escapeHtml(attack.notes || '')}
         const currentIndex = getCurrentTurnIndex();
 
         if (total === 0) {
-            els.combatSummary.textContent = 'Nenhum combatente adicionado ainda. Abra o painel para montar a cena.';
+            els.combatSummary.textContent = 'Nenhum combatente adicionado ainda. Abra a biblioteca para montar a cena.';
         } else {
             els.combatSummary.textContent = `Ordem pronta: ${total} combatentes. Turno atual: ${current?.name || 'sem nome'}${currentIndex >= 0 ? ` (${currentIndex + 1}/${total})` : ''}.`;
         }
 
-        els.statTotal.textContent = String(total);
-        els.statPlayers.textContent = String(characters.filter((character) => character.type === 'player').length);
-        els.statMonsters.textContent = String(characters.filter((character) => character.type === 'enemy').length);
-        els.statCurrentTurn.textContent = current ? current.name : '-';
+        if (els.statTotal) els.statTotal.textContent = String(total);
+        if (els.statPlayers) els.statPlayers.textContent = String(characters.filter((character) => character.type === 'player').length);
+        if (els.statMonsters) els.statMonsters.textContent = String(characters.filter((character) => character.type === 'enemy').length);
+        if (els.statCurrentTurn) els.statCurrentTurn.textContent = current ? current.name : '-';
 
         els.nextTurnBtn.disabled = total === 0;
         els.prevTurnBtn.disabled = total === 0;
     };
 
     const renderQuickSearch = () => {
+        if (!els.quickResults || !els.quickSearchInput) return;
+
         const term = quickSearchTerm.trim();
 
         if (!term) {
@@ -2594,6 +2600,11 @@ ${escapeHtml(attack.notes || '')}
             return;
         }
 
+        if (isPanelOpen('combat')) {
+            setPanelState('combat', false);
+            return;
+        }
+
         if (attackContext) {
             clearPendingAttack();
         }
@@ -2846,6 +2857,7 @@ ${escapeHtml(attack.notes || '')}
     function setupGlobalHandlers() {
         els.charForm.onsubmit = handleCombatFormSubmit;
         els.saveToLibBtn.onclick = saveToLibraryFromCombatForm;
+        els.typeSelect.onchange = updateTypeUI;
         els.nextTurnBtn.onclick = () => shiftTurn(1);
         els.prevTurnBtn.onclick = () => shiftTurn(-1);
         if (els.finishCombatBtn) {
@@ -2853,8 +2865,6 @@ ${escapeHtml(attack.notes || '')}
         }
         els.clearAllBtn.onclick = clearCombatants;
         els.toggleCombatPanelBtn.onclick = () => setPanelState('combat', !isPanelOpen('combat'));
-        els.toggleQuickPanelBtn.onclick = () => setPanelState('quick', !isPanelOpen('quick'));
-
         els.tabBtns.forEach((button) => {
             button.onclick = () => setActiveTab(button.dataset.tab || 'add');
         });
@@ -2867,19 +2877,17 @@ ${escapeHtml(attack.notes || '')}
             els.openCombatPanelEmptyBtn.onclick = () => setPanelState('combat', true);
         }
 
-        if (els.openQuickPanelEmptyBtn) {
-            els.openQuickPanelEmptyBtn.onclick = () => setPanelState('quick', true);
-        }
-
         els.librarySearchInput.oninput = () => {
             librarySearchTerm = els.librarySearchInput.value.trim();
             renderLibrary();
         };
 
-        els.quickSearchInput.oninput = () => {
-            quickSearchTerm = els.quickSearchInput.value.trim();
-            renderQuickSearch();
-        };
+        if (els.quickSearchInput) {
+            els.quickSearchInput.oninput = () => {
+                quickSearchTerm = els.quickSearchInput.value.trim();
+                renderQuickSearch();
+            };
+        }
 
         els.importBtn.onclick = () => importInput.click();
         els.exportBtn.onclick = exportLibrary;

@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20261123-1">
 </head>
 
 <body class="tracker-page">
@@ -26,10 +26,7 @@
 
             <div class="toolbar-actions">
                 <button type="button" id="toggle-combat-panel" class="btn btn-secondary btn-inline">
-                    Adicionar combatentes
-                </button>
-                <button type="button" id="toggle-quick-panel" class="btn btn-secondary btn-inline">
-                    Busca rápida
+                    Adicionar
                 </button>
                 <button type="button" id="clear-all" class="btn btn-secondary btn-inline btn-danger">
                     Limpar combate
@@ -38,8 +35,9 @@
         </header>
 
         <main class="workspace">
-            <aside id="combat-panel" class="side-panel side-panel-left">
-                <div class="card panel-card">
+            <div id="combat-panel" class="modal hidden" aria-hidden="true">
+                <div class="modal-backdrop" data-close-panel="combat"></div>
+                <div class="modal-card modal-combatants">
                     <div class="panel-header">
                         <div>
                             <p class="panel-kicker">Montar combate</p>
@@ -52,11 +50,11 @@
                     </div>
 
                     <div class="tabs">
-                        <button class="tab-btn active" data-tab="add" type="button">Adicionar</button>
-                        <button class="tab-btn" data-tab="library" type="button">Biblioteca</button>
+                        <button class="tab-btn" data-tab="add" type="button">Novo combatente</button>
+                        <button class="tab-btn active" data-tab="library" type="button">Biblioteca</button>
                     </div>
 
-                    <div id="tab-add" class="tab-content active">
+                    <div id="tab-add" class="tab-content">
                         <h3 class="card-subtitle">Novo combatente</h3>
                         <form id="char-form" class="combat-form">
                             <div class="form-group">
@@ -102,7 +100,7 @@
                         </form>
                     </div>
 
-                    <div id="tab-library" class="tab-content">
+                    <div id="tab-library" class="tab-content active">
                         <div class="library-head">
                             <div>
                                 <h3 class="card-subtitle">Meus salvos</h3>
@@ -123,11 +121,13 @@
                             <input type="search" id="library-search" placeholder="Procure por nome">
                         </div>
 
-                        <div id="player-library" class="library-list"></div>
-                        <div id="monster-library" class="library-list library-list-spaced"></div>
+                        <div class="library-columns">
+                            <div id="player-library" class="library-list"></div>
+                            <div id="monster-library" class="library-list library-list-spaced"></div>
+                        </div>
                     </div>
                 </div>
-            </aside>
+            </div>
 
             <section class="card board-panel">
                 <div class="board-header">
@@ -143,9 +143,9 @@
                     <div class="turn-controls">
                         <button id="prev-turn" class="btn btn-secondary btn-inline btn-small" type="button">Anterior</button>
                         <button id="finish-combat" class="btn btn-secondary btn-inline btn-small btn-finish" type="button">
-                            Finalizar combate
+                            Finalizar
                         </button>
-                        <button id="next-turn" class="btn btn-primary btn-inline btn-small" type="button">Próximo turno</button>
+                        <button id="next-turn" class="btn btn-primary btn-inline btn-small" type="button">Próximo</button>
                     </div>
                 </div>
 
@@ -153,61 +153,17 @@
                     <div class="empty-state">
                         <h3>Sem combatentes na mesa</h3>
                         <p>
-                            Abra o painel de combatentes para montar a ordem de turno ou use a busca rápida para
-                            trazer algo salvo.
+                            Abra a biblioteca para selecionar quem participará do combate.
                         </p>
                         <div class="empty-actions">
                             <button type="button" id="open-combat-panel-empty" class="btn btn-primary btn-inline">
-                                Abrir painel
-                            </button>
-                            <button type="button" id="open-quick-panel-empty" class="btn btn-secondary btn-inline">
-                                Busca rápida
+                                Abrir biblioteca
                             </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <aside id="quick-panel" class="side-panel side-panel-right">
-                <div class="card panel-card">
-                    <div class="panel-header">
-                        <div>
-                            <p class="panel-kicker">Busca e atalhos</p>
-                            <h2>Atalhos narrativos</h2>
-                        </div>
-                        <button type="button" class="panel-close btn btn-secondary btn-inline btn-mini"
-                            data-close-panel="quick">
-                            Fechar
-                        </button>
-                    </div>
-
-                    <div class="stat-grid">
-                        <div class="stat-card">
-                            <span>Total</span>
-                            <strong id="stat-total">0</strong>
-                        </div>
-                        <div class="stat-card">
-                            <span>Jogadores</span>
-                            <strong id="stat-players">0</strong>
-                        </div>
-                        <div class="stat-card">
-                            <span>Monstros</span>
-                            <strong id="stat-monsters">0</strong>
-                        </div>
-                        <div class="stat-card">
-                            <span>Turno atual</span>
-                            <strong id="stat-current-turn">-</strong>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="quick-search-input">Pesquisar nome</label>
-                        <input type="search" id="quick-search-input" placeholder="Ex: Orc, Kyra, Draven">
-                    </div>
-
-                    <div id="quick-results" class="quick-results"></div>
-                </div>
-            </aside>
         </main>
     </div>
 
@@ -420,7 +376,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20261123-1"></script>
 </body>
 
 </html>
