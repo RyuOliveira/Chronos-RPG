@@ -4,10 +4,15 @@ body {
     background-color: #0d0d0d;
     color: #e0e0e0;
     font-family: 'Georgia', serif;
+    line-height: 1.4;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1280px;
+}
+
+#monster-sheet-container {
+    margin-top: 1.5rem !important;
 }
 
 .monster-card {
@@ -16,14 +21,28 @@ body {
     overflow: hidden;
     background-color: #212529;
     border: 2px solid #dc3545;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.monster-card.mb-5 {
+    margin-bottom: 1.5rem !important;
 }
 
 .card-header {
     background-color: #dc3545;
     color: #fff;
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 1rem;
     border-bottom: 2px solid #8b0000;
+    gap: 0.75rem;
+}
+
+.card-header > .d-flex {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.monster-card .card-body {
+    padding: 1rem;
 }
 
 .badge {
@@ -66,9 +85,26 @@ body {
     color: #ffc107;
 }
 
+.monster-basics,
+.monster-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    column-gap: 1.25rem;
+    row-gap: 0.25rem;
+}
+
+.monster-basics p,
+.monster-details p {
+    margin-bottom: 0 !important;
+}
+
+.monster-details {
+    padding-top: 0.75rem !important;
+}
+
 .ability-score {
     flex: 1;
-    padding: 0.75rem;
+    padding: 0.5rem;
     background: rgba(255, 193, 7, 0.1);
     border-radius: 6px;
     margin: 0 4px;
@@ -82,11 +118,35 @@ body {
 
 .action-item,
 .special-trait {
-    padding: 0.8rem 1rem;
+    padding: 0.6rem 0.75rem;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0;
     border-left: 4px solid #00bcd4;
+}
+
+.monster-abilities,
+.monster-basics,
+.monster-details,
+.monster-traits {
+    margin-bottom: 0.75rem !important;
+}
+
+.monster-traits h5,
+.legendary-actions h5 {
+    margin-bottom: 0.6rem !important;
+    padding-bottom: 0.35rem !important;
+}
+
+.trait-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 0.6rem;
+}
+
+.action-item p,
+.special-trait p {
+    line-height: 1.35;
 }
 
 .action-item strong,
@@ -98,8 +158,10 @@ body {
     font-style: italic;
     color: #adb5bd;
     background: rgba(255, 255, 255, 0.03);
-    padding: 1rem;
+    padding: 0.75rem;
     border-radius: 8px;
+    margin-top: 1rem !important;
+    padding-top: 0.75rem !important;
 }
 
 .fa-icon {
@@ -115,18 +177,102 @@ body {
     background-color: #1a1a1a;
     border: 2px solid #dc3545;
     border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
     text-align: center;
 }
 
 .group-header h1 {
     color: #ffc107;
-    font-size: 2.5rem;
+    font-size: clamp(1.75rem, 3vw, 2.35rem);
+    margin-bottom: 0.5rem;
 }
 
 .group-header img {
     max-width: 500px;
+    max-height: 240px;
+    object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+}
+
+.group-header p {
+    margin-bottom: 0.5rem;
+}
+
+.group-header .mt-4 {
+    margin-top: 0.75rem !important;
+}
+
+@media (max-height: 800px) and (min-width: 768px) {
+    #monster-sheet-container {
+        margin-top: 0.75rem !important;
+    }
+
+    .group-header {
+        padding: 0.85rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .group-header img {
+        max-height: 120px;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .monster-card .card-body {
+        padding: 0.8rem 1rem;
+    }
+
+    .card-header {
+        padding: 0.6rem 1rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    #monster-sheet-container,
+    body > .container {
+        margin-top: 0.75rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    .group-header {
+        padding: 1rem;
+    }
+
+    .group-header img {
+        max-height: 180px;
+    }
+
+    .card-header {
+        align-items: flex-start !important;
+        flex-direction: column;
+    }
+
+    .card-header > .d-flex {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .monster-basics,
+    .monster-details,
+    .trait-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .monster-abilities .d-flex {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+
+    .ability-score {
+        margin: 0;
+    }
+}
+
+@media (max-width: 380px) {
+    .monster-abilities .d-flex {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

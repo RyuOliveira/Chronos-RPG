@@ -317,7 +317,6 @@ class MonsterManual {
     }
 
     generateMonsterCard(m, slug, group, index) {
-        const sheetUrl = buildMonsterSheetUrl(slug);
         const monsterKey = `${slug}:${index}`;
         const monsterData = buildMonsterTrackerPayload(m, slug, group, index);
         trackerPayloadCache.set(monsterKey, monsterData);
@@ -327,7 +326,6 @@ class MonsterManual {
             <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
                 <h2 class="h4 mb-0">${m.nome}</h2>
                 <div class="d-flex align-items-center gap-2">
-                    <a class="btn btn-sm btn-outline-light" href="${sheetUrl}" target="_blank" rel="noopener">Abrir ficha</a>
                     <button class="btn btn-sm btn-warning" onclick='sendToTracker(event, ${JSON.stringify(monsterKey)})'>Adicionar à biblioteca</button>
                     <div class="badge bg-dark text-white fs-6">Desafio ${m.desafioCR_text} (${m.xp} XP)</div>
                 </div>
@@ -370,11 +368,13 @@ class MonsterManual {
                     <div class="monster-actions legendary-actions">
                         <h5 class="border-bottom pb-2 mb-3 text-danger">Ações Lendárias</h5>
                         <p class="mb-2">${m.descricaoAcoesLendarias || ''}</p>
-                        ${m.acoesLendarias.map((a) => `
-                            <div class="action-item">
-                                <p class="mb-1"><strong><i class="${a.icone || 'fas fa-bolt'} fa-icon"></i>${a.nome}${a.custo > 1 ? ` (Custa ${a.custo} Ações)` : ''}.</strong> ${a.descricao}</p>
-                            </div>
-                        `).join('')}
+                        <div class="trait-grid">
+                            ${m.acoesLendarias.map((a) => `
+                                <div class="action-item">
+                                    <p class="mb-1"><strong><i class="${a.icone || 'fas fa-bolt'} fa-icon"></i>${a.nome}${a.custo > 1 ? ` (Custa ${a.custo} Ações)` : ''}.</strong> ${a.descricao}</p>
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
                 ` : ''}
 
@@ -400,12 +400,14 @@ class MonsterManual {
         return `
             <div class="monster-traits mb-3">
                 <h5 class="border-bottom pb-2 mb-3">${title}</h5>
-                ${items.map((item) => `
-                    <div class="special-trait">
-                        <p class="mb-1"><strong><i class="${item.icone || 'fas fa-chevron-right'} fa-icon"></i>${item.nome}.</strong> ${item.descricao}</p>
-                        ${item.notaDM ? `<p class="note-clarification">DM Note: ${item.notaDM}</p>` : ''}
-                    </div>
-                `).join('')}
+                <div class="trait-grid">
+                    ${items.map((item) => `
+                        <div class="special-trait">
+                            <p class="mb-1"><strong><i class="${item.icone || 'fas fa-chevron-right'} fa-icon"></i>${item.nome}.</strong> ${item.descricao}</p>
+                            ${item.notaDM ? `<p class="note-clarification">DM Note: ${item.notaDM}</p>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
             </div>
         `;
     }
