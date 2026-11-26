@@ -253,40 +253,114 @@ class MonsterManual {
         const container = document.getElementById(containerId);
         if (!container || !this.data) return;
 
-        // Simplified grouping for the glossary
-        const groups = {};
-        this.data.forEach((group) => {
-            const firstLetter = group.titulo_pagina.charAt(0).toUpperCase();
-            if (!groups[firstLetter]) groups[firstLetter] = [];
-            groups[firstLetter].push(group);
-        });
+        const creatures = this.data.flatMap((group) => (group.monstros ?? []).map((monster, index) => ({
+            group,
+            monster,
+            index,
+            name: cleanWhitespace(monster.nome || group.titulo_pagina),
+            challenge: this.getChallengeValue(monster.desafioCR_text)
+        })));
 
-        const sortedLetters = Object.keys(groups).sort();
+        const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        })[character]);
 
-        let html = '<div class="row">';
-        let colCount = 0;
+        container.innerHTML = `
+            <div class="catalog-controls">
+                <label class="catalog-search-wrap" for="monster-catalog-search">
+                    <span>Buscar criatura</span>
+                    <span class="catalog-search-field">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input id="monster-catalog-search" type="search" placeholder="Nome, tipo ou ND..." autocomplete="off">
+                    </span>
+                </label>
+                <label class="catalog-sort-wrap" for="monster-catalog-sort">
+                    <span>Ordenar por</span>
+                    <select id="monster-catalog-sort">
+                        <option value="challenge">Nível de Desafio (ND)</option>
+                        <option value="name">Ordem alfabética</option>
+                    </select>
+                </label>
+            </div>
+            <div class="catalog-result-line">
+                <p id="catalog-result-count" aria-live="polite"></p>
+                <button id="catalog-clear-search" class="catalog-clear-search" type="button">Limpar busca</button>
+            </div>
+            <div id="catalog-results" class="catalog-results"></div>
+        `;
 
-        sortedLetters.forEach((letter) => {
-            if (colCount % 3 === 0) {
-                if (colCount > 0) html += '</div>';
-                html += '<div class="row">';
-            }
+        const searchInput = container.querySelector('#monster-catalog-search');
+        const sortSelect = container.querySelector('#monster-catalog-sort');
+        const resultCount = container.querySelector('#catalog-result-count');
+        const results = container.querySelector('#catalog-results');
+        const clearButton = container.querySelector('#catalog-clear-search');
 
-            html += `<div class="col-md-4">
-                <div class="glossary-group">
-                    <h5>${letter}</h5>
-                    <ul class="glossary-list">`;
-
-            groups[letter].forEach((group) => {
-                html += `<li><a href="monster.html?slug=${group.slug}">${group.titulo_pagina}</a></li>`;
+        const renderResults = () => {
+            const term = normalizeToken(searchInput.value);
+            const filtered = creatures.filter(({ group, monster, name }) => {
+                const searchable = normalizeToken([
+                    name,
+                    group.titulo_pagina,
+                    monster.tipo,
+                    monster.desafioCR_text
+                ].join(' '));
+                return searchable.includes(term);
             });
 
-            html += `</ul></div></div>`;
-            colCount++;
-        });
+            filtered.sort((left, right) => {
+                if (sortSelect.value === 'name') {
+                    return left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' })
+                        || left.challenge - right.challenge;
+                }
+                return left.challenge - right.challenge
+                    || left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' });
+            });
 
-        html += '</div>';
-        container.innerHTML = html;
+            resultCount.textContent = `${filtered.length} ${filtered.length === 1 ? 'criatura encontrada' : 'criaturas encontradas'}`;
+            clearButton.hidden = !term;
+
+            if (filtered.length === 0) {
+                results.innerHTML = '<div class="catalog-empty"><i class="fas fa-search" aria-hidden="true"></i><p>Nenhuma criatura encontrada. Tente outro nome ou ND.</p></div>';
+                return;
+            }
+
+            results.innerHTML = filtered.map(({ group, monster, index, name }) => `
+                <a class="catalog-creature" href="monster.html?slug=${encodeURIComponent(group.slug)}#monstro-${index}">
+                    <span class="catalog-creature-main">
+                        <span class="catalog-creature-name">${escapeHtml(name)}</span>
+                        <span class="catalog-creature-group">${escapeHtml(group.titulo_pagina)}</span>
+                    </span>
+                    <span class="catalog-creature-meta">
+                        ${monster.tipo ? `<span class="catalog-type">${escapeHtml(monster.tipo)}</span>` : ''}
+                        <span class="catalog-cr">ND ${escapeHtml(monster.desafioCR_text ?? '—')}</span>
+                    </span>
+                    <i class="fas fa-chevron-right catalog-creature-arrow" aria-hidden="true"></i>
+                </a>
+            `).join('');
+        };
+
+        searchInput.addEventListener('input', renderResults);
+        sortSelect.addEventListener('change', renderResults);
+        clearButton.addEventListener('click', () => {
+            searchInput.value = '';
+            renderResults();
+            searchInput.focus();
+        });
+        renderResults();
+    }
+
+    getChallengeValue(value) {
+        const text = cleanWhitespace(value).replace(',', '.');
+        if (text.includes('/')) {
+            const [numerator, denominator] = text.split('/').map(Number);
+            return denominator ? numerator / denominator : Number.POSITIVE_INFINITY;
+        }
+        const challenge = Number(text);
+        return Number.isFinite(challenge) ? challenge : Number.POSITIVE_INFINITY;
     }
 
     renderMonsterSheet(slug, containerId) {
@@ -322,7 +396,7 @@ class MonsterManual {
         trackerPayloadCache.set(monsterKey, monsterData);
 
         return `
-        <div class="monster-card card border-danger mb-5">
+        <div id="monstro-${index}" class="monster-card card border-danger mb-5">
             <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
                 <h2 class="h4 mb-0">${m.nome}</h2>
                 <div class="d-flex align-items-center gap-2">
