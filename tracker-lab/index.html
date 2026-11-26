@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20261123-lab2">
+    <link rel="stylesheet" href="style.css?v=20261125-lab3">
 </head>
 
 <body class="tracker-page">
@@ -113,10 +113,7 @@
             <section class="lab-combat-shell">
                 <aside class="turn-rail" aria-label="Ordem de iniciativa">
                     <div class="rail-brand">
-                        <div>
-                            <p class="eyebrow">Chronos RPG</p>
-                            <h1>Iniciativa</h1>
-                        </div>
+                        <h1>Iniciativa</h1>
                         <span class="lab-badge">Teste</span>
                     </div>
 
@@ -127,13 +124,9 @@
                         <button type="button" id="clear-all" class="btn btn-secondary btn-inline btn-small btn-danger">
                             Limpar
                         </button>
-                    </div>
-
-                    <div class="turn-rail-head">
-                        <div>
-                            <p class="panel-kicker">Ordem de turno</p>
-                            <h2>Combate</h2>
-                        </div>
+                        <button id="finish-combat" class="btn btn-secondary btn-inline btn-small btn-finish" type="button">
+                            Finalizar
+                        </button>
                     </div>
 
                     <div class="rail-turn-controls">
@@ -145,9 +138,6 @@
                         <p class="rail-empty">Adicione combatentes para montar a ordem.</p>
                     </div>
 
-                    <button id="finish-combat" class="btn btn-secondary btn-inline btn-small btn-finish rail-finish" type="button">
-                        Finalizar combate
-                    </button>
                 </aside>
 
                 <section class="card board-panel focus-board">
@@ -390,7 +380,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=20261123-lab2"></script>
+    <script src="script.js?v=20261125-lab3"></script>
 </body>
 
 </html>

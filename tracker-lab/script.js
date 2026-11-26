@@ -932,14 +932,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getInitiativeLabel = (combatant) => String(combatant.init ?? 0);
 
-    const getCombatantDisplayName = (combatant) => {
+    const getCombatantNameParts = (combatant) => {
         const name = String(combatant?.name ?? 'Sem nome').trim() || 'Sem nome';
-        if (normalizeType(combatant?.type) !== 'enemy') return name;
+        const numberedCopy = combatant?.type === 'enemy' && name.match(/^(.*\S)\s+(\d+)$/);
+        return numberedCopy ? { name: numberedCopy[1], number: numberedCopy[2] } : { name };
+    };
 
-        const numberedCopy = name.match(/^(.*\S)\s+(\d+)$/);
-        if (!numberedCopy) return name;
-
-        return `${numberedCopy[2]} · ${numberedCopy[1]}`;
+    const getCombatantDisplayName = (combatant) => {
+        const { name, number } = getCombatantNameParts(combatant);
+        return number ? `#${number} · ${name}` : name;
     };
 
     const canTakeTurn = (combatant) => normalizeState(combatant?.state) !== 'dead';
@@ -2057,6 +2058,13 @@ ${escapeHtml(attack.notes || '')}
         const isCurrent = combatant.id === currentTurnId;
         const isSelected = combatant.id === selectedCombatantId;
         const isSource = combatant.id === attackContext?.sourceId;
+        const { name, number } = getCombatantNameParts(combatant);
+        const action = attackContext?.waitingForTarget ? 'Atacar' : 'Abrir';
+        const description = [
+            `${action} ${getCombatantDisplayName(combatant)}`,
+            isCurrent ? 'Turno atual' : '',
+            `Iniciativa ${getInitiativeLabel(combatant)}`
+        ].filter(Boolean).join(' · ');
         const health = getHealthStatus(combatant);
         const classes = [
             'turn-order-item',
@@ -2073,15 +2081,14 @@ ${escapeHtml(attack.notes || '')}
         return `
             <button type="button" class="${classes.join(' ')}" data-id="${combatant.id}"
                 aria-pressed="${isSelected ? 'true' : 'false'}"
-                title="${attackContext?.waitingForTarget ? `Atacar ${escapeHtml(getCombatantDisplayName(combatant))}` : `Abrir ${escapeHtml(getCombatantDisplayName(combatant))}`}">
+                ${isCurrent ? 'aria-current="true"' : ''}
+                title="${escapeHtml(description)}">
                 <span class="rail-init">${escapeHtml(getInitiativeLabel(combatant))}</span>
                 <span class="rail-person">
-                    <span class="rail-name">${escapeHtml(getCombatantDisplayName(combatant))}</span>
-                    <span class="rail-meta">
-                        ${isCurrent ? '<strong>Turno atual</strong>' : ''}
-                        ${combatant.ac !== undefined && combatant.ac !== null ? `<span>CA ${escapeHtml(combatant.ac)}</span>` : ''}
-                    </span>
+                    ${number ? `<span class="rail-copy-number">#${number}</span>` : ''}
+                    <span class="rail-name">${escapeHtml(name)}</span>
                 </span>
+                <span class="rail-ac">${Number.isFinite(combatant.ac) ? `CA ${combatant.ac}` : ''}</span>
                 <span class="rail-hp" title="Pontos de vida">${escapeHtml(formatHpDisplay(combatant))}</span>
             </button>
         `;
@@ -2099,17 +2106,13 @@ ${escapeHtml(attack.notes || '')}
         const ordered = currentIndex >= 0
             ? [...characters.slice(currentIndex), ...characters.slice(0, currentIndex)]
             : [...characters];
-        const [current, ...upcoming] = ordered;
         const targetHint = attackContext?.waitingForTarget
             ? '<p class="rail-target-hint">Escolha o alvo abaixo</p>'
             : '';
 
         els.turnOrderList.innerHTML = `
             ${targetHint}
-            <p class="rail-section-label">Agora</p>
-            ${renderTurnOrderItem(current)}
-            ${upcoming.length > 0 ? '<p class="rail-section-label rail-next-label">Depois</p>' : ''}
-            ${upcoming.map((combatant) => renderTurnOrderItem(combatant)).join('')}
+            ${ordered.map(renderTurnOrderItem).join('')}
         `;
 
         els.turnOrderList.querySelectorAll('.turn-order-item').forEach((item) => {

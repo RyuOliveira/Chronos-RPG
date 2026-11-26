@@ -1417,6 +1417,7 @@ body.modal-open {
 /* Laboratório: ordem lateral + uma única ficha em foco */
 body.tracker-page {
   height: 100vh;
+  height: 100dvh;
   min-height: 0;
   padding: 0.35rem;
   overflow: hidden;
@@ -1431,7 +1432,7 @@ body.tracker-page {
 
 .lab-combat-shell {
   display: grid;
-  grid-template-columns: minmax(270px, 310px) minmax(0, 1fr);
+  grid-template-columns: clamp(19rem, 26vw, 23rem) minmax(0, 1fr);
   gap: 0.65rem;
   align-items: stretch;
   min-width: 0;
@@ -1461,11 +1462,6 @@ body.tracker-page {
   padding: 0.05rem 0.1rem 0.5rem;
 }
 
-.rail-brand .eyebrow {
-  margin-bottom: 0.15rem;
-  font-size: 0.66rem;
-}
-
 .rail-brand h1 {
   font-size: 1.15rem;
   letter-spacing: 0.07em;
@@ -1473,29 +1469,17 @@ body.tracker-page {
 
 .rail-main-actions {
   display: grid;
-  grid-template-columns: 1fr 0.72fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.35rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  margin-bottom: 0.35rem;
 }
 
-.rail-main-actions .btn-inline {
+.rail-main-actions .btn-inline,
+.rail-turn-controls .btn-inline {
   width: 100%;
-  padding: 0.45rem 0.55rem;
+  min-height: 2rem;
+  padding: 0.35rem 0.25rem;
   font-size: 0.76rem;
-}
-
-.turn-rail-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.45rem 0.1rem 0.4rem;
-}
-
-.turn-rail-head h2 {
-  color: var(--primary);
-  font-size: 1.05rem;
 }
 
 .lab-badge {
@@ -1514,11 +1498,6 @@ body.tracker-page {
   gap: 0.4rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.rail-turn-controls .btn-inline,
-.rail-finish {
-  width: 100%;
 }
 
 .turn-order-list {
@@ -1540,28 +1519,16 @@ body.tracker-page {
   border-radius: 999px;
 }
 
-.rail-section-label,
 .rail-target-hint {
-  margin: 0.1rem 0.25rem 0.28rem;
-  color: #8f8980;
-  font-size: 0.72rem;
+  margin: 0.1rem 0.15rem 0.3rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.rail-next-label {
-  margin-top: 0.45rem;
-}
-
-.rail-target-hint {
-  padding: 0.5rem 0.6rem;
+  padding: 0.35rem 0.45rem;
   border-radius: 9px;
   background: rgba(231, 76, 60, 0.14);
   border: 1px solid rgba(231, 76, 60, 0.26);
   color: #ffbbb3;
   text-align: center;
-  letter-spacing: 0.05em;
 }
 
 .rail-empty {
@@ -1574,14 +1541,15 @@ body.tracker-page {
 .turn-order-item {
   position: relative;
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
+  grid-template-columns: 2rem minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.4rem;
   width: 100%;
   min-width: 0;
-  margin-bottom: 0.28rem;
-  padding: 0.4rem 0.48rem;
-  border-radius: 11px;
+  min-height: 2.1rem;
+  margin-bottom: 0.2rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-left: 3px solid var(--accent-red);
@@ -1599,7 +1567,6 @@ body.tracker-page {
 .turn-order-item.is-selected {
   background: rgba(52, 152, 219, 0.1);
   border-color: rgba(52, 152, 219, 0.32);
-  transform: translateX(2px);
 }
 
 .turn-order-item.is-current {
@@ -1645,18 +1612,28 @@ body.tracker-page {
 .rail-init {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
+  min-height: 1.5rem;
+  border-radius: 6px;
   background: rgba(212, 175, 55, 0.13);
   color: var(--primary);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
 .rail-person {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   min-width: 0;
+}
+
+.rail-copy-number {
+  flex: none;
+  color: #efda91;
+  font-size: 0.875rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
 
 .rail-name {
@@ -1670,18 +1647,10 @@ body.tracker-page {
   white-space: nowrap;
 }
 
-.rail-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: 0.16rem;
-  color: #9e9890;
-  font-size: 0.7rem;
-}
-
-.rail-meta strong {
-  color: #f1d978;
-  font-weight: 700;
+.rail-ac {
+  color: #b1aba2;
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .rail-hp {
@@ -1700,10 +1669,6 @@ body.tracker-page {
 
 .turn-order-item.health-wounded .rail-hp {
   color: #ff8f82;
-}
-
-.rail-finish {
-  margin-top: 0.4rem;
 }
 
 .focus-board {
@@ -1756,14 +1721,8 @@ body.attack-targeting .turn-rail {
   }
 
   .turn-rail {
-    position: static;
-    height: calc(100vh - 0.7rem);
-    min-height: 500px;
-    max-height: none;
-  }
-
-  .turn-order-list {
-    max-height: none;
+    height: min(24rem, 50dvh);
+    min-height: 11rem;
   }
 
   .focus-board {
